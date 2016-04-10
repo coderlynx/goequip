@@ -1,21 +1,39 @@
+var modelo, descripcion, talle, color, stock, precio;
+
 var Producto = {
+    init: function() {
+        var _this = this;
+        
+        _this.mostrarProductos();
+
+      //cuando presiona guardar
+        $("#btnAltaProducto").click(function() {
+            if( _this.validarCampos()) {
+                var producto = _this.armarObjetoProducto();
+                _this.insertProducto(producto);
+            }
+          
+            
+        })
+    },
+    validarCampos: function() {
+        return true;
+    },
     mostrarProductos: function () {
 
-		var json = JSON.stringify(false);
-		
         var _this = this;
         //Lo hice de esta forma porque necesitaba que el asincronismo sea false
 		$.ajax({
 			  async:false,    
 			  cache:false,   
 			  type: 'GET',   
-			  url: "php/listarProductos.php",
+			  url: "php/controllerProducto.php",
 			  success:  function(productos){  
 					var rta = JSON.parse(productos);
 					//console.log( "Data Loaded: " + rta );
 					var items = [];
 					for (i=0; i < rta.length; i++) {
-						_this.dibujarProductoEnPantalla($('#container'), rta[i]);
+						_this.dibujarProductoEnPantalla($('#contenedor'), rta[i]);
 					}
 			  },
 			  error:function(objXMLHttpRequest){
@@ -23,37 +41,45 @@ var Producto = {
 			  }
 			});
     },
-	dibujarProductoEnPantalla: function($contenedor, producto) {
-		return true;
+	dibujarProductoEnPantalla: function(contenedor, producto) {
+        
+        var div_item = $('<div>');
+			div_item.attr('id',producto.id);
+			//div_item.addClass('');
+        
+        var p = $("<p>");
+        p.html(producto.modelo);
+        
+        div_item.append(p);
+        
+        contenedor.append(div_item);
+        
+		return div_item;
 			 
 	}, 
-    insertProducto: function () {
+    insertProducto: function (producto) {
         var _this = this;
 
-		$("#agregar").click(function() {
+        //Parseo a JSON el obj Producto
+        var jsonProducto = JSON.stringify(producto);
 
-			var producto = _this.armarProducto();
-			
-			var jsonProducto = JSON.stringify(producto);
+        // guardo el aviso
+        $.post('php/controllerProducto.php', {producto:jsonProducto }, function(respuestaJson) {
+            var rta = JSON.parse(respuestaJson);
+            if(rta == "exito") {
+                alert("El producto ha sigo guardado con exito.");
+            }
+            
+           
 
-			
-			// guardo el aviso
-			$.post('php/agregarProducto.php', {producto:jsonProducto }, function(respuestaJson) {
-				var rta = JSON.parse(respuestaJson);
-				if(rta == "exito") {
-					alert("El producto ha sigo guardado con exito.");
-				}
-				_this.mostrarMensajesError(rta);
-				alertify.error("complete los campos obligatorios.");
-				
-					//console.log(rta);
-			}).error(function(e){
-					console.log('Error al ejecutar la petición por:' + e);
-				}
-			);
-			
-			return false;
-		});
+                //console.log(rta);
+        }).error(function(e){
+                console.log('Error al ejecutar la petición por:' + e);
+            }
+        );
+
+        return false;
+
 		
 		
 		
@@ -62,12 +88,22 @@ var Producto = {
         return false;
     },
 	armarObjetoProducto: function() {
-		
-		var nombre = $('#nombre').val();
-		
+        
+       /* modelo = $("#modelo").val();
+        descripcion = $("#descripcion").val();
+        talle = $("#talle").val();
+        color = $("#color").val();
+        stock = $("#stock").val();
+        precio = $("#precio").val();*/
+				
 		var producto = {};
 		
-		producto.Nombre = nombre;
+		producto.Modelo = $("#modelo").val();
+		producto.Descripcion = $("#descripcion").val();
+		producto.Talle = $("#talle").val();
+		producto.Color = $("#color").val();
+		producto.Stock = $("#stock").val();
+		producto.Precio = $("#precio").val();
 		
 
 		return producto;

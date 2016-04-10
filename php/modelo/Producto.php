@@ -4,17 +4,31 @@ require_once 'autoload.php';
 
  class Producto  implements JsonSerializable { 
 	private $id;
-	private $nombre;
+	private $modelo;
+	private $descripcion;
+	private $talle;
+	private $color;
+	private $stock;
+	private $precio;
 	
 	
-	public function __construct($id=null, $nombre) {
+	public function __construct($id=null, $modelo, $descripcion,$talle=null, $color, $stock, $precio) {
        $this->id = $id;
-	   $this->nombre = $nombre;
+	   $this->modelo = $modelo;
+	   $this->descripcion = $descripcion;
+	   $this->talle = $talle;
+	   $this->color = $color;
+	   $this->stock = $stock;
+	   $this->precio = $precio;
 	  
     }
 	
 	public static $reglas = [
-		'nombre' => ['required']
+		'modelo' => ['required'],
+		'descripcion' => ['required'],
+		'color' => ['required'],
+		'stock' => ['required'],
+		'precio' => ['required']
 	];
 	
 	
@@ -27,10 +41,14 @@ require_once 'autoload.php';
 	{
 		$json = array();
 		
-		//foreach($this as $key=>)
 		return [
 			'id' => $this->id,
-			'nombre' => $this->nombre
+			'modelo' => $this->modelo,
+			'descripcion' => $this->descripcion,
+			'talle' => $this->talle,
+			'color' => $this->color,
+			'stock' => $this->stock,
+			'precio' => $this->precio
 		];
 		
 	}
@@ -49,7 +67,7 @@ require_once 'autoload.php';
 			try	{
 				$db->beginTransaction();
 				
-				$query = "UPDATE aviso SET nombre = :nombre WHERE id = :id";
+				$query = "UPDATE productos SET modelo = :modelo, descripcion = :descripcion, talle = :talle, color = :color, stock = :stock, precio = :precio WHERE id = :id";
 				 
 				$stmt = DBConnection::getStatement($query);
 				
@@ -58,16 +76,14 @@ require_once 'autoload.php';
 				
 
 				 if(!$stmt->execute()) {
-					throw new Exception("Error en el editado del aviso.");
+					throw new Exception("Error en el editado del producto.");
 				}
 				
-				$id = $producto->id;
-
-				$_SESSION['idProducto'] = $producto->id;
+				//$_SESSION['idProducto'] = $producto->id;
 
 				$db->commit();
-				 //echo 'El aviso ha sido modificado con éxito';
-				 return $aviso;
+				 
+				 return $producto;
 			 } catch(PDOException $e)
 				{
 				  echo 'Error: ' . $e->getMessage();
@@ -77,13 +93,13 @@ require_once 'autoload.php';
 			try	{
 				$db->beginTransaction();
 				
-				$query = "INSERT INTO aviso (nombre)
-				VALUES(:nombre)";
+				$query = "INSERT INTO productos (modelo, descripcion, talle, color, stock, precio)
+				VALUES(:modelo, :descripcion, :talle, :color, :stock, :precio)";
 
 				$stmt = DBConnection::getStatement($query);
 															
 				$stmt = Producto::bindearDatos($stmt, $producto);
-								 
+                			 
 				if(!$stmt->execute()) {
 					throw new Exception("Error en el insertado del producto.");
 				}
@@ -92,7 +108,7 @@ require_once 'autoload.php';
 
 				$producto->setId($id);
 				
-                $_SESSION['idProducto'] = $producto->id;
+                //$_SESSION['idProducto'] = $producto->id;
 			
 				$db->commit();
 				
@@ -115,7 +131,12 @@ require_once 'autoload.php';
 	 */
 	private static function bindearDatos($stmt, $producto) {
 		
-		 $stmt->bindParam(':nombre', $producto->nombre,PDO::PARAM_STR);
+		 $stmt->bindParam(':modelo', $producto->modelo,PDO::PARAM_STR);
+		 $stmt->bindParam(':descripcion', $producto->descripcion,PDO::PARAM_STR);
+		 $stmt->bindParam(':talle', $producto->talle,PDO::PARAM_STR);
+		 $stmt->bindParam(':color', $producto->color,PDO::PARAM_STR);
+		 $stmt->bindParam(':stock', $producto->stock,PDO::PARAM_INT);
+		 $stmt->bindParam(':precio', $producto->precio);
 		
 		 return $stmt;
 	}
@@ -140,7 +161,7 @@ require_once 'autoload.php';
 			$stmt->bindParam(':id', $idProducto,PDO::PARAM_INT);
 			
 			if(!$stmt->execute()) {
-				throw new Exception("Error al eliminar el aviso");
+				throw new Exception("Error al eliminar el producto");
 			}
 		   
 		    $db->commit();
@@ -160,7 +181,7 @@ require_once 'autoload.php';
     public static function getById($id){
 		try{
 			
-			$listaProductos = Producto::getAll(false);
+			$listaProductos = Producto::getTodos();
 			
 			$prod = null;
 			foreach($listaProductos as $producto) {
@@ -188,11 +209,11 @@ require_once 'autoload.php';
 	 *
 	 * @return  Array el array de productos
 	 */
-	public static function getAll(){
+	public static function getTodos(){
 		try {
 			 
-			$query = "SELECT av.id, av.nombre
-					 FROM aviso av ";
+			$query = "SELECT prod.id, prod.modelo, prod.descripcion, prod.talle, prod.color, prod.stock, prod.precio
+					 FROM productos prod ";
 											
 		   $stmt = DBConnection::getStatement($query);
 		   
@@ -206,7 +227,7 @@ require_once 'autoload.php';
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
 
-                $producto = new Aviso($row['id'],$row['nombre']);
+                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['talle'], $row['color'], $row['stock'], $row['precio']);
 
                 $productos[] = $producto;
 
@@ -255,9 +276,6 @@ require_once 'autoload.php';
 		
 	}
 	
-	/*public function setNombre($nombre) {
-		$this->nombre = $nombre;
-	}*/
 	
 	public function setId($valor) {
 		$this->id = $valor;

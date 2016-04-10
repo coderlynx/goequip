@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION["nombre"]))	
+//if(!isset($_SESSION["nombre"]))	
   //header("Location: hoysesale");  //Si no hay sesión activa, lo direccionamos al index.php (inicio de sesión) 
   
 ?>
@@ -13,26 +13,28 @@ if(!isset($_SESSION["nombre"]))
 	</head>
 	
 	<body>
-			<div class="">
-			<h3 id="nombre_formulario">Agregar Producto</h3>
-			<form id="">
+        <div id="contenedor"></div>
 
-				<input id="nombre" type="text" placeholder="Nombre" value="">
-				
-			</form>
+
+        <h3 id="nombre_formulario">Agregar Producto</h3>
+        <form id="">
+
+            <input id="modelo" type="text" placeholder="Modelo" value="">
+            <input id="descripcion" type="text" placeholder="Descripcion" value="">
+            <input id="talle" type="text" placeholder="Talle" value="">
+            <input id="color" type="text" placeholder="Color" value="">
+            <input id="stock" type="text" placeholder="Stock" value="">
+            <input id="precio" type="text" placeholder="Precio" value="">
+            <input type="button" id="btnAltaProducto" value="Guardar" />
+        </form>
 			
-		</div>
-		
 	
 	<?php include('scripts.html') ?>
+	<script src="js/Producto.js"></script>
 	<script>
 		$( document ).ready(function() {
-			
 
-			Producto.insertProducto();
-
-			Producto.editProducto();	
-
+			Producto.init();
 
 		});
 	
