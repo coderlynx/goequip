@@ -2,7 +2,7 @@
 //session_start();
 require_once 'autoload.php';
 
- class Producto  implements JsonSerializable { 
+ class Producto implements JsonSerializable { 
 	private $id;
 	private $modelo;
 	private $descripcion;
@@ -33,9 +33,9 @@ require_once 'autoload.php';
 	
 	
 	/**
-	 * Retorna el array con los datos de mi clase. Se implementó el método de JsonSerializable para poder acceder a los métodos privados de mi clase, ya que el json_encode al cual le paso mi lista de avisos respetaba el acceso y no lo pasaba al front.
+	 * Retorna el array con los datos de mi clase. Se implementó el método de JsonSerializable para poder acceder a los métodos privados de mi clase, ya que el json_encode al cual le paso mi lista de productos respetaba el acceso y no lo pasaba al front.
 	 *
-	 * @return array de las propiedades mi aviso.
+	 * @return array de las propiedades mi producto.
 	 */
 	public  function jsonSerialize() 
 	{
@@ -242,7 +242,6 @@ require_once 'autoload.php';
 			}
     }
 	
-
 
 /*GETTER Y SETTER */
 	public function __get($propiedad)
