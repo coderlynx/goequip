@@ -1,63 +1,74 @@
 <?php
+require_once ('php/autoload.php');
 require_once ('php/lib/mercadopago.php');
-//Mis datos secretos Client_id y Client_secret
-$mp = new MP('5836268351908133', '8q3o4CY9gQKTx8LCz9clL4wQdMCBb1Zq');
 
-$mp->sandbox_mode(TRUE);
-//Get an existent Checkout preference
-//$preference = $mp->get_preference("110542");
+session_start();
 
-//print_r ($preference);*/
 
-//Create a Checkout preference
-$preference_data = array(
-    "items" => array( 
-        array(
-            "id"=> "item-ID-1234",
-			"title"=> "Title of what you are paying for. It will be displayed in the payment process.",
-			"currency_id"=> "ARS",
-			"picture_url"=> "https://www.mercadopago.com/org-img/MP3/home/logomp3.gif",
-			"description"=> "Item description",
-			"category_id"=> "art", // Available categories at https://api.mercadopago.com/item_categories
-			"quantity"=> 1,
-			"unit_price"=> 100           
-             )
-    ),
-    "payer" => array(
-        array(
-            "name"=> "user-name",
-            "surname"=> "user-surname",
-            "email"=> "user@email.com",
-            "date_created"=> "2015-06-02T12:58:41.425-04:00",
-            "phone"=>[
-                "area_code"=> "11",
-                "number"=> "4444-4444"
+if(isset($_SESSION['monto'])) {
+    /** UNSERIALIZE **/
+   $montoTotal = $_SESSION['monto'];
+       
+    //print_r ($carrito);
+
+    //Mis datos secretos Client_id y Client_secret
+    $mp = new MP('5836268351908133', '8q3o4CY9gQKTx8LCz9clL4wQdMCBb1Zq');
+
+    $mp->sandbox_mode(TRUE);
+    //Get an existent Checkout preference
+    //$preference = $mp->get_preference("110542");
+
+    //print_r ($preference);
+
+    //Create a Checkout preference
+    $preference_data = array(
+        "items" => array( 
+            array(
+                "id"=> "item-ID-1234",
+                "title"=> "GO Equipamientos.",//Title of what you are paying for. It will be displayed in the payment process.
+                "currency_id"=> "ARS",
+                "picture_url"=> "css/goequip_logo.gif",
+                "description"=> "Equipamientos",
+                "category_id"=> "art", // Available categories at https://api.mercadopago.com/item_categories
+                "quantity"=> 1,
+                "unit_price"=> $montoTotal          
+                 )
+        ),
+        "payer" => array(
+            array(
+                "name"=> "user-name",
+                "surname"=> "user-surname",
+                "email"=> "user@email.com",
+                "date_created"=> "2015-06-02T12:58:41.425-04:00",
+                "phone"=>[
+                    "area_code"=> "11",
+                    "number"=> "4444-4444"
+                    ],
+                "identification"=> [
+                    "type"=> "DNI",
+                    "number"=> "12345678"
                 ],
-            "identification"=> [
-                "type"=> "DNI",
-                "number"=> "12345678"
-            ],
-            "address"=> [
-                "street_name"=> "Street",
-                "street_number"=> 123,
-                "zip_code"=> "5700"
-            ] 
-        )
-	),
-    "external_reference" => "1",
-    "auto_return" => "approved",
-    "back_urls" => array(
-         "failure" => "http://localhost/coderlynx/goequip/goequip/Notificacion.php",
-         "pending" => "http://localhost/coderlynx/goequip/goequip/Notificacion.php",
-         "success" => "http://localhost/coderlynx/goequip/goequip/Notificacion.php"
-         )
-);
+                "address"=> [
+                    "street_name"=> "Street",
+                    "street_number"=> 123,
+                    "zip_code"=> "5700"
+                ] 
+            )
+        ),
+        "external_reference" => "1",
+        "auto_return" => "approved",
+        "back_urls" => array(
+             "failure" => "http://localhost/coderlynx/goequip/goequip/Notificacion.php",
+             "pending" => "http://localhost/coderlynx/goequip/goequip/Notificacion.php",
+             "success" => "http://localhost/coderlynx/goequip/goequip/Notificacion.php"
+             )
+    );
 
-$preference = $mp->create_preference ($preference_data);
+    $preference = $mp->create_preference ($preference_data);
 
-$access_token = "APP_USR-5836268351908133-040920-10062c9f055f8bc1b369e188ef27c07b__E_F__-43258013";// $mp->get_access_token();
+    $access_token = "APP_USR-5836268351908133-040920-10062c9f055f8bc1b369e188ef27c07b__E_F__-43258013";// $mp->get_access_token();
 
-print_r ($access_token);
+    //print_r ($access_token);
 
 //$payment_info = $mp->get_payment_info('1146523287');
 
@@ -83,7 +94,7 @@ print_r ($search_result);*/
 //$paymentInfo = $mp->get_payment ('1146523287');
 
 //print_r ($paymentInfo);
-
+}
 
 ?>
 <!DOCTYPE html>

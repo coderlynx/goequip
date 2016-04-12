@@ -1,4 +1,5 @@
 <?php
+require_once ('php/autoload.php');
 
 class Validator
 {

@@ -1,6 +1,7 @@
 <?php 
-//session_start();
+//
 require_once 'autoload.php';
+//session_start();
 
  class Producto  implements JsonSerializable { 
 	private $id;
@@ -10,7 +11,7 @@ require_once 'autoload.php';
 	private $color;
 	private $stock;
 	private $precio;
-	
+    
 	
 	public function __construct($id=null, $modelo, $descripcion,$talle=null, $color, $stock, $precio) {
        $this->id = $id;
@@ -59,7 +60,7 @@ require_once 'autoload.php';
 	 *
 	 * @return Aviso el aviso insertado o editado
 	 */
-	public static function insertProducto($producto){
+	public static function insert($producto){
 		$db = DBConnection::getConnection();
 		
 		if($producto->id) /*Modifica*/ {
@@ -147,7 +148,7 @@ require_once 'autoload.php';
 	 *
 	 * @return  String el mensaje
 	 */
-   	public static function eliminar($idProducto){
+   	public static function delete($idProducto){
 		try{
 			$db = DBConnection::getConnection();
 			
@@ -181,7 +182,7 @@ require_once 'autoload.php';
     public static function getById($id){
 		try{
 			
-			$listaProductos = Producto::getTodos();
+			$listaProductos = Producto::getAll();
 			
 			$prod = null;
 			foreach($listaProductos as $producto) {
@@ -209,7 +210,7 @@ require_once 'autoload.php';
 	 *
 	 * @return  Array el array de productos
 	 */
-	public static function getTodos(){
+	public static function getAll(){
 		try {
 			 
 			$query = "SELECT prod.id, prod.modelo, prod.descripcion, prod.talle, prod.color, prod.stock, prod.precio
@@ -279,7 +280,11 @@ require_once 'autoload.php';
 	
 	public function setId($valor) {
 		$this->id = $valor;
-   }
+    }
+     
+    public function setStock($valor) {
+		$this->stock = $valor;
+    }
 	
 	
  }
