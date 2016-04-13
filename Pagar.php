@@ -55,13 +55,14 @@ if(isset($_SESSION['pedido'])) {
                 ] 
             )
         ),
-        "external_reference" => "1",
-        "auto_return" => "approved",
+        "notification_url" => "http://www.hoysesale.club/wsparques/Notificacion.php",
+        "external_reference" => "1"
+        /*"auto_return" => "approved",
         "back_urls" => array(
              "failure" => "http://localhost/coderlynx/goequip/goequip/CompraFinalizada.php",
              "pending" => "http://localhost/coderlynx/goequip/goequip/CompraFinalizada.php",
              "success" => "http://localhost/coderlynx/goequip/goequip/CompraFinalizada.php"
-             )
+             )*/
     );
 
     $preference = $mp->create_preference ($preference_data);
@@ -109,6 +110,8 @@ print_r ($search_result);*/
     
     </body>
     
+    <?php include('scripts.html') ?>
+    <script src="js/Pedido.js"></script>
     <script type="text/javascript">
       
         function execute_my_onreturn (json) {
@@ -120,42 +123,13 @@ print_r ($search_result);*/
     "preference_id":"preference-id-creado-en-la-preferencia-de-checkout"
 }*/
             if (json.collection_status=='approved'){
-                alert ('Pago acreditado');
-                    $.ajax({
-                          async:false,    
-                          cache:false,   
-                          type: 'POST', 
-                          data: {info: jsonRta },
-                          url: "php/controllerPedido.php",
-                          success:  function(respuestaJson){  
-                             var rta = JSON.parse(respuestaJson);
-                               
-                          },
-                          error:function(objXMLHttpRequest){
-                               console.log('Error al ejecutar la petición por:' + e);
-                          }
-                        });
+                console.log("Pago acreditado");
+                
+                Pedido.insertPedido(json.collection_id, json.payment_type, json.collection_status);
             } else if(json.collection_status=='pending'){
+                console.log("El usuario no completó el pago");
                 //alert ('El usuario no completó el pago');
-                var jsonRta = JSON.stringify(json);
-                        $.ajax({
-                          async:false,    
-                          cache:false,   
-                          type: 'POST', 
-                          data: {info: jsonRta },
-                          url: "php/controllerPedido.php",
-                          success:  function(respuestaJson){  
-                             var rta = JSON.parse(respuestaJson);
-                               
-                          },
-                          error:function(objXMLHttpRequest){
-                               console.log('Error al ejecutar la petición por:' + e);
-                          }
-                        });
-                /* $.post( "php/controllerPedido.php", { info: jsonRta }, function(responseJSON){
-                    alert(responseJSON);
-                    alert( "Pedido Creado");
-                });*/
+                Pedido.insertPedido(json.collection_id, json.payment_type, json.collection_status);
             } else if(json.collection_status=='in_process'){    
                 alert ('El pago está siendo revisado');    
             } else if(json.collection_status=='rejected'){

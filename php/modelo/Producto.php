@@ -246,7 +246,7 @@ require_once 'autoload.php';
 
 
 /*GETTER Y SETTER */
-	public function __get($propiedad)
+	public function &__get($propiedad)
 	{
 		return $this->$propiedad;
 	}

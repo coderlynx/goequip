@@ -1,10 +1,6 @@
 <?php
 require_once ('php/autoload.php');
-require_once "php/lib/mercadopago.php";
 session_start();
-
-
-$mp = new MP("5836268351908133", "8q3o4CY9gQKTx8LCz9clL4wQdMCBb1Zq");
 
 //$payment_info = $mp->get_payment_info($_GET["collection_id"]);
 /*
@@ -54,14 +50,15 @@ if ($merchant_order_info["status"] == 200) {
     <body>
        
        <h1>Felicitaciones!! Su compra ha finalizado.</h1>
+       <h2>Su numero de Pedido es: <span id="nroPedido"></span></h2>
        <?php include('scripts.html') ?>
-        <script src="js/Pedido.js"></script>
+       
      <script>
     
    $( document ).ready(function() {
-
-	   Pedido.insertPedido(GetURLParameter('collection_id'), GetURLParameter('payment_type'));
-        
+       
+       $("#nroPedido").html(GetURLParameter('nroPedido'))
+    
         function GetURLParameter(sParam) {
             var sPageURL = window.location.search.substring(1);
             var sURLVariables = sPageURL.split('&');

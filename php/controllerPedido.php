@@ -4,14 +4,7 @@ require_once ('lib/mercadopago.php');
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
-    /*if(empty($_SESSION['carrito'])) {
-        $carrito = new Carrito();  
-        $_SESSION["carrito"] = $carrito; 
-    }*/
-
-    //$nroPedido = $_GET["collection_id"];
-    
+        
     $montoTotal = $_SESSION['pedido']['total'];
     $idCliente =  $_SESSION['pedido']['cliente'];
     $productos = $_SESSION['pedido']['productos']; 
@@ -22,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if($ped->formaDePago != 'credit_card') $formaDePago = 2;
     
-    $pedido = new Pedido(null, $ped->nroPedido, $idCliente ,$montoTotal,$formaDePago, 1, $productos);
+    $pedido = new Pedido(null, $ped->nroPedido, $idCliente ,$montoTotal,$formaDePago, 1,$ped->estadoDePago, $productos,null);
     
         
     $validator = new Validator;
@@ -30,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$validator->validate($pedido, Pedido::$reglas);
 
 	if($validator->tuvoExito() && Pedido::insert($pedido)) {
-		echo json_encode($pedido->nroPedido);
+		echo $pedido->nroPedido;
 		exit;
 	}
 	
@@ -47,10 +40,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($payment_info["status"] == 200) {
 	   echo json_encode($payment_info["response"]); //print_r($payment_info["response"]);
     }*/
-
+   
+} else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    
+    $pedidos = Pedido::getAll();
+    
+    echo json_encode($pedidos);
+    
+}  else if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
     
     
-} 
+    $pedido = Pedido::getById($_GET['id']);
+    
+    echo json_encode($pedido);
+    
+}
 
 
 ?>

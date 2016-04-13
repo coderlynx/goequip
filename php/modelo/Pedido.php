@@ -10,17 +10,21 @@ require_once 'autoload.php';
 	private $total;
 	private $formaDePago;
 	private $formaDeEnvio;
+	private $estadoDePago;
 	private $productos;
+    private $fecha;
     
 	
-	public function __construct($id=null, $nroPedido, $idCliente,$total, $formaDePago, $formaDeEnvio, $productos=null) {
+	public function __construct($id=null, $nroPedido, $idCliente,$total, $formaDePago, $formaDeEnvio, $estadoDePago, $productos=null, $fecha=null) {
        $this->id = $id;
 	   $this->nroPedido = $nroPedido;
 	   $this->idCliente = $idCliente;
 	   $this->total = $total;
 	   $this->formaDePago = $formaDePago;
 	   $this->formaDeEnvio = $formaDeEnvio;
+	   $this->estadoDePago = $estadoDePago;
 	   $this->productos = $productos;
+       $this->fecha = $fecha;
 	  
     }
 	
@@ -44,12 +48,14 @@ require_once 'autoload.php';
 		
 		return [
 			'id' => $this->id,
-			'modelo' => $this->modelo,
-			'descripcion' => $this->descripcion,
-			'talle' => $this->talle,
-			'color' => $this->color,
-			'stock' => $this->stock,
-			'precio' => $this->precio
+			'nroPedido' => $this->nroPedido,
+			'idCliente' => $this->idCliente,
+			'total' => $this->total,
+			'formaDePago' => $this->formaDePago,
+			'formaDeEnvio' => $this->formaDeEnvio,
+			'estadoDePago' => $this->estadoDePago,
+			'productos' => $this->productos,
+			'fecha' => $this->fecha,
 		];
 		
 	}
@@ -65,9 +71,24 @@ require_once 'autoload.php';
 		
 		try	{
 				$db->beginTransaction();
+            
+                //valido que no exista un pedido con el mismo numero
+                $query = "SELECT count(*) as pedido from pedidos where nroPedido = :nroPedido";
+
+                $stmt = DBConnection::getStatement($query);
+
+                $stmt->bindParam(':nroPedido', $pedido->nroPedido,PDO::PARAM_INT);
+
+                if(!$stmt->execute()) {
+                    throw new Exception("Error en buscar el pedido.");
+                }
+            
+                 while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+                    if ($row["pedido"] == 1) die("Ya existe ese pedido");
+                 }
 				
-				$query = "INSERT INTO pedidos (idCliente, nroPedido, total, formaDePago, formaDeEnvio, fecha)
-				VALUES(:idCliente, :nroPedido, :total, :formaDePago, :formaDeEnvio, :fecha)";
+				$query = "INSERT INTO pedidos (idCliente, nroPedido, total, formaDePago, formaDeEnvio, estadoDePago, fecha)
+				VALUES(:idCliente, :nroPedido, :total, :formaDePago, :formaDeEnvio, :estadoDePago, :fecha)";
 
 				$stmt = DBConnection::getStatement($query);
 															
@@ -126,6 +147,7 @@ require_once 'autoload.php';
 		 $stmt->bindParam(':total', $pedido->total,PDO::PARAM_STR);
 		 $stmt->bindParam(':formaDePago', $pedido->formaDePago,PDO::PARAM_INT);
 		 $stmt->bindParam(':formaDeEnvio', $pedido->formaDeEnvio,PDO::PARAM_INT);
+         $stmt->bindParam(':estadoDePago', $pedido->estadoDePago,PDO::PARAM_STR);
 		 $stmt->bindParam(':fecha',  $fecha);
 		
 		 return $stmt;
@@ -170,28 +192,50 @@ require_once 'autoload.php';
 	 */
     public static function getById($id){
 		try{
-			
-			$listaProductos = Producto::getAll();
-			
-			$prod = null;
-			foreach($listaProductos as $producto) {
-				if ($id == $producto->id) {
-					$prod = $producto;
-					break;
-				}
+            
+            $query = "SELECT ped.id, ped.nroPedido, ped.total, ped.formaDePago, ped.formaDeEnvio, ped.estadoDePago,  ped.fecha, 
+                     cli.nombre nombre, cli.apellido apellido,
+                     detPed.cantidad, detPed.precio precioUnitario,
+                     prod.modelo
+					 FROM pedidos ped 
+                     INNER JOIN clientes cli ON cli.id = ped.idCliente
+                     INNER JOIN detallepedido detPed ON detPed.idPedido = ped.id
+                     INNER JOIN productos prod ON prod.id = detPed.idProducto
+                     WHERE ped.id = :id";
+											
+		   $stmt = DBConnection::getStatement($query);
+		   
+
+		   if(!$stmt->execute()) {
+				throw new Exception('Error al traer el pedido');
 			}
+		   	   
+			$productos = array();
 			
-			if (!isset($prod)) {
-				throw new Exception("No se encontro el producto.");
+			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+
+                $producto = $row['modelo'];
+                $productos[] = $producto;
 			}
-			
-			return $prod;
+            
+            while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+
+                $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['formaDePago'], $row['formaDeEnvio'], $row['estadoDePago'], $productos, $row['fecha']);
+                break;
+			}
+            
+            
+            
+		
+			 return $pedido;
+
 
 		   } catch(PDOException $e)
 			{
 			  echo 'Error: ' . $e->getMessage();
 			}
     }
+        
 	
 
 	/**
@@ -202,28 +246,29 @@ require_once 'autoload.php';
 	public static function getAll(){
 		try {
 			 
-			$query = "SELECT prod.id, prod.modelo, prod.descripcion, prod.talle, prod.color, prod.stock, prod.precio
-					 FROM productos prod ";
+			$query = "SELECT ped.id, ped.nroPedido, ped.total, ped.formaDePago, ped.formaDeEnvio, ped.estadoDePago,  ped.fecha, 
+                     cli.nombre nombre, cli.apellido apellido
+					 FROM pedidos ped INNER JOIN clientes cli ON cli.id = ped.idCliente";
 											
 		   $stmt = DBConnection::getStatement($query);
 		   
 
 		   if(!$stmt->execute()) {
-				throw new Exception('Error al traer los productos');
+				throw new Exception('Error al traer los pedidos');
 			}
 		   	   
-			$productos = array();
-			
+			$pedidos = array();
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
 
-                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['talle'], $row['color'], $row['stock'], $row['precio']);
+                $cliente = $row['apellido'] . ", " . $row['nombre'];
+                $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['formaDePago'], $row['formaDeEnvio'], $row['estadoDePago'], null, $row['fecha']);
 
-                $productos[] = $producto;
+                $pedidos[] = $pedido;
 
 			}
 		
-			 return $productos;
+			 return $pedidos;
 
 
 	   } catch(PDOException $e)
@@ -273,6 +318,10 @@ require_once 'autoload.php';
      
     public function setStock($valor) {
 		$this->stock = $valor;
+    }
+     
+     public function setProductos($valor) {
+		$this->productos = $valor;
     }
 	
 	
