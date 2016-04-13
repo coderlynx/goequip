@@ -47,50 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['show'])) {
     echo json_encode("ok");
     
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['pagar'])){
-    //$obj = new Carrito();
-    //$obj = $_SESSION['carrito'];
-    //$carrito = $_SESSION['carrito'];
-    
-    //$_SESSION['obj'] = serialize($obj);
-    $_SESSION['monto'] = $_SESSION['carrito']->calculateTotal();
 
-    //$obj = unserialize($_SESSION['obj']);
-    //$_SESSION['preCompra'] = serialize($_SESSION["carrito"]);
-    
-    //$_SESSION['carrito'] = serialize($carrito);
-        //$carrito = serialize($_SESSION["carrito"]);
-    // almacenamos $s en algún lugar en el que page2.php puede encontrarlo.
-        
-    //serialize($_SESSION["carrito"]); 
-     
-    //header("Location: ../Pagar.php");
-    
-    //die();
+    $_SESSION['pedido']['total'] = $_SESSION['carrito']->calculateTotal();
+    $_SESSION['pedido']['cliente'] = 1;
+    $_SESSION['pedido']['productos'] = $_SESSION['carrito']->showProductos();
 
 }
 
-  /*
-$prod2 = new Producto();  
-$prod2->codigo = 2;  
-$prod2->stock = 1;  
-$prod2->nombre = "Silla";  
-$prod2->precio = 23;  */
-  
-
-  
-/*echo "Modificando el producto de codigo 1...  
-";  
-$auxProd = $_SESSION["carrito"]->getProducto("1");  
-$auxProd->stock++;  
-  
-echo $_SESSION["carrito"]->trace();  
-  
-echo "Eliminando el producto de codigo 2...  
-";  
-$_SESSION["carrito"]->eliminarProducto("2");  
-  
-echo $_SESSION["carrito"]->trace();  
-  
-echo "Listo...";  */
 
 ?>

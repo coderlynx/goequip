@@ -1,17 +1,20 @@
 <?php
+require_once ('php/autoload.php');
 require_once "php/lib/mercadopago.php";
+session_start();
+
 
 $mp = new MP("5836268351908133", "8q3o4CY9gQKTx8LCz9clL4wQdMCBb1Zq");
 
-$payment_info = $mp->get_payment_info($_GET["id"]);
-
+//$payment_info = $mp->get_payment_info($_GET["collection_id"]);
+/*
 if ($payment_info["status"] == 200) {
     print_r("Imprimo get_payment_info");
 	print_r($payment_info["response"]);
-}
+}*/
 
 // Get the payment and the corresponding merchant_order reported by the IPN.
-if($_GET["topic"] == 'payment'){
+/*if($_GET["topic"] == 'payment'){
 	$payment_info = $mp->get("/collections/notifications/" . $_GET["id"]);
 	$merchant_order_info = $mp->get("/merchant_orders/" . $payment_info["response"]["collection"]["merchant_order_id"]);
 // Get the merchant_order reported by the IPN.
@@ -40,5 +43,45 @@ if ($merchant_order_info["status"] == 200) {
 	} else {
 		print_r("Not paid yet. Do not release your item.");
 	}
-}
+}*/
 ?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Compra Finalizada</title>
+       
+    </head>
+    <body>
+       
+       <h1>Felicitaciones!! Su compra ha finalizado.</h1>
+       <?php include('scripts.html') ?>
+        <script src="js/Pedido.js"></script>
+     <script>
+    
+   $( document ).ready(function() {
+
+	   Pedido.insertPedido(GetURLParameter('collection_id'), GetURLParameter('payment_type'));
+        
+        function GetURLParameter(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++)
+            {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam)
+                {
+                    return sParameterName[1];
+                }
+            }
+        }
+
+    });
+        
+
+
+    
+    </script>
+    </body>
+    
+   
+</html>

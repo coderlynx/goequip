@@ -5,9 +5,9 @@ require_once ('php/lib/mercadopago.php');
 session_start();
 
 
-if(isset($_SESSION['monto'])) {
+if(isset($_SESSION['pedido'])) {
     /** UNSERIALIZE **/
-   $montoTotal = $_SESSION['monto'];
+   $montoTotal =  $_SESSION['pedido']['total'];
        
     //print_r ($carrito);
 
@@ -58,15 +58,15 @@ if(isset($_SESSION['monto'])) {
         "external_reference" => "1",
         "auto_return" => "approved",
         "back_urls" => array(
-             "failure" => "http://localhost/coderlynx/goequip/goequip/Notificacion.php",
-             "pending" => "http://localhost/coderlynx/goequip/goequip/Notificacion.php",
-             "success" => "http://localhost/coderlynx/goequip/goequip/Notificacion.php"
+             "failure" => "http://localhost/coderlynx/goequip/goequip/CompraFinalizada.php",
+             "pending" => "http://localhost/coderlynx/goequip/goequip/CompraFinalizada.php",
+             "success" => "http://localhost/coderlynx/goequip/goequip/CompraFinalizada.php"
              )
     );
 
     $preference = $mp->create_preference ($preference_data);
 
-    $access_token = "APP_USR-5836268351908133-040920-10062c9f055f8bc1b369e188ef27c07b__E_F__-43258013";// $mp->get_access_token();
+    //$access_token = $mp->get_access_token();//"APP_USR-5836268351908133-040920-10062c9f055f8bc1b369e188ef27c07b__E_F__-43258013";// $mp->get_access_token();
 
     //print_r ($access_token);
 
@@ -94,18 +94,21 @@ print_r ($search_result);*/
 //$paymentInfo = $mp->get_payment ('1146523287');
 
 //print_r ($paymentInfo);
-}
+
 
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Pagar</title>
+       
     </head>
     <body>
         <a href="<?php echo $preference['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-rn-m" onreturn="execute_my_onreturn">Pagar</a>
         <script type="text/javascript" src="https://www.mercadopago.com/org-img/jsapi/mptools/buttons/render.js"></script>
+    
     </body>
+    
     <script type="text/javascript">
       
         function execute_my_onreturn (json) {
@@ -118,8 +121,41 @@ print_r ($search_result);*/
 }*/
             if (json.collection_status=='approved'){
                 alert ('Pago acreditado');
+                    $.ajax({
+                          async:false,    
+                          cache:false,   
+                          type: 'POST', 
+                          data: {info: jsonRta },
+                          url: "php/controllerPedido.php",
+                          success:  function(respuestaJson){  
+                             var rta = JSON.parse(respuestaJson);
+                               
+                          },
+                          error:function(objXMLHttpRequest){
+                               console.log('Error al ejecutar la petición por:' + e);
+                          }
+                        });
             } else if(json.collection_status=='pending'){
-                alert ('El usuario no completó el pago');
+                //alert ('El usuario no completó el pago');
+                var jsonRta = JSON.stringify(json);
+                        $.ajax({
+                          async:false,    
+                          cache:false,   
+                          type: 'POST', 
+                          data: {info: jsonRta },
+                          url: "php/controllerPedido.php",
+                          success:  function(respuestaJson){  
+                             var rta = JSON.parse(respuestaJson);
+                               
+                          },
+                          error:function(objXMLHttpRequest){
+                               console.log('Error al ejecutar la petición por:' + e);
+                          }
+                        });
+                /* $.post( "php/controllerPedido.php", { info: jsonRta }, function(responseJSON){
+                    alert(responseJSON);
+                    alert( "Pedido Creado");
+                });*/
             } else if(json.collection_status=='in_process'){    
                 alert ('El pago está siendo revisado');    
             } else if(json.collection_status=='rejected'){
@@ -128,6 +164,11 @@ print_r ($search_result);*/
                 alert ('El usuario no completó el proceso de pago, no se ha generado ningún pago');
             }
         }
-</script>
+    </script>
+<?php
+} else {
+    echo "Sesion vencida";
+}
+    ?>
 </html>
 
