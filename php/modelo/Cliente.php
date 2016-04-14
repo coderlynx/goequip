@@ -10,8 +10,12 @@ require_once 'autoload.php';
 	private $nombre;
 	private $telefono;
 	private $email;
-	
-	public function __construct($id=null, $dni, $cuil,$apellido, $nombre, $telefono, $email) {
+    private $idDomicilio;
+    private $domicilio;
+
+   
+	public function __construct($id=null, $dni, $cuil,$apellido, $nombre, $telefono, $email, $domicilio = null) 
+    {
        $this->id = $id;
 	   $this->dni = $dni;
 	   $this->cuil = $cuil;
@@ -19,7 +23,9 @@ require_once 'autoload.php';
 	   $this->nombre = $nombre;
 	   $this->telefono = $telefono;
 	   $this->email = $email;
-	  
+       
+       // Domicilio
+       $this->domicilio = $domicilio;
     }
 	
 	public static $reglas = [
@@ -28,7 +34,7 @@ require_once 'autoload.php';
 		'apellido' => ['required'],
 		'nombre' => ['required'],
 		'telefono' => ['required'],
-		'email' => ['required']
+		'email' => ['required'],
 	];
 	
 	/**
@@ -47,7 +53,8 @@ require_once 'autoload.php';
 			'apellido' => $this->apellido,
 			'nombre' => $this->nombre,
 			'telefono' => $this->telefono,
-			'email' => $this->email
+			'email' => $this->email,
+            'domicilio' => $this->domicilio
 		];
 		
 	}
@@ -57,6 +64,7 @@ require_once 'autoload.php';
 	 *
 	 * @return Aviso el aviso insertado o editado
 	 */
+    
 	public static function insertCliente($cliente){
 		$db = DBConnection::getConnection();
 		
@@ -70,6 +78,7 @@ require_once 'autoload.php';
 				$stmt = DBConnection::getStatement($query);
 				
 				$stmt = Cliente::bindearDatos($stmt, $cliente);
+              
 				$stmt->bindParam(':id', $cliente->id,PDO::PARAM_INT);
 				
 				if(!$stmt->execute()) {
@@ -87,9 +96,9 @@ require_once 'autoload.php';
 			try	{
 				$db->beginTransaction();
 				
-				$query = "INSERT INTO clientes (dni, cuil, apellido, nombre, telefono, email)
+                $query = "INSERT INTO clientes (dni, cuil, apellido, nombre, telefono, email)
 				VALUES(:dni, :cuil, :apellido, :nombre, :telefono, :email)";
-
+                
 				$stmt = DBConnection::getStatement($query);
 															
 				$stmt = Cliente::bindearDatos($stmt, $cliente);
@@ -101,7 +110,18 @@ require_once 'autoload.php';
 				$id = $db->lastInsertId();
 
 				$cliente->setId($id);
-				
+              
+                $query = "INSERT INTO domicilios (calle, numero, piso, depto, localidad, provincia, pais, cp, idCliente) 
+                VALUES(:calle, :numero, :piso, :depto, :localidad, :provincia, :pais, :cp, $cliente->id)";
+                
+                $stmt = DBConnection::getStatement($query);
+                
+                $stmt = Cliente::bindearDatosDom($stmt, $cliente);
+                
+                if(!$stmt->execute()) {
+					throw new Exception("Error en el insertado del domicilio del cliente.");
+				}
+                
 				$db->commit();
 				
 				return $cliente;
@@ -117,14 +137,27 @@ require_once 'autoload.php';
 	 *
 	 * @return  Statement el statement de la conexion
 	 */
+    private static function bindearDatosDom($stmt, $cliente) {
+		
+		 $stmt->bindParam(':calle', $cliente->domicilio->calle,PDO::PARAM_STR);
+		 $stmt->bindParam(':numero', $cliente->domicilio->numero,PDO::PARAM_STR);
+		 $stmt->bindParam(':piso', $cliente->domicilio->piso,PDO::PARAM_STR);
+		 $stmt->bindParam(':depto', $cliente->domicilio->depto,PDO::PARAM_STR);
+		 $stmt->bindParam(':localidad', $cliente->domicilio->localidad,PDO::PARAM_STR);
+		 $stmt->bindParam(':provincia', $cliente->domicilio->provincia,PDO::PARAM_STR);
+		 $stmt->bindParam(':pais', $cliente->domicilio->pais,PDO::PARAM_STR);
+         $stmt->bindParam(':cp', $cliente->domicilio->cp,PDO::PARAM_STR);
+      
+		 return $stmt;
+	}
 	private static function bindearDatos($stmt, $cliente) {
 		
 		 $stmt->bindParam(':dni', $cliente->dni,PDO::PARAM_STR);
 		 $stmt->bindParam(':cuil', $cliente->cuil,PDO::PARAM_STR);
 		 $stmt->bindParam(':apellido', $cliente->apellido,PDO::PARAM_STR);
 		 $stmt->bindParam(':nombre', $cliente->nombre,PDO::PARAM_STR);
-		 $stmt->bindParam(':telefono', $cliente->telefono,PDO::PARAM_INT);
-		 $stmt->bindParam(':email', $cliente->email);
+		 $stmt->bindParam(':telefono', $cliente->telefono,PDO::PARAM_STR);
+		 $stmt->bindParam(':email', $cliente->email,PDO::PARAM_STR);
 		
 		 return $stmt;
 	}
@@ -163,7 +196,7 @@ require_once 'autoload.php';
 	 */
     public static function getById($id){
 		try{
-			$listaClientes = Cliente::getTodos();
+			$listaClientes = Cliente::getAll();
 			
 			$cli = null;
 			foreach($listaClientes as $cliente) {
@@ -188,11 +221,17 @@ require_once 'autoload.php';
 	 *
 	 * @return  Array el array de clientes
 	 */
-	public static function getTodos(){
+	public static function getAll(){
 		try {
-			 
-		    $query = "SELECT cli.id, cli.dni, cli.cuil, cli.apellido, cli.nombre, cli.telefono, cli.email
+		    $query = "SELECT cli.id, cli.dni, cli.cuil, cli.apellido, cli.nombre, cli.telefono, cli.email, 
+	                  dom.calle, dom.numero, dom.numero, dom.piso, dom.depto, dom.localidad, dom.provincia, dom.pais, dom.cp
+                      FROM clientes cli 
+                      INNER JOIN domicilios dom ON cli.id = dom.idCliente 
+                      ORDER BY apellido";
+		    /*
+            $query = "SELECT cli.id, cli.dni, cli.cuil, cli.apellido, cli.nombre, cli.telefono, cli.email
 					 FROM clientes cli ";  
+            */
 		    $stmt = DBConnection::getStatement($query);
 		   
 		    if(!$stmt->execute()) {
@@ -202,8 +241,10 @@ require_once 'autoload.php';
 			$clientes = array();
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
-              $cliente = new Cliente($row['id'], $row['dni'], $row['cuil'], $row['apellido'], $row['nombre'], $row['telefono'], $row['email']);
-
+              $domicilio = new Domicilio($row['calle'], $row['numero'], $row['piso'], $row['depto'], $row['localidad'], $row['provincia'], $row['pais'], $row['cp']);
+              
+              $cliente = new Cliente($row['id'], $row['dni'], $row['cuil'], $row['apellido'], $row['nombre'], $row['telefono'], $row['email'], $domicilio);
+              
               $clientes[] = $cliente;
 			}
 		
@@ -244,7 +285,7 @@ require_once 'autoload.php';
 	
 	public function setId($valor) {
 		$this->id = $valor;
-   }
+    }
  }
 	
 ?>

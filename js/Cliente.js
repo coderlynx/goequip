@@ -3,7 +3,6 @@ var dni, cuil, apellido, nombre, telefono, email;
 var Cliente = {
     init: function() {
         var _this = this;
-        
         _this.mostrarClientes();
 
       //cuando presiona guardar
@@ -15,7 +14,7 @@ var Cliente = {
         })
     },
     validarCampos: function() {
-        return true;
+      return true;
     },
     mostrarClientes: function () {
         var _this = this;
@@ -39,13 +38,23 @@ var Cliente = {
           });
     },
 	dibujarClienteEnPantalla: function(contenedor, cliente) {
+        var _this = this;
+        contenedor.css("display","block");
         var div_item = $('<div>');
-			div_item.attr('id',cliente.id);
-			//div_item.addClass('');
+            div_item.attr('id',cliente.id);
+            //div_item.addClass('');
         
         var p = $("<p>");
-        p.html(cliente.dni);
+        p.html("DNI: " + cliente.dni + ", Apellido: " + cliente.apellido + ", Nombre: " + cliente.nombre +
+              ", CUIL: " + cliente.cuil + ", Teléfono: " + cliente.telefono + ", E-mail: " + cliente.email +
+              ", Calle: " + cliente.domicilio.calle + ", Número: " + cliente.domicilio.numero + 
+              ", Localidad: " + cliente.domicilio.localidad + " ");
         div_item.append(p);
+        var a = $("<a href='#' class='eliminar'>Eliminar</a>");
+        a.click(function(){
+          _this.eliminarCliente(cliente.id);
+        });
+        p.append(a);
         contenedor.append(div_item);
         
 		return div_item;		 
@@ -55,14 +64,15 @@ var Cliente = {
 
         //Parseo a JSON el obj Cliente
         var jsonCliente = JSON.stringify(cliente);
-
+        
         // guardo el aviso
         $.post('php/controllerCliente.php', {cliente:jsonCliente }, function(respuestaJson) {
             var rta = JSON.parse(respuestaJson);
             if(rta == "exito") {
                 alert("El cliente ha sigo guardado con exito.");
+            } else {
+              console.log(rta);
             }
-                //console.log(rta);
         }).error(function(e){
                 console.log('Error al ejecutar la petición por:' + e);
           }
@@ -81,7 +91,29 @@ var Cliente = {
 		cliente.Nombre = $("#nombre").val();
 		cliente.Telefono = $("#telefono").val();
 		cliente.Email = $("#email").val();
+        // Domicilio
+        cliente.Calle = $("#calle").val();
+        cliente.Numero = $("#numero").val();
+        cliente.Piso = $("#piso").val();
+        cliente.Depto = $("#depto").val();
+        cliente.Localidad = $("#localidad").val();
+        cliente.Provincia = $("#provincia").val();
+        cliente.Pais = $("#pais").val();
+        cliente.CP = $("#cp").val();
 		
 		return cliente;
 	},
+    eliminarCliente: function(idCliente) {
+        $.post('php/controllerCliente.php', {idCliente:idCliente }, function(rta) {
+            if(rta == "exito") {
+                alert("El cliente ha sido eliminado con exito.");
+            } else {
+              console.log(rta);
+            }
+        }).error(function(e){
+                console.log('Error al ejecutar la petición por:' + e);
+          }
+        );
+        return false;
+    },
 }
