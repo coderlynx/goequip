@@ -28,20 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 	
 	echo json_encode($validator->getErrores());
-    //echo json_encode($productos);
-    
-    /*
-    $mp = new MP('5836268351908133', '8q3o4CY9gQKTx8LCz9clL4wQdMCBb1Zq');
-
-    $mp->sandbox_mode(TRUE);
-
-    $payment_info = $mp->get_payment_info($info->collection_id);
-
-    if ($payment_info["status"] == 200) {
-	   echo json_encode($payment_info["response"]); //print_r($payment_info["response"]);
-    }*/
    
-} else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+} else if ($_SERVER['REQUEST_METHOD'] == 'GET' && (!isset($_GET['id']))) {
     
     $pedidos = Pedido::getAll();
     

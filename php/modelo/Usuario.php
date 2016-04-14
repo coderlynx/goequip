@@ -6,21 +6,41 @@ class Usuario implements JsonSerializable
 {
 	private $id;
 	private $nombre;
+    private $password;
 	private $perfil;
 	private $mail;
 	private $fechaCreacion;
+    public static $MENSAJE;
 
  
-    public function __construct($id, $nombre, $perfil,$mail, $fechaCreacion=null)
+    public function __construct($id=null, $nombre, $password, $perfil,$mail, $fechaCreacion=null)
     {
 		$this->id = $id;
 		$this->nombre = $nombre;
+        $this->password = $password;
 		$this->perfil = $perfil;
 		$this->mail = $mail;
 		$this->fechaCreacion = $fechaCreacion;
 		
 
     }
+    
+    //uso este metodo porque PHP no acepta sobrecarga de metodos, entonce lo simulo
+    public static function soloNombreYUsuario($nombre, $password)
+    {
+        return new self('n',$nombre,$password,0,'n','n');
+    }
+    
+    public static $reglasLogin = [
+		'nombre' => ['required'],
+		'password' => ['required'],
+	];
+    
+    public static $reglasRegitrar = [
+		'nombre' => ['required'],
+		'password' => ['required'],
+		'mail' => ['required'],	
+	];
 	
 	public function jsonSerialize() 
 	{
@@ -36,12 +56,130 @@ class Usuario implements JsonSerializable
 		];
 		
 	}
+    
+    /**
+	 * Retorna si existe el usuario el nombre o un 0 si no lo encuentra.
+	 *
+	 * @return $_SESSION el nombre de la session.
+	 */
+	public static function login($usuario)
+	{
+		
+		try {
+			
+			//$query = "SELECT * from usuarios WHERE nombre = :nombre AND password = :password";
+			$query = "SELECT * from usuarios WHERE nombre = :nombre";
+			$stmt = DBConnection::getStatement($query);
+
+			$stmt->bindValue(':nombre',$usuario->nombre);
+			//$stmt->bindValue(':password',$password_encriptado, PDO::PARAM_STR);
+			
+			$stmt->execute();
+ 
+			//si existe el usuario
+			if($stmt->rowCount() == 1)
+			{
+				 $row  = $stmt->fetch();
+				 
+				 $password_encriptado = password_hash($row['password'], PASSWORD_DEFAULT);
+
+				if (password_verify($usuario->password, $row['password'])) {
+					 
+					$_SESSION['nombre'] = $row['nombre'];	
+					$_SESSION['perfil'] = $row['perfil'];	
+					$_SESSION['idUsuario'] = $row['id'];
+                    //$_SESSION['idCliente'] = $row['idCliente'];
+				 
+					return $_SESSION['nombre'];
+				} else {
+					return 0;
+				}
+				 
+			}
+			
+			return 0;
+			
+		}catch(PDOException $e){
+			
+			print "Error!: " . $e->getMessage();
+			
+		}		
+		
+	}
+    
+    /**
+	 * Retorna un registro si pudo registrarse o un mensaje si ya existe el usuario
+	 *
+	 * @return Registro el registro que llego de la pantalla 
+	 */
+	public static function registrar($usuario)
+	{
+		
+		try {
+
+			//VALIDO QUE NO EXISTE EL USUARIO
+			$query = "SELECT * from usuarios WHERE nombre = :nombre";
+			$stmt = DBConnection::getStatement($query);
+			$stmt->bindValue(':nombre',$usuario->nombre);
+
+			$stmt->execute();
+ 
+			//si existe el usuario
+			if($stmt->rowCount() == 1)
+			{				 
+				 //$fila  = $stmt->fetch();
+				 //$_SESSION['nombre'] = $fila['nombre'];
+                die('Ya existe ese usuario.');
+				 //return 'Ya existe ese usuario';
+				 //return TRUE;
+			}
+			
+			//VALIDO QUE NO EXISTE EL MAIL
+			$query = "SELECT * from usuarios WHERE mail = :mail";
+			$stmt = DBConnection::getStatement($query);
+			$stmt->bindValue(':mail',$usuario->mail);
+
+			$stmt->execute();
+ 
+			//si existe el usuario con ese mail
+			if($stmt->rowCount() == 1)
+			{				 
+				die('Ya existe ese mail.');
+			}
+
+			$query = "INSERT INTO usuarios VALUES (null, :nombre, :password, :mail,:perfil, :fecha)";
+			$stmt = DBConnection::getStatement($query);
+			
+			$password_encriptado = password_hash($usuario->password, PASSWORD_DEFAULT);
+			$fecha = date('Y/m/d H:i:s');
+
+			$stmt->bindValue(':nombre', $usuario->nombre);
+			$stmt->bindValue(':password', $password_encriptado);			
+			$stmt->bindValue(':mail', $usuario->mail);		
+			$stmt->bindValue(':perfil',  $usuario->perfil);						
+			$stmt->bindValue(':fecha',  $fecha);				
+					
+			
+			if(!$stmt->execute()) {
+				throw new Exception("Error en la creacion del usuario.");
+			}
+			
+			die("exito");
+			//return $usuario;
+			
+		}catch(PDOException $e){
+
+			print "Error!: " . $e->getMessage();
+			
+		}		
+		
+	}
 	 
 	public function getAll()
 	{
 		
 		try {
-			$query = "SELECT us.id idUsuario, us.nombre nombreUsuario, us.mail,us.foto,us.baneado,
+			$query = "SELECT us.id idUsuario, us.nombre nombreUsuario, us.mail,
 							 perfil.id idPerfil, perfil.descripcion descripcionPerfil
 					  FROM usuarios us 
 					  INNER JOIN tipo_usuario perfil
@@ -78,7 +216,7 @@ class Usuario implements JsonSerializable
 		try {
 			
 			//$query = "SELECT * from usuarios WHERE nombre = :nombre AND password = :password";
-			$query = "SELECT us.id idUsuario, us.nombre nombreUsuario, us.mail, us.foto,
+			$query = "SELECT us.id idUsuario, us.nombre nombreUsuario, us.mail, 
 							 perfil.id idPerfil, perfil.descripcion descripcionPerfil
 					  FROM usuarios us 
 					  INNER JOIN tipo_usuario perfil

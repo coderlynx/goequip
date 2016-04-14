@@ -41,11 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['show'])) {
 
     echo json_encode($_SESSION["carrito"]->getProducto($id)); 
     
-} else if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sesion'])){
-    session_destroy();
-    
-    echo json_encode("ok");
-    
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['pagar'])){
 
     $_SESSION['pedido']['total'] = $_SESSION['carrito']->calculateTotal();

@@ -17,13 +17,18 @@
     </div>
     
     
-    <div id="div_tabla_Detalle" >
+    <div id="div_detalle_pedido">
+        <h3>Nro Pedido: <span id="detalleNroPedido"></span></h3>
+        <h3>Cliente: <span id="detalleCliente"></span></h3>
+        <h3>Fecha: <span id="detalleFecha"></span></h3>
+        <div id="div_tabla_detalle">
 
-        <table id="tabla_pedidos_detalle">
+            <table id="tabla_pedidos_detalle">
 
-        </table>
+            </table>
+        </div>
+        <h3>Total: $ <span id="detalleTotal"></span></h3>
     </div>
-
     
      <?php include('scripts.html') ?>
      <script src="js/Pedido.js"></script>

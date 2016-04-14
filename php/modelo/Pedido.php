@@ -159,25 +159,25 @@ require_once 'autoload.php';
 	 *
 	 * @return  String el mensaje
 	 */
-   	public static function delete($idProducto){
+   	public static function delete($idPedido){
 		try{
 			$db = DBConnection::getConnection();
 			
 			$db->beginTransaction();
 			
 			//BORRO EL PRODUCTO
-			$query = "DELETE FROM productos WHERE id = :id";
+			$query = "DELETE FROM pedidos WHERE id = :id";
 		
 			$stmt = DBConnection::getStatement($query);
 			
-			$stmt->bindParam(':id', $idProducto,PDO::PARAM_INT);
+			$stmt->bindParam(':id', $idPedido,PDO::PARAM_INT);
 			
 			if(!$stmt->execute()) {
-				throw new Exception("Error al eliminar el producto");
+				throw new Exception("Error al eliminar el pedido");
 			}
 		   
 		    $db->commit();
-			echo "Producto eliminado correctamente";
+			echo "Pedido eliminado correctamente";
 		} catch (PDOException $e)
 			{
 			  echo 'Error: ' . $e->getMessage();
@@ -186,7 +186,7 @@ require_once 'autoload.php';
     }
    
    	/**
-	 * Retorna un producto especifico, buscado por id. De no encontrar retorna una excepcion
+	 * Retorna un pedido especifico, buscado por id. De no encontrar retorna una excepcion
 	 *
 	 * @return  Producto  buscado
 	 */
@@ -203,30 +203,34 @@ require_once 'autoload.php';
                      INNER JOIN productos prod ON prod.id = detPed.idProducto
                      WHERE ped.id = :id";
 											
-		   $stmt = DBConnection::getStatement($query);
+		    $stmt = DBConnection::getStatement($query);
 		   
+            $stmt->bindParam(':id', $id,PDO::PARAM_INT);
 
 		   if(!$stmt->execute()) {
 				throw new Exception('Error al traer el pedido');
 			}
 		   	   
 			$productos = array();
+            
+            $idPedido = 0;
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
-
-                $producto = $row['modelo'];
+                
+                if($idPedido != $row['id'] ) {
+                    $cliente = $row['apellido'] . ", " . $row['nombre'];
+                    $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['formaDePago'], $row['formaDeEnvio'], $row['estadoDePago'], null, $row['fecha']);               
+                }
+                
+                $producto = new Producto(null, $row['modelo'], '', '', '', $row['cantidad'], $row['precioUnitario']); $row['modelo'];
+                
                 $productos[] = $producto;
+                
+                $idPedido = $row['id'];
 			}
             
-            while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
-
-                $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['formaDePago'], $row['formaDeEnvio'], $row['estadoDePago'], $productos, $row['fecha']);
-                break;
-			}
+            $pedido->productos = $productos;
             
-            
-            
-		
 			 return $pedido;
 
 

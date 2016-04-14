@@ -4,16 +4,6 @@ var Producto = {
         
         _this.mostrarProductos();
 
-      //cuando presiona guardar
-        $("#btnAltaProducto").click(function() {
-            if( _this.validarCampos()) {
-                var producto = _this.armarObjetoProducto();
-                producto.Id = null;
-                _this.insertProducto(producto);
-            }
-          
-            
-        })
     },
     validarCampos: function() {
         return true;

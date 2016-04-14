@@ -2,6 +2,8 @@ var Pedido = {
     init: function() {
         var _this = this;
         
+        $('#div_detalle_pedido').hide();
+        
         $.ajax({
               async:false,    
               cache:false,   
@@ -10,7 +12,7 @@ var Pedido = {
               url: "php/controllerPedido.php",
               success:  function(respuestaJson){
                 var rta = JSON.parse(respuestaJson);
-                Pedido.dibujarTabla(rta, $('#div_tabla'), $('#tabla_pedidos'))
+                Pedido.dibujarTabla(rta, $('#div_tabla'))
               },
               error:function(objXMLHttpRequest){
                    console.log('Error al ejecutar la petición por:' + e);
@@ -43,7 +45,7 @@ var Pedido = {
         );
 		
     },
-    dibujarTabla: function (resultado, div_tabla, tabla) {
+    dibujarTabla: function (resultado, div_tabla) {
         var _this = this;
         $("#tabla_pedidos").empty();
         $('#div_tabla_Detalle').hide();
@@ -56,7 +58,7 @@ var Pedido = {
         var nombre = "";
         columnas.push(new Columna("nroPedido", {generar: function (un_pedido) { return un_pedido.nroPedido; } }));
         columnas.push(new Columna("idCliente", { generar: function (un_pedido) { return un_pedido.idCliente } }));  
-        columnas.push(new Columna("Total", { generar: function (un_pedido) { return un_pedido.total } }));  
+        columnas.push(new Columna("Total", { generar: function (un_pedido) { return '$ ' + un_pedido.total } }));  
         columnas.push(new Columna("Forma de Pago", { generar: function (un_pedido) { return un_pedido.formaDePago } }));  
         columnas.push(new Columna("Forma de Envio", { generar: function (un_pedido) { return un_pedido.formaDeEnvio } }));  
         columnas.push(new Columna("Estao de Pago", { generar: function (un_pedido) { return un_pedido.estadoDePago } }));  
@@ -65,13 +67,13 @@ var Pedido = {
             generar: function (un_pedido) {
                 var btn_accion = $('<a>');
                 var img = $('<img>');
-                img.attr('src', '../Imagenes/detalle.png');
+                img.attr('src', 'css/img/lupa.png');
                 img.attr('width', '15px');
                 img.attr('height', '15px');
                 btn_accion.append(img);
                 btn_accion.click(function () {
                     $('#div_tabla_Detalle').show();
-                    _this.getPedido(un_pedido.id, $("#tabla_pedidos_detalle"));
+                    _this.getPedido(un_pedido.id);
                 });
                 return btn_accion;
             }
@@ -84,7 +86,7 @@ var Pedido = {
         _this.GrillaResumen.DibujarEn(divGrilla);
 
     },
-    getPedido: function(id, tabla ) {
+    getPedido: function(id) {
          $.ajax({
               async:false,    
               cache:false,   
@@ -93,7 +95,7 @@ var Pedido = {
               url: "php/controllerPedido.php",
               success:  function(respuestaJson){
                 var rta = JSON.parse(respuestaJson);
-                Pedido.dibujarTablaDetalle(rta, $('#div_tabla_detalle'), tabla)
+                Pedido.dibujarTablaDetalle(rta, $('#div_tabla_detalle'))
               },
               error:function(objXMLHttpRequest){
                    console.log('Error al ejecutar la petición por:' + e);
@@ -101,22 +103,28 @@ var Pedido = {
         });
         
     },
-    dibujarTablaDetalle: function (resultado, div_tabla, tabla) {
+    dibujarTablaDetalle: function (pedido, div_tabla, tabla) {
         var _this = this;
         $("#div_tabla_detalle").empty();
-   
+        $('#div_detalle_pedido').show();
+        $("#detalleNroPedido").html(pedido.nroPedido);
+        $("#detalleCliente").html(pedido.idCliente);
+        $("#detalleFecha").html(pedido.fecha);
+        $("#detalleTotal").html(pedido.total);
 
         var divGrilla = div_tabla;
-        var pedidos = resultado;
+        //var pedidos = resultado;
         var columnas = [];
         var nombre = "";
-        columnas.push(new Columna("nroPedido", {generar: function (un_pedido) { return un_pedido.nroPedido; } }));
+        columnas.push(new Columna("Modelo", {generar: function (un_producto) { return un_producto.modelo; } }));
+        columnas.push(new Columna("Cantidad", {generar: function (un_producto) { return un_producto.stock; } }));
+        columnas.push(new Columna("Precio", {generar: function (un_producto) { return un_producto.precio; } }));
        
        
         _this.GrillaResumen = new Grilla(columnas);
-        _this.GrillaResumen.SetOnRowClickEventHandler(function (un_pedido) {
+        _this.GrillaResumen.SetOnRowClickEventHandler(function (un_producto) {
         });
-        _this.GrillaResumen.CargarObjetos(pedidos);
+        _this.GrillaResumen.CargarObjetos(pedido.productos);
         _this.GrillaResumen.DibujarEn(divGrilla);
 
     }
