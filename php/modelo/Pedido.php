@@ -218,6 +218,7 @@ require_once 'autoload.php';
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
                 
                 if($idPedido != $row['id'] ) {
+                    
                     $cliente = $row['apellido'] . ", " . $row['nombre'];
                     $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['formaDePago'], $row['formaDeEnvio'], $row['estadoDePago'], null, $row['fecha']);               
                 }
@@ -262,13 +263,20 @@ require_once 'autoload.php';
 			}
 		   	   
 			$pedidos = array();
+            //$formaDePago = "T.C";
+            //$formaDeEnvio = "Sucursal";
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
 
-                $cliente = $row['apellido'] . ", " . $row['nombre'];
-                $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['formaDePago'], $row['formaDeEnvio'], $row['estadoDePago'], null, $row['fecha']);
+                //if ($row['formaDePago'] != Constantes::$PAGO_TARJETA) $formaDePago = "Factura";
+                //if ($row['formaDeEnvio'] != Constantes::ENTREGA_SUCURSAL) $formaDeEnvio = "Domicilio";
+                
+               
+                
+                //$cliente = $row['apellido'] . ", " . $row['nombre'];
+                //$pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $formaDePago, $formaDeEnvio, $row['estadoDePago'], null, $row['fecha']);
 
-                $pedidos[] = $pedido;
+                $pedidos[] =  Pedido::armarPedido($row);// $pedido;
 
 			}
 		
@@ -279,6 +287,27 @@ require_once 'autoload.php';
 			{
 			  echo 'Error: ' . $e->getMessage();
 			}
+    }
+     
+    private static function armarPedido($row) {
+        
+        if ($row['formaDePago'] == Constantes::$PAGO_TARJETA) {
+            $formaDePago = Constantes::$PAGO_TARJETA_DESCRIPCION;
+        } else {
+             $formaDePago = Constantes::$PAGO_FACTURA_DESCRIPCION;
+        }
+        
+        if ($row['formaDeEnvio'] == Constantes::$ENTREGA_SUCURSAL) {
+            $formaDeEnvio = Constantes::$ENTREGA_SUCURSAL_DESCRIPCION;
+        } else {
+            $formaDeEnvio = Constantes::$ENTREGA_DOMICILIO_DESCRIPCION;
+        }
+        
+        $cliente = $row['apellido'] . ", " . $row['nombre'];        
+        $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $formaDePago, $formaDeEnvio, $row['estadoDePago'], null, $row['fecha']);
+        
+        return $pedido;
+        
     }
 	
 

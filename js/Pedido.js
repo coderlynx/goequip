@@ -8,7 +8,7 @@ var Pedido = {
               async:false,    
               cache:false,   
               type: 'GET', 
-              data: {pagar:true },
+              data: {G:true },
               url: "php/controllerPedido.php",
               success:  function(respuestaJson){
                 var rta = JSON.parse(respuestaJson);

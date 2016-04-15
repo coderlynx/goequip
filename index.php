@@ -77,7 +77,7 @@
                       data: {pagar:true },
                       url: "php/controllerCarrito.php",
                       success:  function(respuestaJson){  
-                          window.location.href = 'Pagar.php';
+                          window.location.href = 'ConfirmacionDatos.php';
                       },
                       error:function(objXMLHttpRequest){
                            console.log('Error al ejecutar la petición por:' + e);

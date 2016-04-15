@@ -4,10 +4,20 @@ require_once ('php/lib/mercadopago.php');
 
 session_start();
 
+if(!isset($_SESSION["nombre"]))	{
+    echo "Tenes que estar logueado";
+    exit;
+    //header("Location: index.php");  //Si no hay sesión activa, lo direccionamos al index.php (inicio de sesión) 
+}
+    
+   
 
-if(isset($_SESSION['pedido'])) {
+
+if(isset($_SESSION['pedido']['total'])) {
     /** UNSERIALIZE **/
-   $montoTotal =  $_SESSION['pedido']['total'];
+    $montoTotal =  $_SESSION['pedido']['total'];
+    
+    $cliente = Cliente::getById($_SESSION['pedido']['idCliente']);
        
     //print_r ($carrito);
 
@@ -36,22 +46,22 @@ if(isset($_SESSION['pedido'])) {
         ),
         "payer" => array(
             array(
-                "name"=> "user-name",
-                "surname"=> "user-surname",
-                "email"=> "user@email.com",
+                "name"=> $cliente->nombre,
+                "surname"=> $cliente->apellido,
+                "email"=> $cliente->email,
                 "date_created"=> "2015-06-02T12:58:41.425-04:00",
                 "phone"=>[
                     "area_code"=> "11",
-                    "number"=> "4444-4444"
+                    "number"=> $cliente->telefono
                     ],
                 "identification"=> [
                     "type"=> "DNI",
-                    "number"=> "12345678"
+                    "number"=> $cliente->dni
                 ],
                 "address"=> [
-                    "street_name"=> "Street",
-                    "street_number"=> 123,
-                    "zip_code"=> "5700"
+                    "street_name"=> $cliente->domicilio->calle,
+                    "street_number"=> $cliente->domicilio->numero,
+                    "zip_code"=> $cliente->domicilio->cp
                 ] 
             )
         ),
@@ -141,8 +151,8 @@ print_r ($search_result);*/
     </script>
 <?php
 } else {
-    echo "Sesion vencida";
-}
+    echo "No hay productos en el carrito";
+} 
     ?>
 </html>
 
