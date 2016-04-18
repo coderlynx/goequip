@@ -216,6 +216,34 @@ require_once 'autoload.php';
 		    echo 'Error: ' . $e->getMessage();
 		}
     }
+     
+    /**
+	 * Retorna un cliente especifico, buscado por id de usuario. De no encontrar retorna una excepcion
+	 *
+	 * @return  Cliente  buscado
+	 */
+    public static function getByIdUsuario($id){
+		try{
+			$listaClientes = Cliente::getAll();
+			
+			$cli = null;
+			foreach($listaClientes as $cliente) {
+				if ($id == $cliente->id) {
+					$cli = $cliente;
+					break;
+				}
+			}
+			
+			if (!isset($cli)) {
+				throw new Exception("No se encontro el cliente.");
+			}
+			
+			return $cli;
+
+		} catch(PDOException $e){
+		    echo 'Error: ' . $e->getMessage();
+		}
+    }
 	/**
 	 * Retorna un array de todos los clientes. De tirar un error arroja una excepcion
 	 *

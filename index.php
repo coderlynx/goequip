@@ -9,6 +9,9 @@
     <a style="float:right; margin:5px;" href="AgregarProducto.php">Crear producto </a>
     <a style="float:right; margin:5px;" href="AgregarCliente.php">Crear Cliente </a>
     
+    <span style="float:right; margin:5px;" id="nombreUsuario"><?php if(isset($_SESSION['nombre'])) echo $_SESSION['nombre'] ?></span>
+
+    
     <!-- REGISTRAR -->
 	<div id="registrar_pop_up" >
 		<form>
@@ -52,7 +55,9 @@
         <div>Total: $ <span id="totalPedido"></span></div>
 
        
-        <input type="button" value="Comprar" id="btnComprar" />
+        <input type="button" value="Comprar" id="btnComprar"  />
+        <span>Debes estar logueado para poder comprar</span>
+       
     
     
 </body>
@@ -76,8 +81,12 @@
                       type: 'POST', 
                       data: {pagar:true },
                       url: "php/controllerCarrito.php",
-                      success:  function(respuestaJson){  
-                          window.location.href = 'ConfirmacionDatos.php';
+                      success:  function(respuestaJson){
+                        if (respuestaJson == 'ok') {
+                            window.location.href = 'ConfirmacionDatos.php';
+                            return;
+                            }
+                            alert(respuestaJson);
                       },
                       error:function(objXMLHttpRequest){
                            console.log('Error al ejecutar la petición por:' + e);
@@ -87,20 +96,6 @@
                 
             });//fin btnComprar
             
-            //temporal en este lugar
-             $("#btnCerrarSesion").click(function() {
-            
-                 $.post('php/controllerCarrito.php', {sesion:false}, function(respuestaJson) {
-                        var rta = JSON.parse(respuestaJson);
-                        if(rta = "ok")	
-                            alert("sesion destruida");
-
-                    }).error(function(e){
-                            console.log('Error al ejecutar la petición por:' + e);
-                        }
-                    );
-            });//fin btnCerrarSesion
-
 		});
 	
     </script>

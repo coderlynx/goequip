@@ -81,7 +81,7 @@ if(!isset($_SESSION["nombre"]))	{
                         return;
                     }
 
-                    $.get('php/controllerPedido.php', {formaDeEntrega:radioFormaDeEntrega}, function(respuesta) {
+                    $.post('php/controllerPedido.php', {formaDeEntrega:radioFormaDeEntrega}, function(respuesta) {
                         //var rta = JSON.parse(respuestaJson);
                         if(respuesta == 'ok') {
                             window.location.href = "Pagar.php";

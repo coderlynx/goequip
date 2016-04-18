@@ -54,7 +54,9 @@ var Autenticacion = {
 						{
 							alert('No se encontro al usuario o el mail');
 						} else if (rta == "exito"){
-							//$('#nombre_usuario').text(login.nombre);
+							$('#nombreUsuario').text(login.nombre);
+                            //$('#btnComprar').attr("style","display:inline");
+                            
 							alert('Bienvenido ' + login.nombre);
 							return;
 						} 
@@ -69,6 +71,10 @@ var Autenticacion = {
 		$('#btnCerrarSesion').click( function() {
 			$.get('php/controllerAutenticacion.php', function(respuestaJson) {
 				//var rta = JSON.parse(respuestaJson);
+                $('#nombreUsuario').text('');
+                $('#totalPedido').text('');
+                $('#contenedorCarro').text('');
+                //$('#btnComprar').attr("style","display:none");
 				alert('Log out');
                 return;
 				//$('#nombre_usuario').text("anonimo");

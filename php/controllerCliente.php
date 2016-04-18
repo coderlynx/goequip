@@ -8,6 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_GET['id'])) {
 } else if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["id"])) {
 	$cliente = Cliente::getById($_GET["id"]);
 	echo json_encode($cliente);
+} else if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["idUsuario"])) {
+	$cliente = Cliente::getByIdUsuario($_SESSION['idUsuario']);
+	echo json_encode($cliente);
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["idCliente"])) {
     $idCliente = $_POST['idCliente'];
     if(Cliente::eliminar($idCliente)) {

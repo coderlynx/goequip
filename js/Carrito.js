@@ -6,7 +6,7 @@ var Carrito = {
 			  async:false,    
 			  cache:false,   
 			  type: 'GET', 
-              data: {show:true},
+              //data: {show:true},
 			  url: "php/controllerCarrito.php",
 			  success:  function(productos){  
                     if(productos == '') return false;
@@ -127,7 +127,7 @@ var Carrito = {
 			  async:false,    
 			  cache:false,   
 			  type: 'POST', 
-              data: {producto:jsonProducto, A:true },
+              data: {producto:jsonProducto },
 			  url: "php/controllerCarrito.php",
 			  success:  function(respuestaJson){  
                  var rta = JSON.parse(respuestaJson);
@@ -148,8 +148,8 @@ var Carrito = {
         $.ajax({
 			  async:false,    
 			  cache:false,   
-			  type: 'POST', 
-              data: {id:producto.id, B:true },
+			  type: 'DELETE', 
+              data: {id:producto.id },
 			  url: "php/controllerCarrito.php",
 			  success:  function(respuestaJson){  
                  var rta = JSON.parse(respuestaJson);

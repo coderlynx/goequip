@@ -82,6 +82,23 @@ var Cliente = {
     editCliente: function() {
         return false;
     },
+    getClienteByIdUsuario: function() {
+         $.ajax({
+              async:false,    
+              cache:false,   
+              type: 'GET', 
+              data: {idUsuario:true },
+              url: "php/controllerCliente.php",
+              success:  function(respuestaJson){
+                    var rta = JSON.parse(respuestaJson);
+                    $("#nombre").val(rta[0].nombre);
+              },
+              error:function(objXMLHttpRequest){
+                   console.log('Error al ejecutar la petición por:' + e);
+              }
+        });
+        
+    },
 	armarObjetoCliente: function() {		
 		var cliente = {};
 		

@@ -100,7 +100,7 @@ var Producto = {
         var jsonProducto = JSON.stringify(producto);
 
         // guardo el producto
-        $.post('php/controllerProducto.php', {producto:jsonProducto, AM:true }, function(respuestaJson) {
+        $.post('php/controllerProducto.php', {producto:jsonProducto}, function(respuestaJson) {
             var rta = JSON.parse(respuestaJson);
             if(rta == "exito") {
                 alert("El producto ha sigo guardado con exito.");
@@ -139,18 +139,19 @@ var Producto = {
         
         
         $(".btnEditar").click(function() {
-             var idProducto = this.parentNode.id;
-                $.get('php/controllerProducto.php', {id:idProducto}, function(respuestaJson) {
-                    var rta = JSON.parse(respuestaJson);
-                    if(rta) {
-                        alert(rta.modelo);
-                    } else {
-                        alert("producto no encontrado");
-                    }
-                }).error(function(e){
-                        console.log('Error al ejecutar la petición por:' + e);
-                    }
-                );
+            var idProducto = this.parentNode.id;
+        
+            $.get('php/controllerProducto.php', {id:idProducto}, function(respuestaJson) {
+                var rta = JSON.parse(respuestaJson);
+                if(rta) {
+                    alert(rta.modelo);
+                } else {
+                    alert("producto no encontrado");
+                }
+            }).error(function(e){
+                    console.log('Error al ejecutar la petición por:' + e);
+                }
+            );
            
         });
         
@@ -160,7 +161,22 @@ var Producto = {
             if (r == true) {
                 var idProducto = this.parentNode.id;
                // borro el producto
-                $.post('php/controllerProducto.php', {id:idProducto, B:true }, function(respuestaJson) {
+                $.ajax({ 
+                    type: 'DELETE',   
+                    url: "php/controllerProducto.php",
+                    data : {id:idProducto},
+                    success:  function(respuestaJson){  
+                        //var rta = JSON.parse(respuestaJson);
+                        //if(rta == "exito") {
+                            alert(respuestaJson);
+                        //}
+                    },
+                    error:function(objXMLHttpRequest){
+                      console.log('Error al ejecutar la petición por:' + e);
+                    }
+                });
+        
+                /*$.post('php/controllerProducto.php', {id:idProducto, B:true }, function(respuestaJson) {
                     var rta = JSON.parse(respuestaJson);
                     if(rta == "exito") {
                         alert("El producto ha sigo eliminado con exito.");
@@ -170,7 +186,7 @@ var Producto = {
                     }
                 );
 
-                return false;
+                return false;*/
             } 
           
         });

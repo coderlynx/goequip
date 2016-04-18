@@ -1,6 +1,6 @@
 <?php
-require_once ('php/autoload.php');
 require_once ('php/lib/mercadopago.php');
+
 
 session_start();
 
@@ -16,10 +16,10 @@ if(!isset($_SESSION["nombre"]))	{
 if(isset($_SESSION['pedido']['total'])) {
     /** UNSERIALIZE **/
     $montoTotal =  $_SESSION['pedido']['total'];
-    
-    $cliente = Cliente::getById($_SESSION['pedido']['idCliente']);
-       
-    //print_r ($carrito);
+
+    $cliente = json_decode($_SESSION['pedido']['cliente']);
+
+    //var_dump ($cliente);
 
     //Mis datos secretos Client_id y Client_secret
     $mp = new MP('5836268351908133', '8q3o4CY9gQKTx8LCz9clL4wQdMCBb1Zq');
