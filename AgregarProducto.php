@@ -20,13 +20,13 @@ session_start();
         
         <h3 id="nombre_formulario">Crear Producto</h3>
         <form id="">
-
-            <input id="modelo" type="text" placeholder="Modelo" value="">
-            <input id="descripcion" type="text" placeholder="Descripcion" value="">
-            <input id="talle" type="text" placeholder="Talle" value="">
-            <input id="color" type="text" placeholder="Color" value="">
-            <input id="stock" type="text" placeholder="Stock" value="">
-            <input id="precio" type="text" placeholder="Precio" value="">
+            <input id="id" type="hidden" value="" />
+            <input id="modelo" type="text" placeholder="Modelo" value="" />
+            <input id="descripcion" type="text" placeholder="Descripcion" value="" />
+            <input id="talle" type="text" placeholder="Talle" value="" />
+            <input id="color" type="text" placeholder="Color" value="" />
+            <input id="stock" type="text" placeholder="Stock" value="" />
+            <input id="precio" type="text" placeholder="Precio" value="" />
             <input type="button" id="btnAltaProducto" value="Guardar" />
         </form>
 
@@ -39,11 +39,40 @@ session_start();
             $("#btnAltaProducto").click(function() {
                 if( Producto.validarCampos()) {
                     var producto = Producto.armarObjetoProducto();
-                    producto.Id = null;
-                    Producto.insertProducto(producto);
+                    //producto.Id = null;
+                    Producto.insert(producto);
                 }  
             });
+            
+            var id = getUrlParameter('id');
+            
+            if(id) {
+                Producto.getById(id);
+                $("#btnAltaProducto").attr('value','Editar');
+            }
+
 		});
+        
+                    
+            
+            
+            
+            function getUrlParameter(sParam) {
+                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i;
+
+                for (i = 0; i < sURLVariables.length; i++) {
+                    sParameterName = sURLVariables[i].split('=');
+
+                    if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : sParameterName[1];
+                    }
+                }
+            };
+        
+        
 	
 	</script>	
 	</body>

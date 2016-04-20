@@ -17,7 +17,7 @@ switch ($metodo) {
         $filtros = json_decode($_POST['filtros']);
         
         //debemos realizar una generalización de métodos a través de la función call_user_func(), ya que sabemos que metodo se llamo. Con esto evitamos usar estructuras de decisión y solo llamamos el método de la clase necesitada.
-        $datos = call_user_func(array('reporte', $filtros->tipo), $filtros);
+        $datos = call_user_func(array('Reporte', 'get' . $filtros->tipo), $filtros);
            
         //$filtros->fechaDesde = '2016-04-13 00:00:00.000';
         

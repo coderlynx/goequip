@@ -24,7 +24,7 @@ Grilla.prototype = {
     },
     crearEncabezado: function () {
         var tHead = $('<thead>');
-        tHead.addClass("detalle_viatico_titulo_tabla_detalle");
+        //tHead.addClass("");
 
         var encabezado = $('<tr>');
         tHead.append(encabezado);

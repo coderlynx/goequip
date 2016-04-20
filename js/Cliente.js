@@ -90,8 +90,12 @@ var Cliente = {
               data: {idUsuario:true },
               url: "php/controllerCliente.php",
               success:  function(respuestaJson){
+                if(respuestaJson == "No se encontro el cliente.") {
+                    $("#mensaje_cliente").html(respuestaJson);
+                    return false;
+                }
                     var rta = JSON.parse(respuestaJson);
-                    $("#nombre").val(rta[0].nombre);
+                    $("#nombre").val(rta.nombre);
               },
               error:function(objXMLHttpRequest){
                    console.log('Error al ejecutar la petición por:' + e);
@@ -121,7 +125,26 @@ var Cliente = {
 		return cliente;
 	},
     eliminarCliente: function(idCliente) {
-        $.post('php/controllerCliente.php', {idCliente:idCliente }, function(rta) {
+        
+        $.ajax({
+              async:false,    
+              cache:false,   
+              type: 'DELETE', 
+              data: {idCliente:idCliente },
+              url: "php/controllerCliente.php",
+              success:  function(rta){
+                    if(rta == "exito") {
+                        alert("El cliente ha sido eliminado con exito.");
+                    } else {
+                      console.log(rta);
+                    }
+              },
+              error:function(objXMLHttpRequest){
+                   console.log('Error al ejecutar la petición por:' + e);
+              }
+        });
+
+        /*$.post('php/controllerCliente.php', {idCliente:idCliente }, function(rta) {
             if(rta == "exito") {
                 alert("El cliente ha sido eliminado con exito.");
             } else {
@@ -130,7 +153,7 @@ var Cliente = {
         }).error(function(e){
                 console.log('Error al ejecutar la petición por:' + e);
           }
-        );
+        );*/
         return false;
     },
 }

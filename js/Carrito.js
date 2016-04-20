@@ -50,19 +50,22 @@ var Carrito = {
         
         var div_item = $('<div>');
 			div_item.attr('id',producto.id);
-			//div_item.addClass('');
+			div_item.addClass('margen');
         
         var modelo = $("<span>");
         modelo.addClass("modelo");
         modelo.html(producto.modelo);
+        modelo.addClass('margen');
         
         var precio = $("<span>");
         precio.addClass("precio");
         precio.html(producto.precio);
+        precio.addClass('margen');
         
         var stock = $("<span>");
         stock.addClass("stock");
         stock.html(producto.stock);
+        stock.addClass('margen');
         
         var btnSumarACarrito = $("<input>");
         var idBtnSumar = "btnSumarACarrito"+producto.id;
@@ -70,6 +73,7 @@ var Carrito = {
         btnSumarACarrito.attr("id",idBtnSumar);
         btnSumarACarrito.attr("value","Agregar");
         btnSumarACarrito.addClass("btnSumarACarrito");
+        btnSumarACarrito.addClass('margen');
         
         var btnQuitarDeCarrito = $("<input>");
         var idBtnQuitar = "btnQuitarDeCarrito"+producto.id;
@@ -77,6 +81,7 @@ var Carrito = {
         btnQuitarDeCarrito.attr("id",idBtnQuitar);
         btnQuitarDeCarrito.attr("value","Quitar");
         btnQuitarDeCarrito.addClass("btnQuitarDeCarrito");
+        btnQuitarDeCarrito.addClass('margen');
               
         
         div_item.append(modelo);

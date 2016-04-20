@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Inicio</title>
+    <?php include('estilos.html') ?>
+    <style>
+        .margen {
+            margin:10px;
+        }
+        
+    </style>
 </head>
 <body>
     <input value="Cerrar Sesion" id="btnCerrarSesion" type="button" style="float:right; margin:5px;" />
+    <a style="float:right; margin:5px;" href="Pedidos.php">Pedidos</a>
+    <a style="float:right; margin:5px;" href="Graficos.php">Estadisticas</a>
     <a style="float:right; margin:5px;" href="AgregarProducto.php">Crear producto </a>
     <a style="float:right; margin:5px;" href="AgregarCliente.php">Crear Cliente </a>
     
@@ -16,8 +25,6 @@
 	<div id="registrar_pop_up" >
 		<form>
 			<h5>Registrarse</h5>
-			<!--<input type="text" class="sign-up-input" placeholder="Nombre" autofocus/>
-			<input type="password" class="sign-up-input" placeholder="Apellido">-->
 			<input type="text"  id="form_reg_usuario" placeholder="Usuario" autofocus />
 			<span style="color:red" id="form_reg_error_usuario" ></span>
 			<input type="text"  id="form_reg_mail" placeholder="Mail" />

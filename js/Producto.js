@@ -35,47 +35,55 @@ var Producto = {
         
         var div_item = $('<div>');
 			div_item.attr('id',producto.id);
-			//div_item.addClass('');
+			div_item.addClass('margen');
         
         var modelo = $("<span>");
         modelo.addClass("modelo");
         modelo.html(producto.modelo);
+        modelo.addClass('margen');
         
         var precio = $("<span>");
         precio.addClass("precio");
         precio.html(producto.precio);
+        precio.addClass('margen');
         
         var stock = $("<span>");
         stock.addClass("stock");
         stock.html(producto.stock);
+        stock.addClass('margen');
         
         var descripcion = $("<span>");
         descripcion.addClass("descripcion");
         descripcion.html(producto.descripcion);
+        descripcion.addClass('margen');
         
         var color = $("<span>");
         color.addClass("color");
         color.html(producto.color);
+        color.addClass('margen');
         
         var talle = $("<span>");
         talle.addClass("talle");
         talle.html(producto.talle);
+        talle.addClass('margen');
         
         var btnAgregar = $("<input>");
         btnAgregar.attr("type","button");
         btnAgregar.attr("value","Agregar a Carrito");
         btnAgregar.addClass("btnAgregarACarrito");
+        btnAgregar.addClass('margen');
         
         var btnEditar = $("<input>");
         btnEditar.attr("type","button");
         btnEditar.attr("value","Editar");
         btnEditar.addClass("btnEditar");
+        btnEditar.addClass('margen');
         
         var btnEliminar = $("<input>");
         btnEliminar.attr("type","button");
         btnEliminar.attr("value","Eliminar");
         btnEliminar.addClass("btnEliminar");
-        
+        btnEliminar.addClass('margen');
         
         
         div_item.append(modelo);
@@ -93,7 +101,7 @@ var Producto = {
 		return div_item;
 			 
 	}, 
-    insertProducto: function (producto) {
+    insert: function (producto) {
         var _this = this;
 
         //Parseo a JSON el obj Producto
@@ -116,13 +124,24 @@ var Producto = {
 		
 		
     },
-    editProducto: function() {
-        return false;
+    getById: function(idProducto) {
+        var _this = this;
+        
+         $.get('php/controllerProducto.php', {id:idProducto}, function(respuestaJson) {
+            var rta = JSON.parse(respuestaJson);
+            if(rta) {
+                _this.completarInputs(rta);
+            }
+        }).error(function(e){
+                console.log('Error al ejecutar la petición por:' + e);
+            }
+        );
     },
 	armarObjetoProducto: function() {
 				
 		var producto = {};
 		
+        producto.Id = $("#id").val();
 		producto.Modelo = $("#modelo").val();
 		producto.Descripcion = $("#descripcion").val();
 		producto.Talle = $("#talle").val();
@@ -134,6 +153,15 @@ var Producto = {
 		return producto;
 		
 	},
+    completarInputs: function(producto) {
+        $("#id").val(producto.id);
+        $("#modelo").val(producto.modelo);
+        $("#descripcion").val(producto.descripcion);
+        $("#talle").val(producto.talle);
+        $("#color").val(producto.color);
+        $("#stock").val(producto.stock);
+        $("#precio").val(producto.precio);
+    },
     bindearBotones: function(){
         var _this = this;
         
@@ -144,9 +172,10 @@ var Producto = {
             $.get('php/controllerProducto.php', {id:idProducto}, function(respuestaJson) {
                 var rta = JSON.parse(respuestaJson);
                 if(rta) {
-                    alert(rta.modelo);
+                    //alert(rta.modelo);
+                    window.location.href = 'AgregarProducto.php?id='+rta.id;
                 } else {
-                    alert("producto no encontrado");
+                    alert("Producto no encontrado");
                 }
             }).error(function(e){
                     console.log('Error al ejecutar la petición por:' + e);
@@ -175,18 +204,6 @@ var Producto = {
                       console.log('Error al ejecutar la petición por:' + e);
                     }
                 });
-        
-                /*$.post('php/controllerProducto.php', {id:idProducto, B:true }, function(respuestaJson) {
-                    var rta = JSON.parse(respuestaJson);
-                    if(rta == "exito") {
-                        alert("El producto ha sigo eliminado con exito.");
-                    }
-                }).error(function(e){
-                        console.log('Error al ejecutar la petición por:' + e);
-                    }
-                );
-
-                return false;*/
             } 
           
         });

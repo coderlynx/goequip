@@ -47,7 +47,7 @@ var Pedido = {
     },
     dibujarTabla: function (resultado, div_tabla) {
         var _this = this;
-        $("#tabla_pedidos").empty();
+        //$("#tabla_pedidos").empty();
         $('#div_tabla_Detalle').hide();
         $("#search").show();
        
@@ -56,12 +56,12 @@ var Pedido = {
         var pedidos = resultado;
         var columnas = [];
         var nombre = "";
-        columnas.push(new Columna("nroPedido", {generar: function (un_pedido) { return un_pedido.nroPedido; } }));
-        columnas.push(new Columna("idCliente", { generar: function (un_pedido) { return un_pedido.idCliente } }));  
+        columnas.push(new Columna("Nro. Pedido", {generar: function (un_pedido) { return un_pedido.nroPedido; } }));
+        columnas.push(new Columna("Cliente", { generar: function (un_pedido) { return un_pedido.idCliente } }));  
         columnas.push(new Columna("Total", { generar: function (un_pedido) { return '$ ' + un_pedido.total } }));  
-        columnas.push(new Columna("Forma de Pago", { generar: function (un_pedido) { return un_pedido.formaDePago } }));  
-        columnas.push(new Columna("Forma de Envio", { generar: function (un_pedido) { return un_pedido.formaDeEnvio } }));  
-        columnas.push(new Columna("Estao de Pago", { generar: function (un_pedido) { return un_pedido.estadoDePago } }));  
+        columnas.push(new Columna("Pago", { generar: function (un_pedido) { return un_pedido.formaDePago } }));  
+        columnas.push(new Columna("Envio", { generar: function (un_pedido) { return un_pedido.formaDeEnvio } }));  
+        columnas.push(new Columna("Estado", { generar: function (un_pedido) { return un_pedido.estadoDePago } }));  
         columnas.push(new Columna("Fecha", { generar: function (un_pedido) { return un_pedido.fecha } }));  
         columnas.push(new Columna('Detalle', {
             generar: function (un_pedido) {
@@ -84,6 +84,12 @@ var Pedido = {
         });
         _this.GrillaResumen.CargarObjetos(pedidos);
         _this.GrillaResumen.DibujarEn(divGrilla);
+        
+        //buscador de tabla
+        var options = {
+            valueNames: ['Cliente', 'Pago', 'Envío', 'Estado']
+        };
+        var featureList = new List('div_tabla', options);
 
     },
     getPedido: function(id) {
@@ -103,7 +109,7 @@ var Pedido = {
         });
         
     },
-    dibujarTablaDetalle: function (pedido, div_tabla, tabla) {
+    dibujarTablaDetalle: function (pedido, div_tabla) {
         var _this = this;
         $("#div_tabla_detalle").empty();
         $('#div_detalle_pedido').show();
@@ -126,6 +132,6 @@ var Pedido = {
         });
         _this.GrillaResumen.CargarObjetos(pedido.productos);
         _this.GrillaResumen.DibujarEn(divGrilla);
-
+        
     }
 }

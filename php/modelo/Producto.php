@@ -75,7 +75,7 @@ require_once 'autoload.php';
 				$stmt = Producto::bindearDatos($stmt, $producto);
 				$stmt->bindParam(':id', $producto->id,PDO::PARAM_INT);
 				
-
+                //die(json_encode($producto));
 				 if(!$stmt->execute()) {
 					throw new Exception("Error en el editado del producto.");
 				}

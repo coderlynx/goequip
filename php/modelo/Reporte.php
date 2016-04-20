@@ -150,7 +150,7 @@ require_once 'autoload.php';
 			}
     }
      
-     private function ejecutarQuery($query, $filtros) {
+     private static function ejecutarQuery($query, $filtros) {
          
             $stmt = DBConnection::getStatement($query);
 		   

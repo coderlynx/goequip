@@ -29,10 +29,15 @@ switch ($metodo) {
         }
         
         if (isset($_POST['idCliente'])) {
+            if(!isset($_SESSION['idUsuario'])) die("Usuario no logueado");
             $_SESSION['pedido']['cliente'] = json_encode(Cliente::getByIdUsuario($_SESSION['idUsuario'])); 
             echo 'ok';
             break;
         }
+        
+        //valido antes de seguir que exista el cliente
+        Cliente::getByIdUsuario($_SESSION['idUsuario']); 
+            
         
         $montoTotal = $_SESSION['pedido']['total'];
         $idCliente =  json_decode($_SESSION['pedido']['cliente'])->id;

@@ -6,6 +6,7 @@ if(!isset($_SESSION["nombre"]))	{
     exit;
     //header("Location: index.php");  //Si no hay sesión activa, lo direccionamos al index.php (inicio de sesión) 
 }
+//echo $_SESSION["idUsuario"];
 
 ?>
 
@@ -20,6 +21,10 @@ if(!isset($_SESSION["nombre"]))	{
     <div >
        <h2>Confirmar datos personales</h2>
         <h3 id="nombre_formulario">Datos Personales</h3>
+        <p>Debe completar sus datos personas antes de proseguir.</p>
+        <p>Si ya esta registrado, puede seguir adelante o editar sus datos si es que cambiaron</p>
+        
+        <p id="mensaje_cliente" style="color:red;"></p>
         
       <form id="">
           <input id="dni" type="text" placeholder="DNI" required>
@@ -68,7 +73,7 @@ if(!isset($_SESSION["nombre"]))	{
                         if(respuesta == 'ok') {
                            window.location.href = "FormaDeEntrega.php";
                         } else {
-                            alert("hubo un error");
+                            alert(respuesta);
                         }
                             
                         

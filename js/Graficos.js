@@ -32,13 +32,13 @@ var Graficos = {
             var fechaHasta = $('#fechaHasta').val();
             var titulo = "Ventas Anuales";
             var subTitulo = $('[name="filtro"]:checked').next().html();
-            var divGrafico = 'container_grafico_torta_totales';
-            var divTabla = $('#div_tabla_resultado_totales');
-            var tabla = 'tabla_resultado_totales';
-            _this.GraficoYTabla(tipo,fechaDesde,fechaHasta,subTitulo,divGrafico,divTabla,tabla);
+            var divGrafico = 'container_grafico';
+            var divTabla = 'div_tabla_resultado_totales';
+            //var tabla = 'tabla_resultado_totales';
+            _this.GraficoYTabla(tipo,fechaDesde,fechaHasta,subTitulo,divGrafico,divTabla);
         });
     },
-    GraficoYTabla: function (tipo, fechaDesde,fechaHasta,  subTitulo, div_grafico, div_tabla, tabla) {
+    GraficoYTabla: function (tipo, fechaDesde,fechaHasta,  subTitulo, div_grafico, div_tabla) {
         var _this = this;
         
         var filtros = {
@@ -53,7 +53,7 @@ var Graficos = {
             var rta = JSON.parse(respuestaJson);
             if(rta.length != 0) {
                 _this.ArmarGrafico(rta, subTitulo, div_grafico);
-                _this.DibujarTabla(rta, div_tabla, tabla);
+                _this.DibujarTabla(rta, div_tabla);
             } else {
                 alert("No hay datos para mostrar");
             }
@@ -108,17 +108,17 @@ var Graficos = {
                 });
 
     },
-    DibujarTabla: function (resultado, div_tabla, tabla) {
+    DibujarTabla: function (resultado, div_tabla) {
         var _this = this;
-        $("#" + tabla).empty();
+        $("#" + div_tabla).empty();
        
-        var divGrilla = $('#' + tabla);
+        var divGrilla = $('#' + div_tabla);
         var datos = resultado;
         var columnas = [];
         var nombre = "";
 
         columnas.push(new Columna("Periodo", { generar: function (un_registro) { return un_registro.mes } }));
-        columnas.push(new Columna("Total", { generar: function (un_registro) { return un_registro.total } }));
+        columnas.push(new Columna("Total", { generar: function (un_registro) { return '$ ' + un_registro.total } }));
        
 
         _this.GrillaResumen = new Grilla(columnas);

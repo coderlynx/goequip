@@ -235,7 +235,7 @@ require_once 'autoload.php';
 			}
 			
 			if (!isset($cli)) {
-				throw new Exception("No se encontro el cliente.");
+				die("No se encontro el cliente.");// throw new Exception("No se encontro el cliente.");
 			}
 			
 			return $cli;
