@@ -1,17 +1,23 @@
-var dni, cuil, apellido, nombre, telefono, email;
+var dni, cuil, apellido, nombre, telefono, email, cont = 0;
 
 var Cliente = {
     init: function() {
         var _this = this;
         _this.mostrarClientes();
 
-      //cuando presiona guardar
+        //cuando presiona guardar
         $("#btnAltaCliente").click(function() {
             if( _this.validarCampos()) {
                 var cliente = _this.armarObjetoCliente();
                 _this.insertCliente(cliente);
             }
-        })
+        });
+        
+        // Cuando presiono 'Editar'
+        $("a.editar").click(function(e){
+            var idCliente = $(this).parent().parent().attr("id");
+            _this.editCliente(idCliente);
+        });
     },
     validarCampos: function() {
       return true;
@@ -50,10 +56,16 @@ var Cliente = {
               ", Calle: " + cliente.domicilio.calle + ", Número: " + cliente.domicilio.numero + 
               ", Localidad: " + cliente.domicilio.localidad + " ");
         div_item.append(p);
-        var a = $("<a href='#' class='eliminar'>Eliminar</a>");
+        var a = $("<a href='#' class='eliminar'>Dar de baja</a>");
         a.click(function(){
           _this.eliminarCliente(cliente.id);
         });
+        p.append(a);
+        var a = $("<a href='#' class='editar'>Editar</a>");
+        a.click(function(){
+          _this.editCliente(cliente.id);
+        });
+        p.append("&nbsp;&nbsp;&nbsp;");
         p.append(a);
         contenedor.append(div_item);
         
@@ -71,7 +83,11 @@ var Cliente = {
             if(rta == "exito") {
                 alert("El cliente ha sigo guardado con exito.");
             } else {
-              console.log(rta);
+              var msn = "";
+              for(var x in rta){
+                  msn += x.toUpperCase() + ": " + rta[x] + "\n";
+              }
+              alert(msn);
             }
         }).error(function(e){
                 console.log('Error al ejecutar la petición por:' + e);
@@ -79,17 +95,40 @@ var Cliente = {
         );
         return false;
     },
-    editCliente: function() {
+    editCliente: function(idCliente) {
+        var _this = this;
+        /*
+        $.get("php/controllerCliente.php", {id: idCliente}, function(respuestaJson) {
+            var rta = JSON.parse(respuestaJson);
+            _this.mostrarDatosCliente(rta);
+        });
+        */
+        cont++;
+        console.log(cont);
+        $.ajax({
+            async:false,    
+            cache:false,   
+            type: 'GET',  
+            data: {id: idCliente},
+            url: "php/controllerCliente.php",
+            success:  function(respuestaJson){  
+                var rta = JSON.parse(respuestaJson);
+                _this.mostrarDatosCliente(rta);     
+            },
+            error:function(objXMLHttpRequest){
+                var e = objXMLHttpRequest;
+            }
+        });
         return false;
     },
     getClienteByIdUsuario: function() {
-         $.ajax({
+        $.ajax({
               async:false,    
               cache:false,   
               type: 'GET', 
-              data: {idUsuario:true },
+              data: {idUsuario: true},
               url: "php/controllerCliente.php",
-              success:  function(respuestaJson){
+              success: function(respuestaJson){
                 if(respuestaJson == "No se encontro el cliente.") {
                     $("#mensaje_cliente").html(respuestaJson);
                     return false;
@@ -100,8 +139,7 @@ var Cliente = {
               error:function(objXMLHttpRequest){
                    console.log('Error al ejecutar la petición por:' + e);
               }
-        });
-        
+        });   
     },
 	armarObjetoCliente: function() {		
 		var cliente = {};
@@ -123,6 +161,23 @@ var Cliente = {
         cliente.CP = $("#cp").val();
 		
 		return cliente;
+	},
+    mostrarDatosCliente: function(cliente) {	
+		$("#dni").val(cliente.dni);
+		$("#cuil").val(cliente.cuil);
+		$("#apellido").val(cliente.apellido);
+		$("#nombre").val(cliente.nombre);
+		$("#telefono").val(cliente.telefono);
+		$("#email").val(cliente.email);
+        // Domicilio
+        $("#calle").val(cliente.domicilio.calle);
+        $("#numero").val(cliente.domicilio.numero);
+        $("#piso").val(cliente.domicilio.piso);
+        $("#depto").val(cliente.domicilio.depto);
+        $("#localidad").val(cliente.domicilio.localidad);
+        $("#provincia").val(cliente.domicilio.provincia);
+        $("#pais").val(cliente.domicilio.pais);
+        $("#cp").val(cliente.domicilio.cp);
 	},
     eliminarCliente: function(idCliente) {
         
