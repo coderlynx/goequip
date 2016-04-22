@@ -4,28 +4,46 @@ var Cliente = {
     init: function() {
         var _this = this;
         _this.mostrarClientes();
-
+        
         //cuando presiona guardar
         $("#btnAltaCliente").click(function() {
             if( _this.validarCampos()) {
                 var cliente = _this.armarObjetoCliente();
                 _this.insertCliente(cliente);
-            }
-        });
-        
-        // Cuando presiono 'Editar'
-        $("a.editar").click(function(e){
-            var idCliente = $(this).parent().parent().attr("id");
-            _this.editCliente(idCliente);
+                _this.mostrarClientes();
+                _this.resetAll();
+            }  
         });
     },
     validarCampos: function() {
       return true;
     },
+    armarObjetoCliente: function() {		
+		var cliente = {};
+
+        cliente.Id = $("#idCliente").val().trim();
+		cliente.Dni = $("#dni").val();
+		cliente.Cuil = $("#cuil").val();
+		cliente.Apellido = $("#apellido").val();
+		cliente.Nombre = $("#nombre").val();
+		cliente.Telefono = $("#telefono").val();
+		cliente.Email = $("#email").val();
+        // Domicilio
+        cliente.Calle = $("#calle").val();
+        cliente.Numero = $("#numero").val();
+        cliente.Piso = $("#piso").val();
+        cliente.Depto = $("#depto").val();
+        cliente.Localidad = $("#localidad").val();
+        cliente.Provincia = $("#provincia").val();
+        cliente.Pais = $("#pais").val();
+        cliente.CP = $("#cp").val();
+		
+		return cliente;
+	},
     mostrarClientes: function () {
         var _this = this;
         //Lo hice de esta forma porque necesitaba que el asincronismo sea false
-		$.ajax({
+        $.ajax({
             async:false,    
             cache:false,   
             type: 'GET',   
@@ -45,6 +63,7 @@ var Cliente = {
     },
 	dibujarClienteEnPantalla: function(contenedor, cliente) {
         var _this = this;
+        contenedor.empty();
         contenedor.css("display","block");
         var div_item = $('<div>');
             div_item.attr('id',cliente.id);
@@ -57,19 +76,15 @@ var Cliente = {
               ", Localidad: " + cliente.domicilio.localidad + " ");
         div_item.append(p);
         var a = $("<a href='#' class='eliminar'>Dar de baja</a>");
-        a.click(function(){
-          _this.eliminarCliente(cliente.id);
-        });
         p.append(a);
         var a = $("<a href='#' class='editar'>Editar</a>");
-        a.click(function(){
-          _this.editCliente(cliente.id);
-        });
         p.append("&nbsp;&nbsp;&nbsp;");
         p.append(a);
         contenedor.append(div_item);
         
-		return div_item;		 
+        _this.agregarManejadoresEvento();
+		
+        return div_item;		 
 	}, 
     insertCliente: function (cliente) {
         var _this = this;
@@ -83,11 +98,7 @@ var Cliente = {
             if(rta == "exito") {
                 alert("El cliente ha sigo guardado con exito.");
             } else {
-              var msn = "";
-              for(var x in rta){
-                  msn += x.toUpperCase() + ": " + rta[x] + "\n";
-              }
-              alert(msn);
+              alert(rta);
             }
         }).error(function(e){
                 console.log('Error al ejecutar la petición por:' + e);
@@ -97,27 +108,28 @@ var Cliente = {
     },
     editCliente: function(idCliente) {
         var _this = this;
-        /*
         $.get("php/controllerCliente.php", {id: idCliente}, function(respuestaJson) {
             var rta = JSON.parse(respuestaJson);
             _this.mostrarDatosCliente(rta);
         });
-        */
-        cont++;
-        console.log(cont);
+    },
+    eliminarCliente: function(idCliente) {
         $.ajax({
-            async:false,    
-            cache:false,   
-            type: 'GET',  
-            data: {id: idCliente},
-            url: "php/controllerCliente.php",
-            success:  function(respuestaJson){  
-                var rta = JSON.parse(respuestaJson);
-                _this.mostrarDatosCliente(rta);     
-            },
-            error:function(objXMLHttpRequest){
-                var e = objXMLHttpRequest;
-            }
+              async:false,    
+              cache:false,   
+              type: 'DELETE', 
+              data: {idCliente:idCliente },
+              url: "php/controllerCliente.php",
+              success:  function(rta){
+                    if(rta == "exito") {
+                        alert("El cliente ha sido eliminado con exito.");
+                    } else {
+                      console.log(rta);
+                    }
+              },
+              error:function(objXMLHttpRequest){
+                   console.log('Error al ejecutar la petición por:' + e);
+              }
         });
         return false;
     },
@@ -141,28 +153,8 @@ var Cliente = {
               }
         });   
     },
-	armarObjetoCliente: function() {		
-		var cliente = {};
-		
-		cliente.Dni = $("#dni").val();
-		cliente.Cuil = $("#cuil").val();
-		cliente.Apellido = $("#apellido").val();
-		cliente.Nombre = $("#nombre").val();
-		cliente.Telefono = $("#telefono").val();
-		cliente.Email = $("#email").val();
-        // Domicilio
-        cliente.Calle = $("#calle").val();
-        cliente.Numero = $("#numero").val();
-        cliente.Piso = $("#piso").val();
-        cliente.Depto = $("#depto").val();
-        cliente.Localidad = $("#localidad").val();
-        cliente.Provincia = $("#provincia").val();
-        cliente.Pais = $("#pais").val();
-        cliente.CP = $("#cp").val();
-		
-		return cliente;
-	},
     mostrarDatosCliente: function(cliente) {	
+        $("#idCliente").val(cliente.id);
 		$("#dni").val(cliente.dni);
 		$("#cuil").val(cliente.cuil);
 		$("#apellido").val(cliente.apellido);
@@ -178,37 +170,27 @@ var Cliente = {
         $("#provincia").val(cliente.domicilio.provincia);
         $("#pais").val(cliente.domicilio.pais);
         $("#cp").val(cliente.domicilio.cp);
-	},
-    eliminarCliente: function(idCliente) {
         
-        $.ajax({
-              async:false,    
-              cache:false,   
-              type: 'DELETE', 
-              data: {idCliente:idCliente },
-              url: "php/controllerCliente.php",
-              success:  function(rta){
-                    if(rta == "exito") {
-                        alert("El cliente ha sido eliminado con exito.");
-                    } else {
-                      console.log(rta);
-                    }
-              },
-              error:function(objXMLHttpRequest){
-                   console.log('Error al ejecutar la petición por:' + e);
-              }
-        });
-
-        /*$.post('php/controllerCliente.php', {idCliente:idCliente }, function(rta) {
-            if(rta == "exito") {
-                alert("El cliente ha sido eliminado con exito.");
-            } else {
-              console.log(rta);
-            }
-        }).error(function(e){
-                console.log('Error al ejecutar la petición por:' + e);
-          }
-        );*/
-        return false;
+        $("#nombre_formulario").text("Editar Cliente");
+        $("#btnAltaCliente").val("Editar");
+	},
+    resetAll: function() {
+        $("#frmCliente")[0].reset();
+        $("#idCliente").val("");
+        $("#nombre_formulario").text("Agregar Cliente");
+        $("#btnAltaCliente").val("Guardar");
     },
+    agregarManejadoresEvento: function(){
+        var _this = this;
+        // Cuando presiono link 'Editar'
+        $("a.editar").click(function(e){
+            var idCliente = $(this).parent().parent().attr("id");
+            _this.editCliente(idCliente);
+        });
+        // Cuando presiono link 'Eliminar'
+        $("a.eliminar").click(function(e){
+            var idCliente = $(this).parent().parent().attr("id");
+            _this.eliminarCliente(idCliente);
+        });
+    }
 }
