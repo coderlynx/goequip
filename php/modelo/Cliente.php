@@ -78,20 +78,29 @@ require_once 'autoload.php';
 		$db = DBConnection::getConnection();
 		
 		if($cliente->id) /*Modifica*/ {
-	 
 			try	{
 				$db->beginTransaction();
 				
-				$query = "UPDATE clientes SET dni = :dni, cuil = :cuil, apellido = :apellido, nombre = :nombre, telefono = :telefono, email = :email WHERE id = :id";
+				$query = "UPDATE clientes SET dni = :dni, cuil = :cuil, apellido = :apellido, nombre = :nombre, 
+                telefono = :telefono, email = :email WHERE id = :id";
 				 
 				$stmt = DBConnection::getStatement($query);
 				
-				$stmt = Cliente::bindearDatos($stmt, $cliente);
-              
-				$stmt->bindParam(':id', $cliente->id,PDO::PARAM_INT);
+				$stmt = Cliente::bindearDatosEdit($stmt, $cliente);
 				
 				if(!$stmt->execute()) {
 				  throw new Exception("Error en el editado del cliente.");
+				}
+                
+                $query = "UPDATE domicilios SET calle = :calle, numero = :numero, piso = :piso, depto = :depto, 
+                localidad = :localidad, provincia = :provincia, pais = :pais, cp = :cp WHERE idCliente = $cliente->id";
+				 
+				$stmt = DBConnection::getStatement($query);
+				
+				$stmt = Cliente::bindearDatosDom($stmt, $cliente);
+				
+				if(!$stmt->execute()) {
+				  throw new Exception("Error en el editado del domicilio del cliente.");
 				}
 
 				$db->commit();
@@ -147,32 +156,44 @@ require_once 'autoload.php';
 	 * @return  Statement el statement de la conexion
 	 */
     private static function bindearDatosDom($stmt, $cliente) {
-		
-        $stmt->bindParam(':calle', $cliente->domicilio->calle,PDO::PARAM_STR);
-        $stmt->bindParam(':numero', $cliente->domicilio->numero,PDO::PARAM_STR);
-        $stmt->bindParam(':piso', $cliente->domicilio->piso,PDO::PARAM_STR);
-        $stmt->bindParam(':depto', $cliente->domicilio->depto,PDO::PARAM_STR);
-        $stmt->bindParam(':localidad', $cliente->domicilio->localidad,PDO::PARAM_STR);
-        $stmt->bindParam(':provincia', $cliente->domicilio->provincia,PDO::PARAM_STR);
-        $stmt->bindParam(':pais', $cliente->domicilio->pais,PDO::PARAM_STR);
-        $stmt->bindParam(':cp', $cliente->domicilio->cp,PDO::PARAM_STR);
+        $stmt->bindParam(':calle', $cliente->domicilio->calle, PDO::PARAM_STR);
+        $stmt->bindParam(':numero', $cliente->domicilio->numero, PDO::PARAM_STR);
+        $stmt->bindParam(':piso', $cliente->domicilio->piso, PDO::PARAM_STR);
+        $stmt->bindParam(':depto', $cliente->domicilio->depto, PDO::PARAM_STR);
+        $stmt->bindParam(':localidad', $cliente->domicilio->localidad, PDO::PARAM_STR);
+        $stmt->bindParam(':provincia', $cliente->domicilio->provincia, PDO::PARAM_STR);
+        $stmt->bindParam(':pais', $cliente->domicilio->pais, PDO::PARAM_STR);
+        $stmt->bindParam(':cp', $cliente->domicilio->cp, PDO::PARAM_STR);
 
         return $stmt;
 	}
 	private static function bindearDatos($stmt, $cliente) {
-		
-        $stmt->bindParam(':dni', $cliente->dni,PDO::PARAM_STR);
-        $stmt->bindParam(':cuil', $cliente->cuil,PDO::PARAM_STR);
-        $stmt->bindParam(':apellido', $cliente->apellido,PDO::PARAM_STR);
-        $stmt->bindParam(':nombre', $cliente->nombre,PDO::PARAM_STR);
-        $stmt->bindParam(':telefono', $cliente->telefono,PDO::PARAM_STR);
-        $stmt->bindParam(':email', $cliente->email,PDO::PARAM_STR);
+        $stmt->bindParam(':dni', $cliente->dni, PDO::PARAM_STR);
+        $stmt->bindParam(':cuil', $cliente->cuil, PDO::PARAM_STR);
+        $stmt->bindParam(':apellido', $cliente->apellido, PDO::PARAM_STR);
+        $stmt->bindParam(':nombre', $cliente->nombre, PDO::PARAM_STR);
+        $stmt->bindParam(':telefono', $cliente->telefono, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $cliente->email, PDO::PARAM_STR);
         $stmt->bindParam(':idUsuario', $cliente->idUsuario, PDO::PARAM_INT);
 
         return $stmt;
 	}
+     
+    // Nota mental: cuando se prepara una consulta se deben bindear los datos 
+    // exactos que se van a pasar!!
+    private static function bindearDatosEdit($stmt, $cliente) {
+        $stmt->bindParam(':id', $cliente->id, PDO::PARAM_INT);
+        $stmt->bindParam(':dni', $cliente->dni, PDO::PARAM_STR);
+        $stmt->bindParam(':cuil', $cliente->cuil, PDO::PARAM_STR);
+        $stmt->bindParam(':apellido', $cliente->apellido, PDO::PARAM_STR);
+        $stmt->bindParam(':nombre', $cliente->nombre, PDO::PARAM_STR);
+        $stmt->bindParam(':telefono', $cliente->telefono, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $cliente->email, PDO::PARAM_STR);
+
+        return $stmt;
+	}
 	/**
-	 * Retorna un mensaje si fue eliminado correctamente o una excepcion
+	 * Retorna un mensaje si fue dado de baja correctamente o una excepcion
 	 *
 	 * @return  String el mensaje
 	 */
@@ -187,7 +208,7 @@ require_once 'autoload.php';
             
 			$stmt = DBConnection::getStatement($query);
 			
-			$stmt->bindParam(':id', $idCliente,PDO::PARAM_INT);
+			$stmt->bindParam(':id', $idCliente, PDO::PARAM_INT);
 			
 			if(!$stmt->execute()) {
 				throw new Exception("Error al dar de baja al cliente.");

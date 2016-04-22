@@ -27,14 +27,14 @@ switch ($metodo) {
     case 'post':
         // Almaceno idUsuario
         $idUsuario = $_SESSION['idUsuario'];
-        $cli = Cliente::getByIdUsuario($idUsuario);
-        // Valido si el usuario tiene un perfil de cliente creado o inactivo 'baja = true'
-        if($cli == null || $cli->baja == true) {
+        //$cli = Cliente::getByIdUsuario($idUsuario);
+        // Valido si el usuario tiene un perfil de cliente creado
+        //if($cli == null) {
             $cli = json_decode($_POST['cliente']);
             $domicilio = new Domicilio($cli->Calle, $cli->Numero, $cli->Piso, $cli->Depto, $cli->Localidad, $cli->Provincia, 
                              $cli->Pais, $cli->CP);
             // Paso el objeto domicilio a cliente
-            $cliente = new Cliente(null, $cli->Dni, $cli->Cuil,$cli->Apellido, $cli->Nombre, $cli->Telefono, $cli->Email, 
+            $cliente = new Cliente($cli->Id, $cli->Dni, $cli->Cuil,$cli->Apellido, $cli->Nombre, $cli->Telefono, $cli->Email, 
                                    $domicilio, $idUsuario, null);
 
             /* VALIDACIONES */
@@ -55,11 +55,11 @@ switch ($metodo) {
             if(Cliente::insertCliente($cliente)) {
                 echo json_encode("exito");
                 exit;
-            }
+            }/*
         } else {
             echo json_encode("El usuario ya tiene un perfil de cliente activo.");
             exit;
-        }
+        }*/
            
         break;
     case 'put':
