@@ -134,6 +134,7 @@ var Cliente = {
         return false;
     },
     getClienteByIdUsuario: function() {
+        var _this = this;
         $.ajax({
               async:false,    
               cache:false,   
@@ -146,21 +147,24 @@ var Cliente = {
                     return false;
                 }
                     var rta = JSON.parse(respuestaJson);
-                    $("#nombre").val(rta.nombre);
+                    _this.mostrarDatosCliente(rta);
+                    //$("#nombre").val(rta.nombre);
               },
               error:function(objXMLHttpRequest){
                    console.log('Error al ejecutar la petición por:' + e);
               }
         });   
     },
-    mostrarDatosCliente: function(cliente) {	
-        $("#idCliente").val(cliente.id);
-		$("#dni").val(cliente.dni);
-		$("#cuil").val(cliente.cuil);
-		$("#apellido").val(cliente.apellido);
-		$("#nombre").val(cliente.nombre);
-		$("#telefono").val(cliente.telefono);
-		$("#email").val(cliente.email);
+    mostrarDatosCliente: function(cliente) {
+        if($("#idCliente")) {//MOMENTANEAMENTE PARA DIBUJAR EN LA PANTALLA DE FORMA DE ENTREGA SOLO EL DOMICILIO
+            $("#idCliente").val(cliente.id);
+            $("#dni").val(cliente.dni);
+            $("#cuil").val(cliente.cuil);
+            $("#apellido").val(cliente.apellido);
+            $("#nombre").val(cliente.nombre);
+            $("#telefono").val(cliente.telefono);
+            $("#email").val(cliente.email);
+        }
         // Domicilio
         $("#calle").val(cliente.domicilio.calle);
         $("#numero").val(cliente.domicilio.numero);

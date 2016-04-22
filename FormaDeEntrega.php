@@ -35,7 +35,7 @@ if(!isset($_SESSION["nombre"]))	{
         </div>
         
         <div id="domicilio_entrega" >
-            <p>Ingrese los datos donde se debe entregar</p>
+            <p>Ingrese los datos donde se debe entregar.</p>
              <input type="text" id="calle" placeholder="Calle" required>
               <input type="text" id="numero" placeholder="Número" required>
               <input type="text" id="piso" placeholder="Piso">
@@ -43,20 +43,23 @@ if(!isset($_SESSION["nombre"]))	{
               <input type="text" id="localidad" placeholder="Localidad" required>
               <input type="text" id="provincia" placeholder="Provincia" required>
               <input type="text" id="pais" placeholder="País" required>
-              <input type="text" id="cp" placeholder="Código Postal" required>
+              <input type="text" id="cp" placeholder="Código Postal" required> 
+              <input type="button" id="btnCambiarDomicilio" value="Cambiar domicilio" />
       </div>
+      
       
       <br />
       
       <label class="">
         <input id="terminos" type="checkbox" required="required">
-        Acepto los <span><a href="Terminos.php">términos y condiciones</a></span>de la compra.
+        Acepto los <span><a href="Terminos.php">términos y condiciones</a></span> de la compra.
     </label>
      
      <br />
       
         <input type="button" value="Continuar" id="btnFormaEntrega" />
         <?php include('scripts.html') ?>
+        <script src="js/Cliente.js"></script>
     <script>
         $( document ).ready(function() {
             
@@ -69,6 +72,8 @@ if(!isset($_SESSION["nombre"]))	{
             $("#retiro").click(function() {
                 $("#domicilio_entrega").hide();
             });
+            
+            Cliente.getClienteByIdUsuario();
             
             $("#btnFormaEntrega").click(function() {
                 

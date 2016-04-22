@@ -51,6 +51,8 @@ if ($merchant_order_info["status"] == 200) {
        
        <h1>Felicitaciones!! Su compra ha finalizado.</h1>
        <h2>Su numero de Pedido es: <span id="nroPedido"></span></h2>
+       
+       <a href="index.php">Volver al inicio</a>
        <?php include('scripts.html') ?>
        
      <script>

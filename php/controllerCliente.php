@@ -31,11 +31,9 @@ switch ($metodo) {
         // Valido si el usuario tiene un perfil de cliente creado
         //if($cli == null) {
             $cli = json_decode($_POST['cliente']);
-            $domicilio = new Domicilio($cli->Calle, $cli->Numero, $cli->Piso, $cli->Depto, $cli->Localidad, $cli->Provincia, 
-                             $cli->Pais, $cli->CP);
+            $domicilio = new Domicilio($cli->Calle, $cli->Numero, $cli->Piso, $cli->Depto, $cli->Localidad, $cli->Provincia, $cli->Pais, $cli->CP);
             // Paso el objeto domicilio a cliente
-            $cliente = new Cliente($cli->Id, $cli->Dni, $cli->Cuil,$cli->Apellido, $cli->Nombre, $cli->Telefono, $cli->Email, 
-                                   $domicilio, $idUsuario, null);
+            $cliente = new Cliente($cli->Id, $cli->Dni, $cli->Cuil,$cli->Apellido, $cli->Nombre, $cli->Telefono, $cli->Email, $domicilio, $idUsuario, null);
 
             /* VALIDACIONES */
             $validator = new Validator;

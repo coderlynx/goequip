@@ -27,6 +27,7 @@ if(!isset($_SESSION["nombre"]))	{
         <p id="mensaje_cliente" style="color:red;"></p>
         
       <form id="">
+          <input id="idCliente" type="hidden">
           <input id="dni" type="text" placeholder="DNI" required>
           <input id="cuil" type="text" placeholder="CUIL / CUIT" value="">
           <input id="apellido" type="text" placeholder="Apellido" required>
