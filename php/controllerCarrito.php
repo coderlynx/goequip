@@ -40,7 +40,7 @@ switch ($metodo) {
 
             $prod = json_decode($_POST['producto']);
 
-            $producto = new Producto($prod->id, $prod->modelo, $prod->descripcion,$prod->talle, $prod->color, $prod->stock, $prod->precio);
+            $producto = new Producto($prod->id, $prod->modelo, $prod->descripcion, $prod->categoria, $prod->talle, $prod->color, $prod->stock, $prod->precio);
 
             //echo "Agregando dos productos...";  
             $_SESSION["carrito"]->addProducto($producto);  

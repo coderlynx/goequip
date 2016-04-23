@@ -30,6 +30,7 @@ var Carrito = {
             producto.id = $(this).parent()[0].id;
             producto.modelo = $(this).parent().find(".modelo").html();
             producto.descripcion = $(this).parent().find(".descripcion").html();
+            producto.categoria = 'categoria';
             producto.precio = $(this).parent().find(".precio").html();
             producto.stock = 1;//La cantidad a agregar al carrito != al stock del producto en general
             producto.talle = $(this).parent().find(".talle").html();
@@ -42,6 +43,8 @@ var Carrito = {
     },
     dibujarProductoEnCarrito: function(contenedor, producto){
         var _this = this;
+        
+        if(producto.id == '') return;
         
         if(contenedor.find("#"+producto.id)[0]) {
             contenedor.find("#"+producto.id).find(".stock").html(producto.stock);
@@ -106,6 +109,7 @@ var Carrito = {
             producto.id = $(this).parent()[0].id;
             producto.modelo = "";
             producto.descripcion = "";
+            producto.categoria = "";
             producto.precio = "";
             producto.stock = "";
             producto.talle = "";

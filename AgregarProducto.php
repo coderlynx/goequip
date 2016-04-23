@@ -22,7 +22,16 @@ session_start();
         <form id="">
             <input id="id" type="hidden" value="" />
             <input id="modelo" type="text" placeholder="Modelo" value="" />
-            <input id="descripcion" type="text" placeholder="Descripcion" value="" />
+            <textarea id="descripcion" placeholder="Descripcion" value="" ></textarea>
+<!--            <input id="descripcion" type="text" placeholder="Descripcion" value="" />-->
+            <select id="categoria">
+                <option value="1">Waterrower</option>
+                <option value="2">Kangoo Jumps</option>
+                <option value="3">Equipos Cardio</option>
+                <option value="4">Accesorios</option>
+                <option value="5">Indumentaria</option>
+            </select>
+            
             <select id="talle">
                 <option value="1">L</option>
                 <option value="2">M</option>
@@ -58,7 +67,8 @@ session_start();
             var id = getUrlParameter('id');
             
             if(id) {
-                Producto.getById(id);
+                var prod = Producto.getById(id);
+                Producto.completarInputs(prod);
                 $("#btnAltaProducto").attr('value','Editar');
             }
 
@@ -68,20 +78,20 @@ session_start();
             
             
             
-            function getUrlParameter(sParam) {
-                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-                    sURLVariables = sPageURL.split('&'),
-                    sParameterName,
-                    i;
+        function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
 
-                for (i = 0; i < sURLVariables.length; i++) {
-                    sParameterName = sURLVariables[i].split('=');
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
 
-                    if (sParameterName[0] === sParam) {
-                        return sParameterName[1] === undefined ? true : sParameterName[1];
-                    }
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
                 }
-            };
+            }
+        };
         
         
 	

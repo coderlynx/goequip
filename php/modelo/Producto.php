@@ -7,16 +7,18 @@ require_once 'autoload.php';
 	private $id;
 	private $modelo;
 	private $descripcion;
+    private $categoria;
 	private $talle;
 	private $color;
 	private $stock;
 	private $precio;
     
 	
-	public function __construct($id=null, $modelo, $descripcion,$talle=null, $color, $stock, $precio) {
+	public function __construct($id=null, $modelo, $descripcion, $categoria, $talle=null, $color, $stock, $precio) {
        $this->id = $id;
 	   $this->modelo = $modelo;
 	   $this->descripcion = $descripcion;
+	   $this->categoria = $categoria;
 	   $this->talle = $talle;
 	   $this->color = $color;
 	   $this->stock = $stock;
@@ -27,6 +29,7 @@ require_once 'autoload.php';
 	public static $reglas = [
 		'modelo' => ['required'],
 		'descripcion' => ['required'],
+		'categoria' => ['required'],
 		'color' => ['required'],
 		'stock' => ['required'],
 		'precio' => ['required']
@@ -46,6 +49,7 @@ require_once 'autoload.php';
 			'id' => $this->id,
 			'modelo' => $this->modelo,
 			'descripcion' => $this->descripcion,
+			'categoria' => $this->categoria,
 			'talle' => $this->talle,
 			'color' => $this->color,
 			'stock' => $this->stock,
@@ -68,7 +72,7 @@ require_once 'autoload.php';
 			try	{
 				$db->beginTransaction();
 				
-				$query = "UPDATE productos SET modelo = :modelo, descripcion = :descripcion, talle = :talle, color = :color, stock = :stock, precio = :precio WHERE id = :id";
+				$query = "UPDATE productos SET modelo = :modelo, descripcion = :descripcion, categoria = :categoria, talle = :talle, color = :color, stock = :stock, precio = :precio WHERE id = :id";
 				 
 				$stmt = DBConnection::getStatement($query);
 				
@@ -94,8 +98,8 @@ require_once 'autoload.php';
 			try	{
 				$db->beginTransaction();
 				
-				$query = "INSERT INTO productos (modelo, descripcion, talle, color, stock, precio)
-				VALUES(:modelo, :descripcion, :talle, :color, :stock, :precio)";
+				$query = "INSERT INTO productos (modelo, descripcion, categoria, talle, color, stock, precio)
+				VALUES(:modelo, :descripcion, :categoria, :talle, :color, :stock, :precio)";
 
 				$stmt = DBConnection::getStatement($query);
 															
@@ -134,6 +138,7 @@ require_once 'autoload.php';
 		
 		 $stmt->bindParam(':modelo', $producto->modelo,PDO::PARAM_STR);
 		 $stmt->bindParam(':descripcion', $producto->descripcion,PDO::PARAM_STR);
+		 $stmt->bindParam(':categoria', $producto->categoria,PDO::PARAM_INT);
 		 $stmt->bindParam(':talle', $producto->talle,PDO::PARAM_STR);
 		 $stmt->bindParam(':color', $producto->color,PDO::PARAM_STR);
 		 $stmt->bindParam(':stock', $producto->stock,PDO::PARAM_INT);
@@ -213,8 +218,8 @@ require_once 'autoload.php';
 	public static function getAll(){
 		try {
 			 
-			$query = "SELECT prod.id, prod.modelo, prod.descripcion, prod.talle, prod.color, prod.stock, prod.precio
-					 FROM productos prod ";
+			$query = "SELECT *
+					 FROM productos ";
 											
 		   $stmt = DBConnection::getStatement($query);
 		   
@@ -228,7 +233,7 @@ require_once 'autoload.php';
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
 
-                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['talle'], $row['color'], $row['stock'], $row['precio']);
+                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['categoria'], $row['talle'], $row['color'], $row['stock'], $row['precio']);
 
                 $productos[] = $producto;
 
@@ -270,7 +275,7 @@ require_once 'autoload.php';
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
 
-                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['talle'], $row['color'], $row['stock'], $row['precio']);
+                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['categoria'], $row['talle'], $row['color'], $row['stock'], $row['precio']);
 
                 $productos[] = $producto;
 
