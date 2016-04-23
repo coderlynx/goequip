@@ -23,8 +23,19 @@ session_start();
             <input id="id" type="hidden" value="" />
             <input id="modelo" type="text" placeholder="Modelo" value="" />
             <input id="descripcion" type="text" placeholder="Descripcion" value="" />
-            <input id="talle" type="text" placeholder="Talle" value="" />
-            <input id="color" type="text" placeholder="Color" value="" />
+            <select id="talle">
+                <option value="1">L</option>
+                <option value="2">M</option>
+                <option value="3">S</option>
+                <option value="4">XS</option>
+            </select>
+<!--            <input id="talle" type="text" placeholder="Talle" value="" />-->
+           <select id="color">
+                <option value="1">Blanco</option>
+                <option value="2">Azul</option>
+                <option value="3">Negro</option>
+            </select>
+<!--            <input id="color" type="text" placeholder="Color" value="" />-->
             <input id="stock" type="text" placeholder="Stock" value="" />
             <input id="precio" type="text" placeholder="Precio" value="" />
             <input type="button" id="btnAltaProducto" value="Guardar" />

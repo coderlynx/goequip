@@ -10,13 +10,22 @@ switch ($metodo) {
     case 'get':
         if (isset($_GET["id"])) {
             $producto = Producto::getById($_GET["id"]);
-
             echo json_encode($producto);
-        } else {
-            $productos = Producto::getAll();
-
-            echo json_encode($productos);
+            
+            break;
         }
+        
+        if (isset($_GET["buscar"])) {
+            $productos = Producto::getByTexto($_GET["buscar"]);
+            echo json_encode($productos);
+            
+            break;
+        }
+        
+        $productos = Producto::getAll();
+
+        echo json_encode($productos);
+       
  
         break;
     case 'post':

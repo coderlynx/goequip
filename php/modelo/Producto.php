@@ -242,6 +242,61 @@ require_once 'autoload.php';
 			  echo 'Error: ' . $e->getMessage();
 			}
     }
+     
+    /**
+	 * Retorna un array de todos los productos. De tirar un error arroja una excepcion
+	 *
+	 * @return  Array el array de productos
+	 */
+	public static function getByTexto($valor){
+		try {
+			 
+			$query = "SELECT *
+					 FROM productos
+                     WHERE modelo LIKE :valor or descripcion LIKE :valor";
+											
+		   $stmt = DBConnection::getStatement($query);
+            
+            $texto = '%' . $valor . '%';
+            $stmt->bindParam(':valor', $texto, PDO::PARAM_STR);
+		   
+
+		   if(!$stmt->execute()) {
+				throw new Exception('Error al traer los productos');
+			}
+		   	   
+			$productos = array();
+			
+			
+			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+
+                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['talle'], $row['color'], $row['stock'], $row['precio']);
+
+                $productos[] = $producto;
+
+			}
+		
+			 return $productos;
+
+
+	   } catch(PDOException $e)
+			{
+			  echo 'Error: ' . $e->getMessage();
+			}
+    }
+     
+     
+     
+     //usort nativo de php le paso el array de objetos que quiero ordenar y el metodo de que clase quiero llamar para que ordene
+    //usort($resultados_depurado, array( 'Aviso', 'ordenarPorPuntaje'));
+     
+    public static function ordenarPorPrecio($a, $b)
+	{
+		if ($a->precio == $b->precio) {
+				return 0;
+			}
+			return ($a->precio < $b->precio) ? +1 : -1;
+	}
 	
 
 /*GETTER Y SETTER */

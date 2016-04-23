@@ -23,11 +23,15 @@ require_once 'autoload.php';
             $stmt = Reporte::ejecutarQuery($query, $filtros);
             
             $datos = array();
+            
+            //$bool = new Constantes;
+              //  die(json_encode($bool::TALLE));
 
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
                 
                 $un_registro = new StdClass;
-                $un_registro->mes = Constantes::$MES[$row['Mes']];
+                
+                $un_registro->mes = new Constantes(Constantes::MES[$row['Mes']]);
                 $un_registro->total = $row['Total'];
                 
                 $datos[] = $un_registro;

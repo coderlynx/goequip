@@ -47,6 +47,13 @@
 			<a class="link_recuperar_clave" href="recuperar">Recuperar Contraseña</a>
 		</form>
 	</div><!--  FIN DE LOGIN -->
+  
+  <form class="navbar-form navbar-right" role="search">
+    <div class="form-group">
+      <input id="txtBusqueda" type="text" class="form-control busqueda-input" placeholder="Búsqueda">
+    </div>
+    <button id="btnBuscarProducto" class="btn btn-default busqueda-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+  </form>
    
    
    <h3 id="">Listado de Productos</h3>
