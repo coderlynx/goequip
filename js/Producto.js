@@ -207,6 +207,13 @@ var Producto = {
         $("#precio").html(producto.precio);
         $("#descripcion").html(producto.descripcion);
         
+        for (i=1; i < producto.stock; i++) {
+            var option = $('<option>');
+            option.attr('value',i);
+            option.html(i);
+            $('#cantidad').append(option);
+        }
+        
     },
     bindearBotones: function(){
         var _this = this;

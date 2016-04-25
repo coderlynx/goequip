@@ -63,6 +63,9 @@
 						<div class="cantidad-select">
 							<h4>Cantidad:</h4>
 							<div class="btn-group">
+                              <select id="cantidad" class="btn btn-default dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                              </select>
+<!--
 							  <button id="stock" type="button" class="btn btn-default dropdown-toggle stock" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							    1 <span class="caret"></span>
 							  </button>
@@ -71,6 +74,7 @@
 							    <li><a href="">3</a></li>
 							    <li><a href="">4</a></li>
 							  </ul>
+-->
 							</div>
 						</div>
 

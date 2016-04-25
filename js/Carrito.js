@@ -32,7 +32,7 @@ var Carrito = {
             producto.descripcion = $(this).parent().find(".descripcion").html();
             producto.categoria = 'categoria';
             producto.precio = $(this).parent().find(".precio").html();
-            producto.stock = 1;//La cantidad a agregar al carrito != al stock del producto en general
+            producto.stock = $(this).parent().find("#cantidad option:selected").val();//La cantidad a agregar al carrito != al stock del producto en general
             producto.talle = $(this).parent().find(".talle").html();
             producto.color = $(this).parent().find(".color").html();
             
