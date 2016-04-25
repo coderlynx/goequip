@@ -151,16 +151,28 @@ var Producto = {
         });
         
         return prod;
-         /*$.get('php/controllerProducto.php', {id:idProducto}, function(respuestaJson) {
-            var producto = JSON.parse(respuestaJson);
-            if(producto) {
-                return producto;
-                //_this.completarInputs(rta);
-            }
-        }).error(function(e){
-                console.log('Error al ejecutar la petición por:' + e);
-            }
-        );*/
+    },
+    getByCategoria: function(idCategoria, orden) {
+        var _this = this;
+         //Lo hice de esta forma porque necesitaba que el asincronismo sea false
+		$.ajax({
+			  async:false,    
+			  cache:false,   
+			  type: 'GET', 
+              data: {idCategoria:idCategoria, orden:orden},
+			  url: "php/controllerProducto.php",
+			  success:  function(respuestaJson){  
+					var productos = JSON.parse(respuestaJson);
+                    for (i=0; i < productos.length; i++) {
+						_this.dibujarProductoEnPantalla($('#contenedorCategoria'), productos[i]);
+					}
+                    _this.bindearBotones();
+			  },
+			  error:function(objXMLHttpRequest){
+				  console.log('Error al ejecutar la petición por:' + e);
+			  }
+        });
+        
     },
 	armarObjetoProducto: function() {
 				

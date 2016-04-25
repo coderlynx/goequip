@@ -47,6 +47,14 @@
 			<a class="link_recuperar_clave" href="recuperar">Recuperar Contraseña</a>
 		</form>
 	</div><!--  FIN DE LOGIN -->
+	
+	<ul class="nav navbar-nav">
+        <li><a href="CategoriaProducto.php?id=1">Waterrower</a></li>
+        <li><a href="CategoriaProducto.php?id=2">Kangoo Jumps</a></li>
+        <li><a href="CategoriaProducto.php?id=3">Equipos Cardio</a></li>
+        <li><a href="CategoriaProducto.php?id=4">Accesorios</a></li>
+        <li><a href="CategoriaProducto.php?id=5">Indumentaria</a></li>
+      </ul>
   
   <form class="navbar-form navbar-right" role="search">
     <div class="form-group">

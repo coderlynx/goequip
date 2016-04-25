@@ -208,6 +208,34 @@ require_once 'autoload.php';
 			  echo 'Error: ' . $e->getMessage();
 			}
     }
+     
+    /**
+	 * Retorna productos de una categoria especifica, buscado por idCategoria. De no encontrar retorna una excepcion
+	 *
+	 * @return  Producto  buscado
+	 */
+    public static function getByCategoria($id, $orden){
+		try{
+			
+			$listaProductos = Producto::getAll();
+			
+			$productosPorCategoria = [];
+			foreach($listaProductos as $producto) {
+				if ($id == $producto->categoria) {
+					$productosPorCategoria[] = $producto;
+				}
+			}
+            
+            //usort($productosPorCategoria, array( 'Producto', 'ordenarPorPrecioMayor'));
+            usort($productosPorCategoria, array( 'Producto', $orden));
+			
+			return $productosPorCategoria;
+
+		   } catch(PDOException $e)
+			{
+			  echo 'Error: ' . $e->getMessage();
+			}
+    }
 	
 
 	/**
@@ -293,14 +321,22 @@ require_once 'autoload.php';
      
      
      //usort nativo de php le paso el array de objetos que quiero ordenar y el metodo de que clase quiero llamar para que ordene
-    //usort($resultados_depurado, array( 'Aviso', 'ordenarPorPuntaje'));
+    //usort($resultados_depurado, array( 'Producto', 'ordenarPorPrecio'));
      
-    public static function ordenarPorPrecio($a, $b)
+    public static function ordenarPorPrecioMayor($a, $b)
 	{
 		if ($a->precio == $b->precio) {
 				return 0;
 			}
 			return ($a->precio < $b->precio) ? +1 : -1;
+	}
+     
+    public static function ordenarPorPrecioMenor($a, $b)
+	{
+		if ($a->precio == $b->precio) {
+				return 0;
+			}
+			return ($a->precio > $b->precio) ? +1 : -1;
 	}
 	
 

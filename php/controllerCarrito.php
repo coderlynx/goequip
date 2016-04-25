@@ -20,6 +20,7 @@ switch ($metodo) {
         
         break;
     case 'post':
+        //cuando realizo el pago paso el carrito al pedido
         if (isset($_POST["pagar"])) { 
             if(!isset($_SESSION['nombre'])) die("Debes loguearte.");
             if(!isset($_SESSION['carrito'])) die("No hay productos en el carrito");
@@ -31,7 +32,7 @@ switch ($metodo) {
 
             echo 'ok';
         
-        } else {
+        } else {//cuando agrego al carrito productos o inicializo si no existe
            if(empty($_SESSION['carrito'])) {
                 $carrito = new Carrito();  
                 $_SESSION["carrito"] = $carrito; 

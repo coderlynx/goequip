@@ -22,6 +22,14 @@ switch ($metodo) {
             break;
         }
         
+        if (isset($_GET["idCategoria"])) {
+            $orden = 'ordenarPor' . $_GET["orden"];
+            $productos = Producto::getByCategoria($_GET["idCategoria"],$orden);
+            echo json_encode($productos);
+            
+            break;
+        }
+        
         $productos = Producto::getAll();
 
         echo json_encode($productos);

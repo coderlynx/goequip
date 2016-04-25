@@ -87,6 +87,7 @@ require_once 'autoload.php';
                     if ($row["pedido"] == 1) die("Ya existe ese pedido");
                  }
 				
+                //INSERTO EL PEDIDO
 				$query = "INSERT INTO pedidos (idCliente, nroPedido, total, formaDePago, formaDeEnvio, estadoDePago, fecha)
 				VALUES(:idCliente, :nroPedido, :total, :formaDePago, :formaDeEnvio, :estadoDePago, :fecha)";
 
@@ -102,6 +103,7 @@ require_once 'autoload.php';
 
 				$pedido->setId($id);
             
+                //INSERTO EL DETALLE DEL PEDIDO
                 foreach($pedido->productos as $prod) {
                     $query = "INSERT INTO detallepedido (idPedido, idProducto,cantidad,precio) values (:idPedido, :idProducto, :cantidad, :precio)";
 
@@ -115,8 +117,11 @@ require_once 'autoload.php';
                     if(!$stmt->execute()) {
                         throw new Exception("Error en el insertado del detalle del pedido");
                     }
+                    
+                    Pedido::updateStock($prod);
+                    
                 }
-				
+
                 //$_SESSION['idProducto'] = $producto->id;
 			
 				$db->commit();
@@ -131,6 +136,44 @@ require_once 'autoload.php';
 		
 
 	}
+     
+    private static function updateStock($prod) {
+        //TRAIGO EL PRODUCTO PARA CONOCER SU STOCK
+        $query = "SELECT stock 
+                  FROM productos
+                  WHERE id = :id";
+
+        $stmt = DBConnection::getStatement($query);
+
+        $stmt->bindParam(':id', $prod->id,PDO::PARAM_INT );
+
+         if(!$stmt->execute()) {
+            throw new Exception("Error en buscar el producto del detalle del pedido");
+        }
+
+        while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+            $stockViejo = $row["stock"];
+            $nuevoStock = $stockViejo - $prod->stock;
+            //die('stock viejo: ' . $stockViejo . '.cantidad pedida: ' . $prod->stock . '. nuevo stock: '. $nuevoStock);
+            if ($nuevoStock < 1) die("No se pudo crear el pedido por falta de stock");
+
+             //UPDATE DEL STOCK DEL PRODUCTO 
+            $query = "UPDATE productos 
+                      SET stock = :stock
+                      WHERE id = :id";
+
+            $stmt = DBConnection::getStatement($query);
+
+            $stmt->bindParam(':id', $prod->id,PDO::PARAM_INT );
+            $stmt->bindParam(':stock', $nuevoStock,PDO::PARAM_INT );
+
+            if(!$stmt->execute()) {
+                throw new Exception("Error en actualizar el stock del producto");
+            }
+
+        }
+        
+    }
 	
 
 	/**
