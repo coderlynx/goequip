@@ -69,7 +69,7 @@
         <div id="contenedor"></div>
 
         <h1>Carrito</h1>
-        <h2>Total Articulos: <span id="totalCarrito"></span></h2>
+        <h2>Total Articulos: <span id="totalCantidad"></span></h2>
         <h2>Detalle del Carrito:</h2>
         <div id="contenedorCarro">
             

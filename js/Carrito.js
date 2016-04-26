@@ -24,7 +24,7 @@ var Carrito = {
 			  }
 			});
         
-        $(".btnAgregarACarrito").click(function() {
+        $("#btnAgregarACarrito").click(function() {
             var producto = {};
             
             producto.id = $(this).parent()[0].id;
@@ -32,7 +32,10 @@ var Carrito = {
             producto.descripcion = $(this).parent().find(".descripcion").html();
             producto.categoria = 'categoria';
             producto.precio = $(this).parent().find(".precio").html();
-            producto.stock = $(this).parent().find("#cantidad option:selected").val();//La cantidad a agregar al carrito != al stock del producto en general
+            
+            producto.stock = 1;//default 1 cantidad
+            if($(this).parent().find("#cantidad option:selected").val())
+                producto.stock = $(this).parent().find("#cantidad option:selected").val();//La cantidad a agregar al carrito != al stock del producto en general
             producto.talle = $(this).parent().find(".talle").html();
             producto.color = $(this).parent().find(".color").html();
             
@@ -185,7 +188,10 @@ var Carrito = {
 			  url: "php/controllerCarrito.php",
 			  success:  function(respuestaJson){  
                  var rta = JSON.parse(respuestaJson);
-                    if(rta)	$("#totalPedido").html(rta);
+                    if (rta) {
+                        $("#totalPedido").html(rta.monto);
+                        $("#totalCantidad").html(rta.cantidad);
+                    }
 			  },
 			  error:function(objXMLHttpRequest){
 				   console.log('Error al ejecutar la petición por:' + e);

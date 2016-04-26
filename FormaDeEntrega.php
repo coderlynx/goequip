@@ -91,7 +91,7 @@ if(!isset($_SESSION["nombre"]))	{
                         if(respuesta == 'ok') {
                             window.location.href = "Pagar.php";
                         } else {
-                            alert("hubo un error");
+                            alert(respuesta);
                         }
                             
                         

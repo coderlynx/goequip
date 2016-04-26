@@ -18,12 +18,14 @@ class Carrito  {
 var $productos;
 var $productosArray;
 var $valorTotal;
+var $cantidadTotal;
   
 function Carrito()  
 {  
     $this->productos = new Collection('Producto');
     $this->productosArray = array();
     $this->valorTotal = 0.00;
+    $this->cantidadTotal = 0;
 }  
   
 /** 
@@ -101,7 +103,7 @@ public function showProductos() {
     return $this->productosArray;
 }
     
-public function calculateTotal() {
+public function calculateMontoTotal() {
    
     $this->valorTotal = 0;
     $iterator = $this->productos->getIterator();  
@@ -114,6 +116,21 @@ public function calculateTotal() {
         $iterator->next();  
     }  
        return $this->valorTotal;
+}
+    
+public function calculateCantidadTotal() {
+
+    $this->cantidadTotal = 0;
+    $iterator = $this->productos->getIterator();  
+
+    while($iterator->valid())  
+    {  
+        $prod = $iterator->current();  
+        //$this->productosArray[] = $iterator->current();  
+        $this->cantidadTotal += $prod->stock;
+        $iterator->next();  
+    }  
+   return $this->cantidadTotal;
 }
   
 /** 

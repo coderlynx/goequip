@@ -16,6 +16,7 @@ if(!isset($_SESSION["nombre"]))	{
 if(isset($_SESSION['pedido']['total'])) {
     /** UNSERIALIZE **/
     $montoTotal =  $_SESSION['pedido']['total'];
+    //$cantidadTotal =  $_SESSION['pedido']['cantidad'];
 
     $cliente = json_decode($_SESSION['pedido']['cliente']);
 
@@ -37,10 +38,10 @@ if(isset($_SESSION['pedido']['total'])) {
                 "id"=> "item-ID-1234",
                 "title"=> "GO Equipamientos.",//Title of what you are paying for. It will be displayed in the payment process.
                 "currency_id"=> "ARS",
-                "picture_url"=> "css/goequip_logo.gif",
+                "picture_url"=> "css/img/goequip_logo.gif",
                 "description"=> "Equipamientos",
                 "category_id"=> "art", // Available categories at https://api.mercadopago.com/item_categories
-                "quantity"=> 1,
+                "quantity"=> 1,//le tengo que dejar uno para que compute un total ya calculado por mi.
                 "unit_price"=> $montoTotal          
                  )
         ),
@@ -115,7 +116,7 @@ print_r ($search_result);*/
        
     </head>
     <body>
-        <a href="<?php echo $preference['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-rn-m" onreturn="execute_my_onreturn">Pagar</a>
+        <a href="<?php echo $preference['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-rn-m" onreturn="execute_my_onreturn">Comprar</a>
         <script type="text/javascript" src="https://www.mercadopago.com/org-img/jsapi/mptools/buttons/render.js"></script>
     
     </body>

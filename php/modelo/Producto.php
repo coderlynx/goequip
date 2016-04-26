@@ -154,7 +154,28 @@ require_once 'autoload.php';
 	 * @return  String el mensaje
 	 */
    	public static function delete($idProducto){
-		try{
+        try{
+			$db = DBConnection::getConnection();
+			$db->beginTransaction();
+
+            $query = "UPDATE productos SET baja = 1 WHERE id = :id";
+            
+			$stmt = DBConnection::getStatement($query);
+			
+			$stmt->bindParam(':id', $idProducto, PDO::PARAM_INT);
+			
+			if(!$stmt->execute()) {
+				throw new Exception("Error al dar de baja al producto.");
+			}
+		   
+		    $db->commit();
+			echo "Producto dado de baja correctamente.";
+		} catch (PDOException $e){
+		    echo 'Error: ' . $e->getMessage();
+		    $db->rollBack();
+		}	
+        
+		/*try{
 			$db = DBConnection::getConnection();
 			
 			$db->beginTransaction();
@@ -176,7 +197,7 @@ require_once 'autoload.php';
 			{
 			  echo 'Error: ' . $e->getMessage();
 			  $db->rollBack();
-			}	
+			}	*/
     }
    
    	/**
@@ -247,7 +268,8 @@ require_once 'autoload.php';
 		try {
 			 
 			$query = "SELECT *
-					 FROM productos ";
+					 FROM productos 
+                     WHERE baja = 0";
 											
 		   $stmt = DBConnection::getStatement($query);
 		   
@@ -311,6 +333,80 @@ require_once 'autoload.php';
 		
 			 return $productos;
 
+
+	   } catch(PDOException $e)
+			{
+			  echo 'Error: ' . $e->getMessage();
+			}
+    }
+     
+    public static function updateStock($prod) {
+        //TRAIGO EL PRODUCTO PARA CONOCER SU STOCK
+        $query = "SELECT stock 
+                  FROM productos
+                  WHERE id = :id";
+
+        $stmt = DBConnection::getStatement($query);
+
+        $stmt->bindParam(':id', $prod->id,PDO::PARAM_INT );
+
+         if(!$stmt->execute()) {
+            throw new Exception("Error en buscar el producto del detalle del pedido");
+        }
+
+        while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+            $stockViejo = $row["stock"];
+            $nuevoStock = $stockViejo - $prod->stock;
+            //die('stock viejo: ' . $stockViejo . '.cantidad pedida: ' . $prod->stock . '. nuevo stock: '. $nuevoStock);
+            if ($nuevoStock < 0) die("No se pudo crear el pedido por falta de stock");
+
+             //UPDATE DEL STOCK DEL PRODUCTO 
+            $query = "UPDATE productos 
+                      SET stock = :stock
+                      WHERE id = :id";
+
+            $stmt = DBConnection::getStatement($query);
+
+            $stmt->bindParam(':id', $prod->id,PDO::PARAM_INT );
+            $stmt->bindParam(':stock', $nuevoStock,PDO::PARAM_INT );
+
+            if(!$stmt->execute()) {
+                throw new Exception("Error en actualizar el stock del producto");
+            }
+
+        }
+        
+    }
+     
+   /**
+	 * Retorna un array de todos los productos. De tirar un error arroja una excepcion
+	 *
+	 * @return  Array el array de productos
+	 */
+	public static function validateStock($prod){
+		try {
+			 
+			//TRAIGO EL PRODUCTO PARA CONOCER SU STOCK
+            $query = "SELECT stock 
+                      FROM productos
+                      WHERE id = :id";
+
+            $stmt = DBConnection::getStatement($query);
+
+            $stmt->bindParam(':id', $prod->id,PDO::PARAM_INT );
+
+             if(!$stmt->execute()) {
+                throw new Exception("Error en buscar el stock del producto");
+            }
+            
+            while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+                $stockViejo = $row["stock"];
+                $nuevoStock = $stockViejo - $prod->stock;
+            //die('stock viejo: ' . $stockViejo . '.cantidad pedida: ' . $prod->stock . '. nuevo stock: '. $nuevoStock);
+                if ($nuevoStock < 0) die("En el transcurso de la operacion nos hemos quedado sin stock del producto '" . $prod->modelo . "'. Si desea puede proseguir sin ese producto en el carrito o puede contactarnos via mail o telefono con nosotros para solucionarlo. Gracias.");
+            }
+            
+            
 
 	   } catch(PDOException $e)
 			{

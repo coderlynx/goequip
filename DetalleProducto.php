@@ -80,11 +80,14 @@
 
 						<div class="disponibilidad">
 							<h4>Disponibilidad:</h4>
+							<p id="msgStock"></p>
+<!--
 							<p class="disponibilidad-ok">En stock</p>
 							<p class="disponibilidad-out">Sin stock</p>
+-->
 						</div>
 
-                        <input type="button" id="" class="btn btn-default btn-custom btnAgregarACarrito" value="Agregar al carrito"/>
+                        <input type="button" id="btnAgregarACarrito" class="btn btn-default btn-custom" value="Agregar al carrito"/>
 <!--<a class="btn btn-default btn-custom btn-agregar" href="#" role="button">Agregar al carrito</a>-->
 						
 					</div>

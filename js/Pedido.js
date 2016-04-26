@@ -59,6 +59,7 @@ var Pedido = {
         columnas.push(new Columna("Nro. Pedido", {generar: function (un_pedido) { return un_pedido.nroPedido; } }));
         columnas.push(new Columna("Cliente", { generar: function (un_pedido) { return un_pedido.idCliente } }));  
         columnas.push(new Columna("Total", { generar: function (un_pedido) { return '$ ' + un_pedido.total } }));  
+        columnas.push(new Columna("Cantidad", { generar: function (un_pedido) { return un_pedido.cantidad } }));  
         columnas.push(new Columna("Pago", { generar: function (un_pedido) { return un_pedido.formaDePago } }));  
         columnas.push(new Columna("Envio", { generar: function (un_pedido) { return un_pedido.formaDeEnvio } }));  
         columnas.push(new Columna("Estado", { generar: function (un_pedido) { return un_pedido.estadoDePago } }));  

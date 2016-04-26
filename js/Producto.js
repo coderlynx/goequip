@@ -68,7 +68,7 @@ var Producto = {
         var btnAgregar = $("<input>");
         btnAgregar.attr("type","button");
         btnAgregar.attr("value","Agregar a Carrito");
-        btnAgregar.addClass("btnAgregarACarrito");
+        btnAgregar.attr("id","btnAgregarACarrito");
         btnAgregar.addClass('margen');
         
         var btnVerMas = $("<input>");
@@ -207,11 +207,21 @@ var Producto = {
         $("#precio").html(producto.precio);
         $("#descripcion").html(producto.descripcion);
         
-        for (i=1; i < producto.stock; i++) {
-            var option = $('<option>');
-            option.attr('value',i);
-            option.html(i);
-            $('#cantidad').append(option);
+        if(producto.stock > 0) {
+            for (i=1; i < producto.stock; i++) {
+                var option = $('<option>');
+                option.attr('value',i);
+                option.html(i);
+                $('#cantidad').append(option);
+                $('#msgStock').html('Con Stock');
+                $('#msgStock').addClass('disponibilidad-ok');
+            }
+        } else {
+            $('#cantidad').hide();
+            $('#btnAgregarACarrito').hide();
+            $('#msgStock').html('Sin Stock');
+            $('#msgStock').addClass('disponibilidad-out');
+            
         }
         
     },
@@ -258,6 +268,7 @@ var Producto = {
                         //var rta = JSON.parse(respuestaJson);
                         //if(rta == "exito") {
                             alert(respuestaJson);
+                            location.reload();
                         //}
                     },
                     error:function(objXMLHttpRequest){

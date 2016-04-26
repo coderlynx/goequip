@@ -10,7 +10,10 @@ switch ($metodo) {
     case 'get':
         if (!empty($_GET["calculate"])) {
            if (isset($_SESSION['carrito'])) {
-               echo json_encode($_SESSION['carrito']->calculateTotal());
+               $total['monto'] = $_SESSION['carrito']->calculateMontoTotal();
+               $total['cantidad'] = $_SESSION['carrito']->calculateCantidadTotal();
+               
+               echo json_encode($total);
             } 
         } else {
             if (!empty($_SESSION['carrito'])) {
@@ -27,7 +30,8 @@ switch ($metodo) {
 
 
 
-            $_SESSION['pedido']['total'] = $_SESSION['carrito']->calculateTotal();
+            $_SESSION['pedido']['total'] = $_SESSION['carrito']->calculateMontoTotal();
+            $_SESSION['pedido']['cantidad'] = $_SESSION['carrito']->calculateCantidadTotal();
             $_SESSION['pedido']['productos'] = $_SESSION['carrito']->showProductos();
 
             echo 'ok';
@@ -67,60 +71,6 @@ switch ($metodo) {
         echo 'Metodo no reconocible';
 
 }
-
-/*
-if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['show'])) {
-    
-    if (!empty($_SESSION['carrito'])) {
-       echo json_encode($_SESSION['carrito']->showProductos());
-    } 
-
-} else if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['calculate'])) {
-    
-    if (!empty($_SESSION['carrito'])) {
-       echo json_encode($_SESSION['carrito']->calculateTotal());
-    } 
-
-} else if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['A'])) {
-    
-    if(empty($_SESSION['carrito'])) {
-        $carrito = new Carrito();  
-        $_SESSION["carrito"] = $carrito; 
-    }
-
-
-    $prod = json_decode($_POST['producto']);
-
-    $producto = new Producto($prod->id, $prod->modelo, $prod->descripcion,$prod->talle, $prod->color, $prod->stock, $prod->precio);
-
-	//echo "Agregando dos productos...";  
-    $_SESSION["carrito"]->addProducto($producto);  
-    //$_SESSION["carrito"]->agregarProducto($prod2);  
-
-    echo json_encode($_SESSION["carrito"]->getProducto($prod->id)); 
-    
-} else if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['B'])) {
-    
-    $id = $_POST['id'];
- 
-    $_SESSION["carrito"]->removeProducto($id);  
-
-    echo json_encode($_SESSION["carrito"]->getProducto($id)); 
-    
-} else if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['pagar'])){
-    
-    if(!isset($_SESSION['nombre'])) die("Debes loguearte.");
-    if(!isset($_SESSION['carrito'])) die("No hay productos en el carrito");
-    
-    
-
-    $_SESSION['pedido']['total'] = $_SESSION['carrito']->calculateTotal();
-    $_SESSION['pedido']['cliente'] = 1;
-    $_SESSION['pedido']['productos'] = $_SESSION['carrito']->showProductos();
-    
-    echo 'ok';
-
-}*/
 
 
 ?>

@@ -8,6 +8,7 @@ require_once 'autoload.php';
 	private $nroPedido;
     private $idCliente;
 	private $total;
+    private $cantidad;
 	private $formaDePago;
 	private $formaDeEnvio;
 	private $estadoDePago;
@@ -15,11 +16,12 @@ require_once 'autoload.php';
     private $fecha;
     
 	
-	public function __construct($id=null, $nroPedido, $idCliente,$total, $formaDePago, $formaDeEnvio, $estadoDePago, $productos=null, $fecha=null) {
+	public function __construct($id=null, $nroPedido, $idCliente,$total,$cantidad, $formaDePago, $formaDeEnvio, $estadoDePago, $productos=null, $fecha=null) {
        $this->id = $id;
 	   $this->nroPedido = $nroPedido;
 	   $this->idCliente = $idCliente;
 	   $this->total = $total;
+	   $this->cantidad = $cantidad;
 	   $this->formaDePago = $formaDePago;
 	   $this->formaDeEnvio = $formaDeEnvio;
 	   $this->estadoDePago = $estadoDePago;
@@ -32,6 +34,7 @@ require_once 'autoload.php';
 		'nroPedido' => ['required'],
 		'idCliente' => ['required'],
 		'total' => ['required'],
+		'cantidad' => ['required'],
 		'formaDePago' => ['required'],
 		'formaDeEnvio' => ['required']
 	];
@@ -51,6 +54,7 @@ require_once 'autoload.php';
 			'nroPedido' => $this->nroPedido,
 			'idCliente' => $this->idCliente,
 			'total' => $this->total,
+			'cantidad' => $this->cantidad,
 			'formaDePago' => $this->formaDePago,
 			'formaDeEnvio' => $this->formaDeEnvio,
 			'estadoDePago' => $this->estadoDePago,
@@ -88,8 +92,8 @@ require_once 'autoload.php';
                  }
 				
                 //INSERTO EL PEDIDO
-				$query = "INSERT INTO pedidos (idCliente, nroPedido, total, formaDePago, formaDeEnvio, estadoDePago, fecha)
-				VALUES(:idCliente, :nroPedido, :total, :formaDePago, :formaDeEnvio, :estadoDePago, :fecha)";
+				$query = "INSERT INTO pedidos (idCliente, nroPedido, total, cantidad, formaDePago, formaDeEnvio, estadoDePago, fecha)
+				VALUES(:idCliente, :nroPedido, :total, :cantidad, :formaDePago, :formaDeEnvio, :estadoDePago, :fecha)";
 
 				$stmt = DBConnection::getStatement($query);
 															
@@ -118,7 +122,7 @@ require_once 'autoload.php';
                         throw new Exception("Error en el insertado del detalle del pedido");
                     }
                     
-                    Pedido::updateStock($prod);
+                    Producto::updateStock($prod);
                     
                 }
 
@@ -137,43 +141,7 @@ require_once 'autoload.php';
 
 	}
      
-    private static function updateStock($prod) {
-        //TRAIGO EL PRODUCTO PARA CONOCER SU STOCK
-        $query = "SELECT stock 
-                  FROM productos
-                  WHERE id = :id";
 
-        $stmt = DBConnection::getStatement($query);
-
-        $stmt->bindParam(':id', $prod->id,PDO::PARAM_INT );
-
-         if(!$stmt->execute()) {
-            throw new Exception("Error en buscar el producto del detalle del pedido");
-        }
-
-        while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
-            $stockViejo = $row["stock"];
-            $nuevoStock = $stockViejo - $prod->stock;
-            //die('stock viejo: ' . $stockViejo . '.cantidad pedida: ' . $prod->stock . '. nuevo stock: '. $nuevoStock);
-            if ($nuevoStock < 1) die("No se pudo crear el pedido por falta de stock");
-
-             //UPDATE DEL STOCK DEL PRODUCTO 
-            $query = "UPDATE productos 
-                      SET stock = :stock
-                      WHERE id = :id";
-
-            $stmt = DBConnection::getStatement($query);
-
-            $stmt->bindParam(':id', $prod->id,PDO::PARAM_INT );
-            $stmt->bindParam(':stock', $nuevoStock,PDO::PARAM_INT );
-
-            if(!$stmt->execute()) {
-                throw new Exception("Error en actualizar el stock del producto");
-            }
-
-        }
-        
-    }
 	
 
 	/**
@@ -188,6 +156,7 @@ require_once 'autoload.php';
 		 $stmt->bindParam(':idCliente', $pedido->idCliente,PDO::PARAM_INT);
 		 $stmt->bindParam(':nroPedido', $pedido->nroPedido,PDO::PARAM_INT);
 		 $stmt->bindParam(':total', $pedido->total,PDO::PARAM_STR);
+		 $stmt->bindParam(':cantidad', $pedido->cantidad,PDO::PARAM_INT);
 		 $stmt->bindParam(':formaDePago', $pedido->formaDePago,PDO::PARAM_INT);
 		 $stmt->bindParam(':formaDeEnvio', $pedido->formaDeEnvio,PDO::PARAM_INT);
          $stmt->bindParam(':estadoDePago', $pedido->estadoDePago,PDO::PARAM_STR);
@@ -236,7 +205,7 @@ require_once 'autoload.php';
     public static function getById($id){
 		try{
             
-            $query = "SELECT ped.id, ped.nroPedido, ped.total, ped.formaDePago, ped.formaDeEnvio, ped.estadoDePago,  ped.fecha, 
+            $query = "SELECT ped.id, ped.nroPedido, ped.total, ped.cantidad, ped.formaDePago, ped.formaDeEnvio, ped.estadoDePago,  ped.fecha, 
                      cli.nombre nombre, cli.apellido apellido,
                      detPed.cantidad, detPed.precio precioUnitario,
                      prod.modelo
@@ -263,10 +232,10 @@ require_once 'autoload.php';
                 if($idPedido != $row['id'] ) {
                     
                     $cliente = $row['apellido'] . ", " . $row['nombre'];
-                    $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['formaDePago'], $row['formaDeEnvio'], $row['estadoDePago'], null, $row['fecha']);               
+                    $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['cantidad'], $row['formaDePago'], $row['formaDeEnvio'], $row['estadoDePago'], null, $row['fecha']);               
                 }
-                
-                $producto = new Producto(null, $row['modelo'], '', '', '', $row['cantidad'], $row['precioUnitario']); $row['modelo'];
+                                        
+                $producto = new Producto(null, $row['modelo'], '', '', '','', $row['cantidad'], $row['precioUnitario']); 
                 
                 $productos[] = $producto;
                 
@@ -294,7 +263,7 @@ require_once 'autoload.php';
 	public static function getAll(){
 		try {
 			 
-			$query = "SELECT ped.id, ped.nroPedido, ped.total, ped.formaDePago, ped.formaDeEnvio, ped.estadoDePago,  ped.fecha, 
+			$query = "SELECT ped.id, ped.nroPedido, ped.total, ped.cantidad, ped.formaDePago, ped.formaDeEnvio, ped.estadoDePago,  ped.fecha, 
                      cli.nombre nombre, cli.apellido apellido
 					 FROM pedidos ped INNER JOIN clientes cli ON cli.id = ped.idCliente";
 											
@@ -334,23 +303,30 @@ require_once 'autoload.php';
      
     private static function armarPedido($row) {
         
-        if ($row['formaDePago'] == Constantes::$PAGO_TARJETA) {
-            $formaDePago = Constantes::$PAGO_TARJETA_DESCRIPCION;
+        if ($row['formaDePago'] == Constantes::PAGO_TARJETA) {
+            $formaDePago = Constantes::PAGO_TARJETA_DESCRIPCION;
         } else {
-             $formaDePago = Constantes::$PAGO_FACTURA_DESCRIPCION;
+             $formaDePago = Constantes::PAGO_FACTURA_DESCRIPCION;
         }
         
-        if ($row['formaDeEnvio'] == Constantes::$ENTREGA_SUCURSAL) {
-            $formaDeEnvio = Constantes::$ENTREGA_SUCURSAL_DESCRIPCION;
+        if ($row['formaDeEnvio'] == Constantes::ENTREGA_SUCURSAL) {
+            $formaDeEnvio = Constantes::ENTREGA_SUCURSAL_DESCRIPCION;
         } else {
-            $formaDeEnvio = Constantes::$ENTREGA_DOMICILIO_DESCRIPCION;
+            $formaDeEnvio = Constantes::ENTREGA_DOMICILIO_DESCRIPCION;
         }
         
         $cliente = $row['apellido'] . ", " . $row['nombre'];        
-        $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $formaDePago, $formaDeEnvio, $row['estadoDePago'], null, $row['fecha']);
+        $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['cantidad'], $formaDePago, $formaDeEnvio, $row['estadoDePago'], null, $row['fecha']);
         
         return $pedido;
         
+    }
+     
+    public static function validateStockDelPedido($productos) {
+         //INSERTO EL DETALLE DEL PEDIDO
+        foreach($productos as $prod) {
+            Producto::validateStock($prod);
+        }        
     }
 	
 
