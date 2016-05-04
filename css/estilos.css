@@ -119,6 +119,7 @@ ul.icon_list li a:hover{color: #e61654; border-color:#e61654; }
 	line-height:100px;
 	border: 1px solid #ccc;
 	display: inline-block;
+    cursor: pointer;
 }
 
 .color-negro{background:#000;}
@@ -126,9 +127,9 @@ ul.icon_list li a:hover{color: #e61654; border-color:#e61654; }
 .color-celeste{background:#98c1d2;}
 
 /*----Tallas----*/
-.talla{margin:10px 0px;}
-.talla a{color: #a7a7a7; margin: 0px 5px; padding: 5px;}
-.talla a:hover{color: #e61654;}
+.talla{margin:10px 0px; cursor: pointer;}
+.talla span{color: #a7a7a7; margin: 0px 5px; padding: 5px;}
+.talla span:hover{color: #e61654;}
 
 /*----Cantidad----*/
 .cantidad-select{padding:10px 0px;}

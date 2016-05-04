@@ -45,7 +45,7 @@ switch ($metodo) {
 
             $prod = json_decode($_POST['producto']);
 
-            $producto = new Producto($prod->id, $prod->modelo, $prod->descripcion, $prod->categoria, $prod->talle, $prod->color, $prod->stock, $prod->precio);
+            $producto = new Producto($prod->id, $prod->modelo, $prod->descripcion, $prod->categoria, Constantes::TALLE[ $prod->talle], Constantes::COLOR[$prod->color], $prod->stock, $prod->precio);
             $producto->fotos = $prod->foto;
 
             //echo "Agregando dos productos...";  

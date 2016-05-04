@@ -109,7 +109,7 @@ require_once 'autoload.php';
             
                 //INSERTO EL DETALLE DEL PEDIDO
                 foreach($pedido->productos as $prod) {
-                    $query = "INSERT INTO detallepedido (idPedido, idProducto,cantidad,precio) values (:idPedido, :idProducto, :cantidad, :precio)";
+                    $query = "INSERT INTO detallepedido (idPedido, idProducto,cantidad,precio,talle,color) values (:idPedido, :idProducto, :cantidad, :precio,:talle,:color)";
 
                     $stmt = DBConnection::getStatement($query);
 
@@ -117,6 +117,8 @@ require_once 'autoload.php';
                     $stmt->bindParam(':idProducto', $prod->id,PDO::PARAM_INT );
                     $stmt->bindParam(':cantidad', $prod->stock,PDO::PARAM_INT );
                     $stmt->bindParam(':precio', $prod->precio,PDO::PARAM_STR );
+                    $stmt->bindParam(':talle', $prod->precio,PDO::PARAM_INT );
+                    $stmt->bindParam(':color', $prod->precio,PDO::PARAM_INT );
 
                     if(!$stmt->execute()) {
                         throw new Exception("Error en el insertado del detalle del pedido");
@@ -207,7 +209,7 @@ require_once 'autoload.php';
             
             $query = "SELECT ped.id, ped.nroPedido, ped.total, ped.cantidad, ped.formaDePago, ped.formaDeEnvio, ped.estadoDePago,  ped.fecha, 
                      cli.nombre nombre, cli.apellido apellido,
-                     detPed.cantidad, detPed.precio precioUnitario,
+                     detPed.cantidad, detPed.precio precioUnitario, detPed.talle, detPed.color,
                      prod.modelo
 					 FROM pedidos ped 
                      INNER JOIN clientes cli ON cli.id = ped.idCliente
@@ -235,7 +237,7 @@ require_once 'autoload.php';
                     $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['cantidad'], $row['formaDePago'], $row['formaDeEnvio'], $row['estadoDePago'], null, $row['fecha']);               
                 }
                                         
-                $producto = new Producto(null, $row['modelo'], '', '', '','', $row['cantidad'], $row['precioUnitario']); 
+                $producto = new Producto(null, $row['modelo'], '', '', Constantes::TALLE[$row['talle']], Constantes::COLOR[$row['color']], $row['cantidad'], $row['precioUnitario']); 
                 
                 $productos[] = $producto;
                 
@@ -263,7 +265,7 @@ require_once 'autoload.php';
 	public static function getAll(){
 		try {
 			 
-			$query = "SELECT ped.id, ped.nroPedido, ped.total, ped.cantidad, ped.formaDePago, ped.formaDeEnvio, ped.estadoDePago,  ped.fecha, 
+			$query = "SELECT ped.id, ped.nroPedido, ped.total, ped.cantidad, ped.formaDePago, ped.formaDeEnvio, ped.estadoDePago,  ped.fecha,
                      cli.nombre nombre, cli.apellido apellido
 					 FROM pedidos ped INNER JOIN clientes cli ON cli.id = ped.idCliente";
 											

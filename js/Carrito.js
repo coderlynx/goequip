@@ -39,8 +39,8 @@ var Carrito = {
             producto.stock = 1;//default 1 cantidad
             if($(this).parent().find("#cantidad option:selected").val())
                 producto.stock = $(this).parent().find("#cantidad option:selected").val();//La cantidad a agregar al carrito != al stock del producto en general
-            producto.talle = 1;// $(this).parent().find(".talla").html();
-            producto.color = 1;// $(this).parent().find(".colores").html();
+            producto.talle = $(this).parent().find("#talle").val();
+            producto.color = $(this).parent().find("#color").val();
             
             _this.postAgregar(producto);
 
@@ -52,10 +52,11 @@ var Carrito = {
         
         if(producto.id == '') return;
         
-        /*if(contenedor.find("#"+producto.id)[0]) {
-            contenedor.find("#"+producto.id).find(".stock").html(producto.stock);
+        //para actualizar la cantidad en el detalle del carrito
+        if(contenedor.find("#"+producto.id)[0]) {
+            contenedor.find("#"+producto.id).find(".cantidad").html(producto.stock);
             return false;
-        }*/
+        }
                     
         var article = $("<article>");
         article.attr('id',producto.id);
@@ -96,9 +97,9 @@ var Carrito = {
         
         var p_cantidad = $('<p>');       
         var cantidad = $("<span>");
-        cantidad.addClass("stock");
+        cantidad.addClass("cantidad");
         cantidad.html(producto.stock);
-        p_cantidad.append("<span class='detalle-items'>Cantidad:</span> " + cantidad.html());
+        p_cantidad.append("<span class='detalle-items'>Cantidad:</span><span class='cantidad'>" + cantidad.html() + "</span>");
         
         var btnSumarACarrito = $("<input>");
         var idBtnSumar = "btnSumarACarrito"+producto.id;
@@ -158,7 +159,7 @@ var Carrito = {
         
         $("#"+idBtnQuitar).click(function() {
             var producto = {};
-            producto.id = $(this).parent()[0].id;
+            producto.id = $(this).parent().parent()[0].id;
             _this.postQuitar(producto);
             
         });
@@ -178,7 +179,8 @@ var Carrito = {
 			  success:  function(respuestaJson){  
                  var rta = JSON.parse(respuestaJson);
                     if(rta)	{
-                        //_this.dibujarProductoEnCarrito($('#contenedorCarro'), rta); 
+                        _this.dibujarProductoEnCarrito($('#contenedorDetalleCarro'), rta);
+                        
                         _this.getTotal();
                         alert("Producto agregado");
                     }
@@ -202,9 +204,9 @@ var Carrito = {
 			  success:  function(respuestaJson){  
                  var rta = JSON.parse(respuestaJson);
                     if(rta)	{
-                        _this.dibujarProductoEnCarrito($('#contenedorCarro'), rta);                       
+                        _this.dibujarProductoEnCarrito($('#contenedorDetalleCarro'), rta);                       
                     } else {
-                        $('#contenedorCarro').find("#"+producto.id).remove();
+                        $('#contenedorDetalleCarro').find("#"+producto.id).remove();
                     }
                     _this.getTotal();
             
