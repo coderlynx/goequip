@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Outlet Gym</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="css/normalize.css" />
+	<link rel="stylesheet" href="css/normalize.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/lib/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+	<!-- Google Font -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- Estilos -->
+	<link rel="stylesheet" href="css/estilos.css">
+
+</head>
+<body>
+	<!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <main>
+    <div class="contenedor">
+    	<header>
+    		<div class="container-fluid">
+    			<div class="row">
+    				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 logo">
+    					<h1><a href="index.html" title="Tienda"><img src="img/logo.jpg" alt="Tienda"></a></h1>
+    				</div>
+    				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    					<div class="user">
+    						<!-- Single button -->
+							<div class="btn-group">
+							  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <i class="fa fa-user" aria-hidden="true"></i> <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu pull-right">
+							    <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i> Iniciar sesión</a></li>
+							    <li role="separator" class="divider"></li>
+							    <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> Registrarse</a></li>
+							    <li role="separator" class="divider"></li>
+							    <li><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i> Mis datos</a></li>
+							    
+							    <li role="separator" class="divider"></li>
+							    <li><a href="AgregarProducto.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Crear producto</a></li>
+							    <li><a href="AgregarCliente.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Crear Cliente</a></li>
+                                <li><a href="Pedidos.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Pedidos</a></li>
+							    <li><a href="Graficos.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Estadisticas</a></li>
+							    
+							    <li role="separator" class="divider"></li>
+							    <li><a id="btnCerrarSesion" href="#"><i class="fa fa-sign-out" aria-hidden="true"></i> Salir</a></li>
+							  </ul>
+							</div>
+    						<!-- <p><span class="hide-767">Bienvenido a tu Tienda de Fitness on-line</span></p><a href=""><i class="fa fa-user" aria-hidden="true"></i> <i class="fa fa-angle-down" aria-hidden="true"></i></a> -->
+    					</div>
+    					<div class="total-header">
+    						<a href="">Total $ <span class="totalPedido">0</span> <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="totalCantidad" class="badge">0</span></a>
+    						 <input class="btn btn-default btn-custom" data-toggle="tooltip" title="Debes estar logueado para poder comprar" type="button" value="Comprar" id="btnComprar"  />
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+    	</header>
+
+	    <nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		    </div>
+
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		         <li><a href="categoria.html?id=1">Waterrower</a></li>
+		        <li><a href="categoria.html?id=2">Kangoo Jumps</a></li>
+		        <li><a href="categoria.html?id=3">Equipos Cardio</a></li>
+		        <li><a href="categoria.html?id=4">Accesorios</a></li>
+		        <li><a href="categoria.html?id=5">Indumentaria</a></li>
+		      </ul>
+		      <form class="navbar-form navbar-right" role="search">
+		        <div class="form-group">
+		          <input type="text" class="form-control busqueda-input" placeholder="Búsqueda">
+		        </div>
+		        <button type="submit" class="btn btn-default busqueda-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+		      </form>
+		    </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+		</nav>
+
+	<!-- /.CATEGORIA -->
+	<div class="contenedor carrito">	
+		<div class="container-fluid">
+		<div class="row text-center">
+			<h1><i class="fa fa-shopping-cart" aria-hidden="true"></i> Tu carrito</h1>
+		</div>
+		<section class="row">
+			<div id="contenedorDetalleCarro" class="col-lg-5 col-md-5 col-sm-6 col-xs-12 col-lg-offset-1 col-md-offset-1 detalle-compra">
+				<h2>Productos seleccionados (<span id="cantidadProductosSeleccionados"></span>)</h2>
+<!--
+				<article>
+					<div class="info-detalle-compra"><img src="img/productos/a1home.jpg" alt=" "></div>
+					<div class="info-detalle-compra">
+						<h3>Waterrower A1 Home <span class="detalle-items">$31.900</span></h3>
+						<p><span class="detalle-items">Color:</span> Negro</p>
+						<p><span class="detalle-items">Talla:</span> S</p>
+						<p><span class="detalle-items">Cantidad:</span> 1</p>
+						<a href="">Editar</a>
+						<a href="">Eliminar</a>
+					</div>
+				</article>
+				<article>
+					<div class="info-detalle-compra"><img src="img/productos/a1home.jpg" alt=" "></div>
+					<div class="info-detalle-compra">
+						<h3>Waterrower A1 Home <span class="detalle-items">$31.900</span></h3>
+						<p><span class="detalle-items">Color:</span> Negro</p>
+						<p><span class="detalle-items">Talla:</span> S</p>
+						<p><span class="detalle-items">Cantidad:</span> 1</p>
+						<a href="">Editar</a>
+						<a href="">Eliminar</a>
+					</div>
+				</article>
+				<article>
+					<div class="info-detalle-compra"><img src="img/productos/a1home.jpg" alt=" "></div>
+					<div class="info-detalle-compra">
+						<h3>Waterrower A1 Home <span class="detalle-items">$31.900</span></h3>
+						<p><span class="detalle-items">Color:</span> Negro</p>
+						<p><span class="detalle-items">Talla:</span> S</p>
+						<p><span class="detalle-items">Cantidad:</span> 1</p>
+						<a href="">Editar</a>
+						<a href="">Eliminar</a>
+					</div>
+				</article>
+-->
+			</div>
+
+			<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 detalle-carrito">
+				<article class="detalle-carrito-resumen">
+					<h2><i class="fa fa-truck" aria-hidden="true"></i> Envío:</h2>
+					<div class="row">
+						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Retiro personalmente</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>sin costo <input type="radio" name="optradio"></label></div>
+						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Capital Federal</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
+						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Gran Buenos Aires</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
+						<div class="col-lg-9 col-sm-9 col-xs-9"><p>NOA</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
+						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Chaco</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
+						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Mesopotamia</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
+						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Cuyo</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
+						
+					</div>
+				</article>
+			</div>
+			<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 detalle-carrito">
+				<article class="detalle-carrito-resumen">
+					<h2><i class="fa fa-shopping-cart" aria-hidden="true"></i> Resúmen de tu compra:</h2>
+					<div class="row">
+					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Cantidad:</span></p></div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p><span class="totalCantidad">0</span</p></div>
+
+					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total:</span></p></div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p>$ <span class="totalPedido">0</span></p></div>
+
+					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Envío:</span></p></div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ 200</p></div>
+
+					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total:</span></p></div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p class="precio"> $ 38.100</p></div>
+					</div>
+					<div class="row text-center div-comprar">
+						<div><a class="btn btn-default btn-comprar" href="#" role="button"><i class="fa fa-money" aria-hidden="true"></i> Pagar con <span class="detalle-items">Mercado Pago</span></a></div>
+						<div><a class="btn btn-default btn-comprar" href="#" role="button"><i class="fa fa-paypal" aria-hidden="true"></i> Pagar con <span class="detalle-items">Paypal</span></a></div>
+					</div>
+				</article>
+			</div>
+		</section>
+		</div>
+	</div>
+
+
+	<!-- /.DESTACADOS -->	
+	<section>
+		<div class="container-fluid destacados">
+			<div class="row">
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 col-md-offset-1">
+					<article class="destacados-articulo">
+						<img src="img/titulos.gif" alt=" ">
+						<h2>Waterrower</h2>
+						<h3>Producto destacado</h3>
+						<div class="foto-destacado"><a href=""><img src="img/destacados/waterrower-home.jpg" alt="Waterrower" class="img-responsive"></a></div>
+						<p>Remo A1 Home</p>
+						<a class="btn btn-default btn-custom" href="#" role="button">Ver producto</a>
+					</article>	
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+					<article class="destacados-articulo">
+						<img src="img/titulos.gif" alt=" ">
+						<h2>Kangoo Jumps</h2>
+						<h3>Producto nuevo</h3>
+						<div class="foto-destacado"><a href=""><img src="img/destacados/botas.jpg" alt="Kangoo Jumps" class="img-responsive"></a></div>
+						<p>Botas KJ-XR3</p>
+						<a class="btn btn-default btn-custom" href="#" role="button">Ver producto</a>
+					</article>	
+				</div>
+				<div class="clearfix visible-xs"></div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+					<article class="destacados-articulo">
+						<img src="img/titulos.gif" alt=" ">
+						<h2>Equipos Cardio</h2>
+						<h3>Promo</h3>
+						<div class="foto-destacado"><a href=""><img src="img/destacados/waterrower-studio.jpg" alt="Waterrower" class="img-responsive"></a></div>
+						<p>Remo A1 Studio</p>
+						<a class="btn btn-default btn-custom" href="#" role="button">Ver producto</a>
+					</article>	
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+					<article class="destacados-articulo">
+						<img src="img/titulos.gif" alt=" ">
+						<h2>Accesorios</h2>
+						<h3>Producto destacado</h3>
+						<div class="foto-destacado"><a href=""><img src="img/destacados/bolso.jpg" alt="Accesorios" class="img-responsive"></a></div>
+						<p>Bolso KJBAG9</p>
+						<a class="btn btn-default btn-custom" href="#" role="button">Ver producto</a>
+					</article>	
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+					<article class="destacados-articulo">
+						<img src="img/titulos.gif" alt=" ">
+						<h2>Indumentaria</h2>
+						<h3>Producto destacado</h3>
+						<div class="foto-destacado"><a href=""><img src="img/destacados/calzas.jpg" alt="Indumentaria" class="img-responsive"></a></div>
+						<p>Calzas deportivas mujes</p>
+						<a class="btn btn-default btn-custom" href="#" role="button">Ver producto</a>
+					</article>	
+				</div>
+			</div>
+		</div>
+	</section><!-- /.Fin destacados -->
+    </div><!-- /.contenedor global -->
+    
+	<footer class="pie">
+		<div class="contenedor">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+						<ul>
+							<li><a href="">Aviso legal</a></li>
+							<li><a href="">Condiciones generales</a></li>
+							<li><a href="">Política de cookies</a></li>
+						</ul>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+						<ul>
+							<li><a href="">Contacto</a></li>
+							<li><p>Atención al cliente: 4747-4747</p></li>
+							<li><a href="mailto:info@tiendafit.com.ar"><span class="vinculo-custom">info@tiendafit.com.ar</span></a></li>
+						</ul>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+						<div class="social">
+                        <img src="img/titulos.gif" alt=" ">
+                        <h2>Seguinos:</h2>
+                        <ul class="icon_list">
+                            <li><a href="#"target="_blank"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"target="_blank"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	
+	<script src="js/lib/jquery.js"></script>
+	<!--<script src="http://code.jquery.com/jquery-latest.js"></script><!-->
+	<script src="js/lib/bootstrap.min.js"></script>
+	<script src="js/Producto.js"></script>
+	<script src="js/Carrito.js"></script>
+	<script src="js/Autenticacion.js"></script>
+	<script>
+		$( document ).ready(function() {
+
+            Carrito.init();
+            Autenticacion.init();
+            
+            //temporal en este lugar
+            $("#btnComprar").click(function() {
+                 $.ajax({
+                      async:false,    
+                      cache:false,   
+                      type: 'POST', 
+                      data: {pagar:true },
+                      url: "php/controllerCarrito.php",
+                      success:  function(respuestaJson){
+                        if (respuestaJson == 'ok') {
+                            window.location.href = 'ConfirmacionDatos.php';
+                            return;
+                            }
+                            alert(respuestaJson);
+                      },
+                      error:function(objXMLHttpRequest){
+                           console.log('Error al ejecutar la petición por:' + e);
+                      }
+                    });
+            });//fin btnComprar
+
+		});
+  
+        function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+        
+	
+	</script>	
+</body>
+</html>

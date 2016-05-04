@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Outlet Gym</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="css/normalize.css" />
+	<link rel="stylesheet" href="css/normalize.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/lib/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+	<!-- Google Font -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- Estilos -->
+	<link rel="stylesheet" href="css/estilos.css">
+
+</head>
+<body>
+	<!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <main>
+    <div class="contenedor">
+    	<header>
+    		<div class="container-fluid">
+    			<div class="row">
+    				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 logo">
+    					<h1><a href="index.html" title="Tienda"><img src="img/logo.jpg" alt="Tienda"></a></h1>
+    				</div>
+    				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    					<div class="user">
+    						<!-- Single button -->
+							<div class="btn-group">
+							  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <i class="fa fa-user" aria-hidden="true"></i> <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu pull-right">
+							    <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i> Iniciar sesión</a></li>
+							    <li role="separator" class="divider"></li>
+							    <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> Registrarse</a></li>
+							    <li role="separator" class="divider"></li>
+							    <li><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i> Mis datos</a></li>
+							    
+                                <li role="separator" class="divider"></li>
+							    <li><a href="AgregarProducto.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Crear producto</a></li>
+							    <li><a href="AgregarCliente.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Crear Cliente</a></li>
+                                <li><a href="Pedidos.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Pedidos</a></li>
+							    <li><a href="Graficos.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Estadisticas</a></li>
+							    
+							    <li role="separator" class="divider"></li>
+							    <li><a id="btnCerrarSesion" href="#"><i class="fa fa-sign-out" aria-hidden="true"></i> Salir</a></li>
+							  </ul>
+							</div>
+    						<!-- <p><span class="hide-767">Bienvenido a tu Tienda de Fitness on-line</span></p><a href=""><i class="fa fa-user" aria-hidden="true"></i> <i class="fa fa-angle-down" aria-hidden="true"></i></a> -->
+    					</div>
+    					<div id="contenedorCarro" class="total-header">
+    						<a href="">Total $ <span class="totalPedido">0</span> <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="totalCantidad" class="badge">0</span></a>
+    						<a class="btn btn-default btn-custom" href="carrito.html">Comprar</a> 
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+    	</header>
+
+	    <nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		    </div>
+
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li><a href="categoria.html?id=1">Waterrower</a></li>
+		        <li><a href="categoria.html?id=2">Kangoo Jumps</a></li>
+		        <li><a href="categoria.html?id=3">Equipos Cardio</a></li>
+		        <li><a href="categoria.html?id=4">Accesorios</a></li>
+		        <li><a href="categoria.html?id=5">Indumentaria</a></li>
+		      </ul>
+		      <form class="navbar-form navbar-right" role="search">
+		        <div class="form-group">
+		          <input type="text" class="form-control busqueda-input" placeholder="Búsqueda">
+		        </div>
+		        <button type="submit" class="btn btn-default busqueda-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+		      </form>
+		    </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+		</nav>
+
+	<!-- /.PRODUCTO -->
+	<div class="contenedor contenedor-productos">	
+		<section class="row  producto-rec">
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+				<div class="menu-lateral">
+					<h2>Waterrower</h2>
+					<ul id="listaProductos">
+						<li class="activo"><a href="">A1 Home</a></li>
+						<li><a href="">A1 Studio</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+					<div id="fotoPrincipal" class="vista-grande">
+						<img id="fotoPrincipal" src="img/productos/a1home.jpg" alt="A1 Home">
+					</div>
+					<div class="preview">
+<!--
+						<a href=""><img src="img/productos/a1home.jpg" alt="A1 Home"></a>
+						<a href=""><img src="img/productos/a1home.jpg" alt="A1 Home"></a>
+						<a href=""><img src="img/productos/a1home.jpg" alt="A1 Home"></a>
+						<a href=""><img src="img/productos/a1home.jpg" alt="A1 Home"></a>
+-->
+					</div>
+					<div class="video-producto">
+						<iframe width="560" height="315" src="https://www.youtube.com/embed/mXBWTtd4pgs?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+					</div>
+				</div>
+
+				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 detalle-producto">
+					<div class="divProducto">
+						<h3 id="modelo">Waterrower A1 Home</h3>
+						<p id="precio" class="precio">$ 31.900</p>
+						<p id="descripcion">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. </p>
+<!--						<p>Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. </p><p>Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. </p>-->
+
+						<div class="colores">
+							<h4>Colores:</h4>
+							<a href=""><div class="circle color-blanco"></div></a>
+							<a href=""><div class="circle color-celeste"></div></a>
+							<a href=""><div class="circle color-negro"></div></a>
+						</div>
+
+						<div class="talla">
+							<h4>Talla:</h4>
+							<a href="">L</a>
+							<a href="">M</a>
+							<a href="">S</a>
+							<a href="">XS</a>
+						</div>
+
+						<div class="cantidad-select">
+							<h4>Cantidad:</h4>
+							<div class="btn-group">
+                              <select id="cantidad" class="btn btn-default dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                              </select>
+<!--
+							  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    1 <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu pull-right">
+							    <li><a href="">2</a></li>
+							    <li><a href="">3</a></li>
+							    <li><a href="">4</a></li>
+							    <li><a href="">5</a></li>
+							    <li><a href="">6</a></li>
+							    <li><a href="">7</a></li>
+							    <li><a href="">8</a></li>
+							    <li><a href="">9</a></li>
+							    <li><a href="">10</a></li>
+							    <li><a href="">11</a></li>
+							    <li><a href="">12</a></li>
+							    <li><a href="">13</a></li>
+							    <li><a href="">14</a></li>
+							    <li><a href="">15</a></li>
+							    <li><a href="">16</a></li>
+							    <li><a href="">17</a></li>
+							    <li><a href="">18</a></li>
+							    <li><a href="">19</a></li>
+							    <li><a href="">20</a></li>
+							  </ul>
+-->
+							</div>
+						</div>
+
+						<div class="disponibilidad">
+							<h4>Disponibilidad:</h4>
+							<p id="msgStock"></p>
+<!--
+							<p class="disponibilidad-ok">En stock</p>
+							<p class="disponibilidad-out">Sin stock</p>
+-->
+						</div>
+
+                        <input type="button" id="btnAgregarACarrito" class="btn btn-default btn-custom btn-agregar" value="Agregar al carrito"/>
+<!--						<a class="btn btn-default btn-custom btn-agregar" href="#" role="button">Agregar al carrito</a>-->
+						
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+	<!-- /.DESTACADOS -->	
+	<section>
+		<div class="container-fluid destacados">
+			<div class="row">
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 col-md-offset-1">
+					<article class="destacados-articulo">
+						<img src="img/titulos.gif" alt=" ">
+						<h2>Waterrower</h2>
+						<h3>Producto destacado</h3>
+						<div class="foto-destacado"><a href=""><img src="img/destacados/waterrower-home.jpg" alt="Waterrower" class="img-responsive"></a></div>
+						<p>Remo A1 Home</p>
+						<a class="btn btn-default btn-custom" href="#" role="button">Ver producto</a>
+					</article>	
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+					<article class="destacados-articulo">
+						<img src="img/titulos.gif" alt=" ">
+						<h2>Kangoo Jumps</h2>
+						<h3>Producto nuevo</h3>
+						<div class="foto-destacado"><a href=""><img src="img/destacados/botas.jpg" alt="Kangoo Jumps" class="img-responsive"></a></div>
+						<p>Botas KJ-XR3</p>
+						<a class="btn btn-default btn-custom" href="#" role="button">Ver producto</a>
+					</article>	
+				</div>
+				<div class="clearfix visible-xs"></div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+					<article class="destacados-articulo">
+						<img src="img/titulos.gif" alt=" ">
+						<h2>Equipos Cardio</h2>
+						<h3>Promo</h3>
+						<div class="foto-destacado"><a href=""><img src="img/destacados/waterrower-studio.jpg" alt="Waterrower" class="img-responsive"></a></div>
+						<p>Remo A1 Studio</p>
+						<a class="btn btn-default btn-custom" href="#" role="button">Ver producto</a>
+					</article>	
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+					<article class="destacados-articulo">
+						<img src="img/titulos.gif" alt=" ">
+						<h2>Accesorios</h2>
+						<h3>Producto destacado</h3>
+						<div class="foto-destacado"><a href=""><img src="img/destacados/bolso.jpg" alt="Accesorios" class="img-responsive"></a></div>
+						<p>Bolso KJBAG9</p>
+						<a class="btn btn-default btn-custom" href="#" role="button">Ver producto</a>
+					</article>	
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+					<article class="destacados-articulo">
+						<img src="img/titulos.gif" alt=" ">
+						<h2>Indumentaria</h2>
+						<h3>Producto destacado</h3>
+						<div class="foto-destacado"><a href=""><img src="img/destacados/calzas.jpg" alt="Indumentaria" class="img-responsive"></a></div>
+						<p>Calzas deportivas mujes</p>
+						<a class="btn btn-default btn-custom" href="#" role="button">Ver producto</a>
+					</article>	
+				</div>
+			</div>
+		</div>
+	</section><!-- /.Fin destacados -->
+    </div><!-- /.contenedor global -->
+    
+	<footer class="pie">
+		<div class="contenedor">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+						<ul>
+							<li><a href="">Aviso legal</a></li>
+							<li><a href="">Condiciones generales</a></li>
+							<li><a href="">Política de cookies</a></li>
+						</ul>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+						<ul>
+							<li><a href="">Contacto</a></li>
+							<li><p>Atención al cliente: 4747-4747</p></li>
+							<li><a href="mailto:info@tiendafit.com.ar"><span class="vinculo-custom">info@tiendafit.com.ar</span></a></li>
+						</ul>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+						<div class="social">
+                        <img src="img/titulos.gif" alt=" ">
+                        <h2>Seguinos:</h2>
+                        <ul class="icon_list">
+                            <li><a href="#"target="_blank"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"target="_blank"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	
+	<script src="js/lib/jquery.js"></script>
+	<!--<script src="http://code.jquery.com/jquery-latest.js"></script><!-->
+	<script src="js/lib/bootstrap.min.js"></script>
+	<script src="js/Producto.js"></script>
+	<script src="js/Carrito.js"></script>
+	<script src="js/Autenticacion.js"></script>
+	<script>
+		$( document ).ready(function() {
+
+            Carrito.init();
+            Autenticacion.init();
+            
+            var id = getUrlParameter('id');
+            var idCategoria = getUrlParameter('categoria');
+            
+            if(id) {
+                var prod = Producto.getById(id);
+                Producto.completarDetalle(prod);
+                Producto.getByCategoria(idCategoria, 'PrecioMenor');
+               
+            }
+            
+        });
+
+  
+        function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+        
+	
+	</script>	
+</body>
+</html>

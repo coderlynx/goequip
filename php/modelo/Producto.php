@@ -12,6 +12,7 @@ require_once 'autoload.php';
 	private $color;
 	private $stock;
 	private $precio;
+    private $fotos;
     
 	
 	public function __construct($id=null, $modelo, $descripcion, $categoria, $talle=null, $color, $stock, $precio) {
@@ -53,7 +54,8 @@ require_once 'autoload.php';
 			'talle' => $this->talle,
 			'color' => $this->color,
 			'stock' => $this->stock,
-			'precio' => $this->precio
+			'precio' => $this->precio,
+            'fotos' => $this->fotos
 		];
 		
 	}
@@ -283,7 +285,11 @@ require_once 'autoload.php';
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
 
+                $fotos = self::getFotos($row['id']);
+                
                 $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['categoria'], $row['talle'], $row['color'], $row['stock'], $row['precio']);
+                
+                $producto->fotos = $fotos;
 
                 $productos[] = $producto;
 
@@ -332,6 +338,44 @@ require_once 'autoload.php';
 			}
 		
 			 return $productos;
+
+
+	   } catch(PDOException $e)
+			{
+			  echo 'Error: ' . $e->getMessage();
+			}
+    }
+     
+      /**
+	 * Retorna un array de todos los productos. De tirar un error arroja una excepcion
+	 *
+	 * @return  Array el array de productos
+	 */
+	private static function getFotos($idProducto){
+		try {
+			 
+			$query = "SELECT *
+					 FROM imagenes
+                     WHERE idProducto = :valor
+                     ORDER BY orden";
+											
+		   $stmt = DBConnection::getStatement($query);
+            
+            $stmt->bindParam(':valor', $idProducto, PDO::PARAM_STR);
+		   
+
+		   if(!$stmt->execute()) {
+				throw new Exception('Error al traer las fotos');
+			}
+		   	   
+			$rutasFotos = [];
+			
+			
+			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+                $rutasFotos[] = $row['ruta'];
+			}
+		
+			 return $rutasFotos;
 
 
 	   } catch(PDOException $e)
@@ -477,6 +521,9 @@ require_once 'autoload.php';
 		$this->stock = $valor;
     }
 	
+     public function setFotos($valor) {
+		$this->fotos = $valor;
+    }
 	
  }
 	

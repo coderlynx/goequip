@@ -13,8 +13,10 @@ var Carrito = {
 					var rta = JSON.parse(productos);
 					//console.log( "Data Loaded: " + rta );
 					var items = [];
+                
+                    $("#cantidadProductosSeleccionados").html(rta.length);
 					for (i=0; i < rta.length; i++) {
-						_this.dibujarProductoEnCarrito($('#contenedorCarro'), rta[i]);
+						_this.dibujarProductoEnCarrito($('#contenedorDetalleCarro'), rta[i]);
 					}
                     _this.getTotal();
                     //_this.bindearBotones();
@@ -28,16 +30,17 @@ var Carrito = {
             var producto = {};
             
             producto.id = $(this).parent()[0].id;
-            producto.modelo = $(this).parent().find(".modelo").html();
-            producto.descripcion = $(this).parent().find(".descripcion").html();
+            producto.modelo = $(this).parent().find("#modelo").html();
+            producto.descripcion = $(this).parent().find("#descripcion").html();
             producto.categoria = 'categoria';
-            producto.precio = $(this).parent().find(".precio").html();
+            producto.precio = $(this).parent().find("#precio").html();
+            producto.foto = $("#fotoPrincipal").attr('src');
             
             producto.stock = 1;//default 1 cantidad
             if($(this).parent().find("#cantidad option:selected").val())
                 producto.stock = $(this).parent().find("#cantidad option:selected").val();//La cantidad a agregar al carrito != al stock del producto en general
-            producto.talle = $(this).parent().find(".talle").html();
-            producto.color = $(this).parent().find(".color").html();
+            producto.talle = 1;// $(this).parent().find(".talla").html();
+            producto.color = 1;// $(this).parent().find(".colores").html();
             
             _this.postAgregar(producto);
 
@@ -49,29 +52,53 @@ var Carrito = {
         
         if(producto.id == '') return;
         
-        if(contenedor.find("#"+producto.id)[0]) {
+        /*if(contenedor.find("#"+producto.id)[0]) {
             contenedor.find("#"+producto.id).find(".stock").html(producto.stock);
             return false;
-        }
+        }*/
+                    
+        var article = $("<article>");
+        article.attr('id',producto.id);
+        
+        var div_imagen = $('<div>');
+			div_imagen.addClass('info-detalle-compra');         
+        
+        var img = $('<img>');
+			img.attr('src',producto.fotos);  
+        
         
         var div_item = $('<div>');
-			div_item.attr('id',producto.id);
-			div_item.addClass('margen');
+			
+			div_item.addClass('info-detalle-compra');
         
-        var modelo = $("<span>");
+        var modelo = $("<h3>");
         modelo.addClass("modelo");
         modelo.html(producto.modelo);
-        modelo.addClass('margen');
-        
+           
         var precio = $("<span>");
+        precio.addClass("detalle-items");
         precio.addClass("precio");
-        precio.html(producto.precio);
-        precio.addClass('margen');
+        precio.html(' $ ' + producto.precio);
+
+        modelo.append(precio);
         
-        var stock = $("<span>");
-        stock.addClass("stock");
-        stock.html(producto.stock);
-        stock.addClass('margen');
+        var p_color = $('<p>');
+        var color = $("<span>");
+        color.addClass("color");
+        color.html(producto.color);
+        p_color.append("<span class='detalle-items'>Color:</span> " + color.html());
+        
+        var p_talla = $('<p>');
+        var talla = $("<span>");
+        talla.addClass("talla");
+        talla.html(producto.talle);
+        p_talla.append("<span class='detalle-items'>Talla:</span> " + talla.html());
+        
+        var p_cantidad = $('<p>');       
+        var cantidad = $("<span>");
+        cantidad.addClass("stock");
+        cantidad.html(producto.stock);
+        p_cantidad.append("<span class='detalle-items'>Cantidad:</span> " + cantidad.html());
         
         var btnSumarACarrito = $("<input>");
         var idBtnSumar = "btnSumarACarrito"+producto.id;
@@ -79,7 +106,7 @@ var Carrito = {
         btnSumarACarrito.attr("id",idBtnSumar);
         btnSumarACarrito.attr("value","Agregar");
         btnSumarACarrito.addClass("btnSumarACarrito");
-        btnSumarACarrito.addClass('margen');
+        btnSumarACarrito.addClass('btn btn-default btn-custom');
         
         var btnQuitarDeCarrito = $("<input>");
         var idBtnQuitar = "btnQuitarDeCarrito"+producto.id;
@@ -87,16 +114,22 @@ var Carrito = {
         btnQuitarDeCarrito.attr("id",idBtnQuitar);
         btnQuitarDeCarrito.attr("value","Quitar");
         btnQuitarDeCarrito.addClass("btnQuitarDeCarrito");
-        btnQuitarDeCarrito.addClass('margen');
+        btnQuitarDeCarrito.addClass('btn btn-default btn-custom');
               
         
+        div_imagen.append(img);
+       
         div_item.append(modelo);
-        div_item.append(precio);
-        div_item.append(stock);
+        div_item.append(p_color);
+        div_item.append(p_talla);
+        div_item.append(p_cantidad);
         div_item.append(btnSumarACarrito);
         div_item.append(btnQuitarDeCarrito);
         
-        contenedor.append(div_item);
+        article.append(div_imagen);
+        article.append(div_item);
+        
+        contenedor.append(article);
         
         _this.bindearBotones(idBtnSumar,idBtnQuitar);
         
@@ -109,7 +142,7 @@ var Carrito = {
         
         $("#"+idBtnSumar).click(function() {
             var producto = {};
-            producto.id = $(this).parent()[0].id;
+            producto.id = $(this).parent().parent()[0].id;
             producto.modelo = "";
             producto.descripcion = "";
             producto.categoria = "";
@@ -117,6 +150,7 @@ var Carrito = {
             producto.stock = "";
             producto.talle = "";
             producto.color = "";
+            producto.foto = "";
             
             _this.postAgregar(producto);
             
@@ -144,9 +178,11 @@ var Carrito = {
 			  success:  function(respuestaJson){  
                  var rta = JSON.parse(respuestaJson);
                     if(rta)	{
-                        _this.dibujarProductoEnCarrito($('#contenedorCarro'), rta); 
+                        //_this.dibujarProductoEnCarrito($('#contenedorCarro'), rta); 
                         _this.getTotal();
+                        alert("Producto agregado");
                     }
+                    
 			  },
 			  error:function(objXMLHttpRequest){
 				   console.log('Error al ejecutar la petición por:' + e);
@@ -189,8 +225,8 @@ var Carrito = {
 			  success:  function(respuestaJson){  
                  var rta = JSON.parse(respuestaJson);
                     if (rta) {
-                        $("#totalPedido").html(rta.monto);
-                        $("#totalCantidad").html(rta.cantidad);
+                        $(".totalPedido").html(rta.monto);
+                        $(".totalCantidad").html(rta.cantidad);
                     }
 			  },
 			  error:function(objXMLHttpRequest){

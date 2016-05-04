@@ -4,7 +4,7 @@ require_once "lib/mercadopago.php";
 session_start();
 
 $mp = new MP ("5836268351908133", "8q3o4CY9gQKTx8LCz9clL4wQdMCBb1Zq");
-$mp->sandbox_mode(TRUE);
+$mp->sandbox_mode(false);
 
 //$db = DBConnection::getConnection();
 // VAMOS A BUSCAR A MP LOS DATOS DE LA OPERACION
@@ -61,7 +61,7 @@ try
            
        }*/
 
-    }
+   // }
     
 	//$sql = "select count(*) as cantidad from pagos where collection_id = '".$data["id"]."' ";
 	//$rs = $conn->execute($sql);
@@ -79,9 +79,9 @@ try
 	//}
     
     
-    print_r($data);
-    header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
-	die();
+    //print_r($data);
+    //header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
+	//die();
 
 	## NOTIFICAMOS VIA EMAIL QUE TODO ESTA BIEN Y QUE SALIO TODO COMO QUERIAMOS ( Y el dinero esta en nuestras cuentas ya )
     // the message
@@ -108,9 +108,9 @@ try
 	$sendmail->Send();
 
 	## IMPORTANTE - ENVIAMOS 200 OK para que MP registre que ya lo procesamos y no intente avisarnos nuevamente este movimiento.
-
+    */
 	header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
-	die();*/
+	die();
 
 }catch(Exception $e)
 {

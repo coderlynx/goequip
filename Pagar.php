@@ -25,7 +25,7 @@ if(isset($_SESSION['pedido']['total'])) {
     //Mis datos secretos Client_id y Client_secret
     $mp = new MP('5836268351908133', '8q3o4CY9gQKTx8LCz9clL4wQdMCBb1Zq');
 
-    $mp->sandbox_mode(TRUE);
+    $mp->sandbox_mode(FALSE);
     //Get an existent Checkout preference
     //$preference = $mp->get_preference("110542");
 
@@ -65,7 +65,7 @@ if(isset($_SESSION['pedido']['total'])) {
                     "zip_code"=> $cliente->domicilio->cp
                 ] 
             )
-        ),
+        ),                     
         "notification_url" => "http://www.hoysesale.club/wsparques/Notificacion.php",
         "external_reference" => "1"
         /*"auto_return" => "approved",
@@ -116,7 +116,7 @@ print_r ($search_result);*/
        
     </head>
     <body>
-        <a href="<?php echo $preference['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-rn-m" onreturn="execute_my_onreturn">Comprar</a>
+        <a href="<?php echo $preference['response']['init_point']; ?>" name="MP-Checkout" class="blue-rn-m" onreturn="execute_my_onreturn">Comprar</a>
         <script type="text/javascript" src="https://www.mercadopago.com/org-img/jsapi/mptools/buttons/render.js"></script>
     
     </body>

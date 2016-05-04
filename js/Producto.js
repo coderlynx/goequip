@@ -1,11 +1,11 @@
 var Producto = {
-    init: function() {
+    init: function () {
         var _this = this;
         
         _this.mostrarProductos();
 
     },
-    validarCampos: function() {
+    validarCampos: function () {
         return true;
     },
     mostrarProductos: function () {
@@ -30,12 +30,36 @@ var Producto = {
 			});
     },
 	dibujarProductoEnPantalla: function(contenedor, producto) {
-        
+                
         var div_item = $('<div>');
 			div_item.attr('id',producto.id);
-			div_item.addClass('margen');
+			div_item.addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12');
         
-        var modelo = $("<span>");
+        var article = $("<article>");
+        
+        var link = $("<a>");
+        link.attr('href','producto.html?id=' + producto.id + '&categoria=' + producto.categoria);
+        
+        var foto = $("<img>");
+        foto.attr('src', producto.fotos[0]);
+        foto.attr('alt', producto.modelo);
+        foto.addClass('img-responsive');
+        
+        var h3 = $("<h3>");
+        h3.html(producto.modelo);
+        
+        var p = $("<p>");
+        p.html(producto.precio);
+        
+        link.append(foto);
+        article.append(link);
+        article.append(h3);
+        article.append(p);
+        div_item.append(article);
+        
+        contenedor.append(div_item);
+        
+        /*var modelo = $("<span>");
         modelo.addClass("modelo");
         modelo.html(producto.modelo);
         modelo.addClass('margen');
@@ -101,7 +125,7 @@ var Producto = {
         div_item.append(btnEditar);
         div_item.append(btnEliminar);
         
-        contenedor.append(div_item);
+        contenedor.append(div_item);*/
         
 		return div_item;
 			 
@@ -163,8 +187,15 @@ var Producto = {
 			  url: "php/controllerProducto.php",
 			  success:  function(respuestaJson){  
 					var productos = JSON.parse(respuestaJson);
+            
+                    $('#listaProductos').empty();
+                    $('#cantidadDeProductos').html(productos.length + " Productos");
+            
                     for (i=0; i < productos.length; i++) {
-						_this.dibujarProductoEnPantalla($('#contenedorCategoria'), productos[i]);
+						_this.dibujarProductoEnPantalla($('#contendorProductos'), productos[i]);
+                        
+                        //dibujo el menu del costado
+                        $('#listaProductos').append("<li><a href='producto.html?id=" + productos[i].id + "&categoria=" + productos[i].categoria + "' >" + productos[i].modelo + "</a></li>");
 					}
                     _this.bindearBotones();
 			  },
@@ -206,7 +237,20 @@ var Producto = {
         $("#modelo").html(producto.modelo);
         $("#precio").html(producto.precio);
         $("#descripcion").html(producto.descripcion);
+        $("#fotoPrincipal").attr('src',producto.fotos[0]);
         
+        for (i=1; i < producto.fotos.length;i++){
+            var link = $("<a>");
+            link.attr('href','');
+            
+            var img = $("<img>");
+            img.attr('src',producto.fotos[i]);
+            img.attr('alt',producto.modelo);
+            
+            link.append(img);          
+            $(".preview").append(link);
+        }
+            
         if(producto.stock > 0) {
             for (i=1; i < producto.stock; i++) {
                 var option = $('<option>');
