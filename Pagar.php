@@ -25,7 +25,7 @@ if(isset($_SESSION['pedido']['total'])) {
     //Mis datos secretos Client_id y Client_secret
     $mp = new MP('5836268351908133', '8q3o4CY9gQKTx8LCz9clL4wQdMCBb1Zq');
 
-    $mp->sandbox_mode(FALSE);
+    $mp->sandbox_mode(TRUE);
     //Get an existent Checkout preference
     //$preference = $mp->get_preference("110542");
 
@@ -38,7 +38,7 @@ if(isset($_SESSION['pedido']['total'])) {
                 "id"=> "item-ID-1234",
                 "title"=> "GO Equipamientos.",//Title of what you are paying for. It will be displayed in the payment process.
                 "currency_id"=> "ARS",
-                "picture_url"=> "css/img/goequip_logo.gif",
+                "picture_url"=> "http://localhost/coderlynx/goequip/goequip/img/logo.jpg",
                 "description"=> "Equipamientos",
                 "category_id"=> "art", // Available categories at https://api.mercadopago.com/item_categories
                 "quantity"=> 1,//le tengo que dejar uno para que compute un total ya calculado por mi.
@@ -116,7 +116,7 @@ print_r ($search_result);*/
        
     </head>
     <body>
-        <a href="<?php echo $preference['response']['init_point']; ?>" name="MP-Checkout" class="blue-rn-m" onreturn="execute_my_onreturn">Comprar</a>
+        <a href="<?php echo $preference['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-rn-m" onreturn="execute_my_onreturn">Comprar</a>
         <script type="text/javascript" src="https://www.mercadopago.com/org-img/jsapi/mptools/buttons/render.js"></script>
     
     </body>

@@ -244,7 +244,7 @@ require_once 'autoload.php';
 			
 			$productosPorCategoria = [];
 			foreach($listaProductos as $producto) {
-				if ($id == $producto->categoria) {
+				if ($id == $producto->categoria->id) {
 					$productosPorCategoria[] = $producto;
 				}
 			}
@@ -269,9 +269,11 @@ require_once 'autoload.php';
 	public static function getAll(){
 		try {
 			 
-			$query = "SELECT *
-					 FROM productos 
-                     WHERE baja = 0";
+			$query = "SELECT prod.id, prod.modelo, prod.descripcion, prod.talle, prod.color, prod.stock, prod.precio, 
+                      cat.id idCategoria, cat.descripcion descripcionCategoria
+					  FROM productos prod 
+                      INNER JOIN categorias cat ON prod.categoria = cat.id
+                      WHERE baja = 0";
 											
 		   $stmt = DBConnection::getStatement($query);
 		   
@@ -287,7 +289,8 @@ require_once 'autoload.php';
 
                 $fotos = self::getFotos($row['id']);
                 
-                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['categoria'], $row['talle'], $row['color'], $row['stock'], $row['precio']);
+                $categoria = new Categoria($row['idCategoria'], $row['descripcionCategoria']);
+                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $categoria, $row['talle'], $row['color'], $row['stock'], $row['precio']);
                 
                 $producto->fotos = $fotos;
 

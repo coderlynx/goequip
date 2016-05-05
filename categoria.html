@@ -37,7 +37,7 @@
 		<section class="row">
 			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
 				<div class="menu-lateral">
-					<h2>Waterrower</h2>
+					<h2 id="nombreCategoria"></h2>
 					<ul id="listaProductos">
 <!--
 						<li><a href="">A1 Home</a></li>
@@ -149,12 +149,13 @@
              //codigo repetido extraido
              $( "#header" ).load( "codigoComun.html #header", function() {
                 Carrito.init();
+                Autenticacion.init();
              }); 
              $( "#nav" ).load( "codigoComun.html #nav" );
              $( "#footer" ).load( "codigoComun.html #footer" );
              $( "#destacados" ).load( "codigoComun.html #destacados" );
 
-            Autenticacion.init();
+            
             
             var id = getUrlParameter('id');
             

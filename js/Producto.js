@@ -38,7 +38,7 @@ var Producto = {
         var article = $("<article>");
         
         var link = $("<a>");
-        link.attr('href','producto.html?id=' + producto.id + '&categoria=' + producto.categoria);
+        link.attr('href','producto.html?id=' + producto.id + '&categoria=' + producto.categoria.id);
         
         var foto = $("<img>");
         foto.attr('src', producto.fotos[0]);
@@ -190,6 +190,7 @@ var Producto = {
             
                     $('#listaProductos').empty();
                     $('#cantidadDeProductos').html(productos.length + " Productos");
+                    $('#nombreCategoria').html(productos[0].categoria.descripcion);
             
                     for (i=0; i < productos.length; i++) {
 						_this.dibujarProductoEnPantalla($('#contendorProductos'), productos[i]);
@@ -237,7 +238,13 @@ var Producto = {
         $("#modelo").html(producto.modelo);
         $("#precio").html(producto.precio);
         $("#descripcion").html(producto.descripcion);
-        $("#fotoPrincipal").attr('src',producto.fotos[0]);
+        if (producto.fotos[0]) {
+            $("#imgPrincipal").attr('src',producto.fotos[0]);
+        } else {
+            $("#imgPrincipal").attr('src',"img/productos/sin_imagen.png");
+        }
+           
+        
         
         for (i=1; i < producto.fotos.length;i++){
             var link = $("<a>");
@@ -251,6 +258,7 @@ var Producto = {
             $(".preview").append(link);
         }
             
+        //para dibujar si tiene o no stock
         if(producto.stock > 0) {
             for (i=1; i < producto.stock; i++) {
                 var option = $('<option>');

@@ -150,6 +150,7 @@
              //codigo repetido extraido
              $( "#header" ).load( "codigoComun.html #header", function() {
                 Carrito.init();
+                Autenticacion.init();
              }); 
             
              $( "#nav" ).load( "codigoComun.html #nav" );
@@ -157,7 +158,7 @@
              $( "#destacados" ).load( "codigoComun.html #destacados" );
 
             
-            Autenticacion.init();
+            
             
             //temporal en este lugar
             $("#comprarMP").click(function() {

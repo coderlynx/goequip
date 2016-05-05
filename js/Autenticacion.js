@@ -72,8 +72,8 @@ var Autenticacion = {
 			$.get('php/controllerAutenticacion.php', function(respuestaJson) {
 				//var rta = JSON.parse(respuestaJson);
                 $('#nombreUsuario').text('');
-                $('#totalPedido').text('0');
-                $('#totalCantidad').text('0');
+                $('.totalPedido').text('0');
+                $('.totalCantidad').text('0');
                 $('#contenedorCarro').text('');
                 //$('#btnComprar').attr("style","display:none");
 				alert('Log out');

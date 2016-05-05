@@ -112,13 +112,16 @@ require_once 'autoload.php';
                     $query = "INSERT INTO detallepedido (idPedido, idProducto,cantidad,precio,talle,color) values (:idPedido, :idProducto, :cantidad, :precio,:talle,:color)";
 
                     $stmt = DBConnection::getStatement($query);
+                    
+                    $idColor = array_search($prod->color, Constantes::COLOR);
+                    $idTalle = array_search($prod->talle, Constantes::TALLE);
 
                     $stmt->bindParam(':idPedido', $id,PDO::PARAM_INT );
                     $stmt->bindParam(':idProducto', $prod->id,PDO::PARAM_INT );
                     $stmt->bindParam(':cantidad', $prod->stock,PDO::PARAM_INT );
                     $stmt->bindParam(':precio', $prod->precio,PDO::PARAM_STR );
-                    $stmt->bindParam(':talle', $prod->precio,PDO::PARAM_INT );
-                    $stmt->bindParam(':color', $prod->precio,PDO::PARAM_INT );
+                    $stmt->bindParam(':talle', $idTalle,PDO::PARAM_INT );
+                    $stmt->bindParam(':color', $idColor,PDO::PARAM_INT );
 
                     if(!$stmt->execute()) {
                         throw new Exception("Error en el insertado del detalle del pedido");

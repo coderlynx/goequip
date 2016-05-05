@@ -34,14 +34,25 @@ var Carrito = {
             producto.descripcion = $(this).parent().find("#descripcion").html();
             producto.categoria = 'categoria';
             producto.precio = $(this).parent().find("#precio").html();
-            producto.foto = $("#fotoPrincipal").attr('src');
+            producto.foto = $("#imgPrincipal").attr('src');
             
             producto.stock = 1;//default 1 cantidad
             if($(this).parent().find("#cantidad option:selected").val())
                 producto.stock = $(this).parent().find("#cantidad option:selected").val();//La cantidad a agregar al carrito != al stock del producto en general
+            
             producto.talle = $(this).parent().find("#talle").val();
             producto.color = $(this).parent().find("#color").val();
             
+            if(producto.talle == ''){
+                alert("Debe seleccionar un talle.");
+                return false;
+            } 
+            
+            if(producto.color == ''){
+                alert("Debe seleccionar un color.");
+                return false;
+            }
+               
             _this.postAgregar(producto);
 
         });
@@ -149,8 +160,8 @@ var Carrito = {
             producto.categoria = "";
             producto.precio = "";
             producto.stock = "";
-            producto.talle = "";
-            producto.color = "";
+            producto.talle = 1;//No lo tiene en cuenta...es solo para que rompa
+            producto.color = 1;//idem anterior
             producto.foto = "";
             
             _this.postAgregar(producto);

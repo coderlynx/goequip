@@ -38,17 +38,19 @@
 		<section class="row  producto-rec">
 			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
 				<div class="menu-lateral">
-					<h2>Waterrower</h2>
+					<h2 id="nombreCategoria"></h2>
 					<ul id="listaProductos">
+<!--
 						<li class="activo"><a href="">A1 Home</a></li>
 						<li><a href="">A1 Studio</a></li>
+-->
 					</ul>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
 					<div id="fotoPrincipal" class="vista-grande">
-						<img id="fotoPrincipal" src="img/productos/a1home.jpg" alt="A1 Home">
+						<img id="imgPrincipal" src="" alt="A1 Home">
 					</div>
 					<div class="preview">
 <!--
@@ -165,12 +167,13 @@
             //codigo repetido extraido
              $( "#header" ).load( "codigoComun.html #header", function() {
                 Carrito.init();
+                Autenticacion.init();
              }); 
              $( "#nav" ).load( "codigoComun.html #nav" );
              $( "#footer" ).load( "codigoComun.html #footer" );
              $( "#destacados" ).load( "codigoComun.html #destacados" );
 
-            Autenticacion.init();
+            
             
             var id = getUrlParameter('id');
             var idCategoria = getUrlParameter('categoria');
