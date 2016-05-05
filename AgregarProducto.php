@@ -31,19 +31,26 @@ session_start();
                 <option value="4">Accesorios</option>
                 <option value="5">Indumentaria</option>
             </select>
-            
+            <div id="talles" class="grupo_chk">
+			</div>
+          
+            <div id="colores" class="grupo_chk">
+			</div>
+           
+<!--
             <select id="talle">
                 <option value="1">L</option>
                 <option value="2">M</option>
                 <option value="3">S</option>
                 <option value="4">XS</option>
             </select>
-<!--            <input id="talle" type="text" placeholder="Talle" value="" />-->
+            <input id="talle" type="text" placeholder="Talle" value="" />
            <select id="color">
                 <option value="1">Blanco</option>
                 <option value="2">Azul</option>
                 <option value="3">Negro</option>
             </select>
+-->
 <!--            <input id="color" type="text" placeholder="Color" value="" />-->
             <input id="stock" type="text" placeholder="Stock" value="" />
             <input id="precio" type="text" placeholder="Precio" value="" />
@@ -52,9 +59,12 @@ session_start();
 
 	<?php include('scripts.html') ?>
 	<script src="js/Producto.js"></script>
+	<script src="js/ConstructorDeCheck.js"></script>
 	<script>
 		$( document ).ready(function() {
 
+            ConstructorDeCheck.armarCheckBox('#talles','talles');
+            ConstructorDeCheck.armarCheckBox('#colores','colores');
             //cuando presiona guardar
             $("#btnAltaProducto").click(function() {
                 if( Producto.validarCampos()) {
@@ -69,8 +79,18 @@ session_start();
             if(id) {
                 var prod = Producto.getById(id);
                 Producto.completarInputs(prod);
+                //talles
+                for(i = 0; i < prod.talles.length; i++) {
+                    Producto.tildarCheckbox(prod.talles[i], 'talles');
+                }
+                //colores
+                for(i = 0; i < prod.colores.length; i++) {
+                    Producto.tildarCheckbox(prod.colores[i], 'colores');
+                }
                 $("#btnAltaProducto").attr('value','Editar');
-            }
+            } 
+            
+            
 
 		});
         

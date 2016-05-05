@@ -214,8 +214,9 @@ var Producto = {
 		producto.Modelo = $("#modelo").val();
 		producto.Descripcion = $("#descripcion").val();
 		producto.Categoria = $("#categoria option:selected").val();
-		producto.Talle = $("#talle option:selected").val();
-		producto.Color = $("#color option:selected").val();
+
+		producto.Talle = this.recorrerCheckbox('talles');//$("#talle option:selected").val();
+		producto.Color = this.recorrerCheckbox('colores');//$("#color option:selected").val();
 		producto.Stock = $("#stock").val();
 		producto.Precio = $("#precio").val();
 		
@@ -363,5 +364,25 @@ var Producto = {
 			});
 		
 		
-	}
+	},
+	recorrerCheckbox: function(name) {
+		
+		var checkboxValues = new Array();
+		//recorremos todos los checkbox seleccionados con .each
+		$('input[name="'+name+'[]"]:checked').each(function() {
+			//$(this).val() es el valor del checkbox correspondiente
+			checkboxValues.push($(this).val());
+		});
+		
+		return checkboxValues;
+
+	},
+	tildarCheckbox: function(elemento, name) {
+		
+		$('input[name="'+name+'[]"]').each(function() {
+			//$(this).val() es el valor del checkbox correspondiente
+			if($(this).val() == elemento.id ) $(this)[0].checked =true;
+		});
+		
+	},
 }
