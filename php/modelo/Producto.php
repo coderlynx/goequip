@@ -8,8 +8,8 @@ require_once 'autoload.php';
 	private $modelo;
 	private $descripcion;
     private $categoria;
-	private $talle;
-	private $color;
+	private $talle;//array
+	private $color;//array
 	private $stock;
 	private $precio;
     private $fotos;
@@ -51,8 +51,8 @@ require_once 'autoload.php';
 			'modelo' => $this->modelo,
 			'descripcion' => $this->descripcion,
 			'categoria' => $this->categoria,
-			'talle' => $this->talle,
-			'color' => $this->color,
+			'talles' => $this->talle,
+			'colores' => $this->color,
 			'stock' => $this->stock,
 			'precio' => $this->precio,
             'fotos' => $this->fotos
@@ -74,7 +74,7 @@ require_once 'autoload.php';
 			try	{
 				$db->beginTransaction();
 				
-				$query = "UPDATE productos SET modelo = :modelo, descripcion = :descripcion, categoria = :categoria, talle = :talle, color = :color, stock = :stock, precio = :precio WHERE id = :id";
+				$query = "UPDATE productos SET modelo = :modelo, descripcion = :descripcion, idCategoria = :idCategoria, stock = :stock, precio = :precio WHERE id = :id";
 				 
 				$stmt = DBConnection::getStatement($query);
 				
@@ -87,6 +87,8 @@ require_once 'autoload.php';
 				}
 				
 				//$_SESSION['idProducto'] = $producto->id;
+                self::insertarTalles($producto);
+				self::insertarColores($producto);
 
 				$db->commit();
 				 
@@ -100,8 +102,8 @@ require_once 'autoload.php';
 			try	{
 				$db->beginTransaction();
 				
-				$query = "INSERT INTO productos (modelo, descripcion, categoria, talle, color, stock, precio)
-				VALUES(:modelo, :descripcion, :categoria, :talle, :color, :stock, :precio)";
+				$query = "INSERT INTO productos (modelo, descripcion, idCategoria, stock, precio)
+				VALUES(:modelo, :descripcion, :idCategoria, :stock, :precio)";
 
 				$stmt = DBConnection::getStatement($query);
 															
@@ -114,6 +116,9 @@ require_once 'autoload.php';
 				$id = $db->lastInsertId();
 
 				$producto->setId($id);
+                
+                self::insertarTalles($producto);
+				self::insertarColores($producto);
 				
                 //$_SESSION['idProducto'] = $producto->id;
 			
@@ -140,9 +145,9 @@ require_once 'autoload.php';
 		
 		 $stmt->bindParam(':modelo', $producto->modelo,PDO::PARAM_STR);
 		 $stmt->bindParam(':descripcion', $producto->descripcion,PDO::PARAM_STR);
-		 $stmt->bindParam(':categoria', $producto->categoria,PDO::PARAM_INT);
-		 $stmt->bindParam(':talle', $producto->talle,PDO::PARAM_STR);
-		 $stmt->bindParam(':color', $producto->color,PDO::PARAM_STR);
+		 $stmt->bindParam(':idCategoria', $producto->categoria,PDO::PARAM_INT);
+		 //$stmt->bindParam(':talle', $producto->talle,PDO::PARAM_STR);
+		 //$stmt->bindParam(':color', $producto->color,PDO::PARAM_STR);
 		 $stmt->bindParam(':stock', $producto->stock,PDO::PARAM_INT);
 		 $stmt->bindParam(':precio', $producto->precio);
 		
@@ -269,11 +274,17 @@ require_once 'autoload.php';
 	public static function getAll(){
 		try {
 			 
-			$query = "SELECT prod.id, prod.modelo, prod.descripcion, prod.talle, prod.color, prod.stock, prod.precio, 
-                      cat.id idCategoria, cat.descripcion descripcionCategoria
+			$query = "SELECT prod.id, prod.modelo, prod.descripcion, prod.stock, prod.precio, 
+                      cat.id idCategoria, cat.descripcion descripcionCategoria,
+                      t.id idTalle, t.descripcion descripcionTalle,
+                      c.id idColor, c.descripcion descripcionColor
 					  FROM productos prod 
-                      INNER JOIN categorias cat ON prod.categoria = cat.id
-                      WHERE baja = 0";
+                      INNER JOIN categorias cat ON prod.idCategoria = cat.id
+                      INNER JOIN talles_productos tp ON tp.idProducto = prod.id
+                      INNER JOIN talles t ON tp.idTalle = t.id
+                      INNER JOIN colores_productos cp ON cp.idProducto = prod.id
+                      INNER JOIN colores c ON cp.idColor = c.id
+                      WHERE prod.baja = 0";
 											
 		   $stmt = DBConnection::getStatement($query);
 		   
@@ -283,18 +294,40 @@ require_once 'autoload.php';
 			}
 		   	   
 			$productos = array();
-			
+			$idAnterior = 0;
+            $idTalleAnterior = 0;
+			$idColorAnterior = 0;
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
 
-                $fotos = self::getFotos($row['id']);
+                //hacer un corte de control para los talles y colores
+				$producto;
                 
-                $categoria = new Categoria($row['idCategoria'], $row['descripcionCategoria']);
-                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $categoria, $row['talle'], $row['color'], $row['stock'], $row['precio']);
+                if($idAnterior != $row['id'])
+				{
                 
-                $producto->fotos = $fotos;
+                    $fotos = self::getFotos($row['id']);
+                    
+                    $talle = new Talle($row['idTalle'],$row['descripcionTalle']);
+					$color = new Color($row['idColor'],$row['descripcionColor']);
+                    $categoria = new Categoria($row['idCategoria'], $row['descripcionCategoria']);
+                    $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $categoria, null, null, $row['stock'], $row['precio']);
 
-                $productos[] = $producto;
+                    $producto->fotos = $fotos;
+                    $producto->addTalle($talle);
+					$producto->addColor($color);
+                    
+                    $idTalleAnterior = $row['idTalle'];
+					$idColorAnterior = $row['idColor'];
+
+                    $productos[] = $producto;
+                } else {
+                    self::CorteControlTalles($producto, $row, $idTalleAnterior);
+					self::CorteControlColores($producto, $row, $idColorAnterior);
+                    
+                }
+                
+                $idAnterior = $row['id'];
 
 			}
 		
@@ -461,6 +494,69 @@ require_once 'autoload.php';
 			}
     }
      
+    /**
+	 * Inserta los talles en la tabla relacional
+	 *
+	 * @return  
+	 */
+	private static function insertarTalles($producto) {
+		
+		$id = $producto->id;
+		
+		$query1 = "DELETE FROM talles_productos WHERE idProducto = :idProducto";
+		$stmt = DBConnection::getStatement($query1);
+		$stmt->bindParam(':idProducto', $id,PDO::PARAM_INT );
+		
+		if(!$stmt->execute()) {
+			throw new Exception("Error en el borrado de la relacion con los talles.");
+		}
+		
+		foreach($producto->talle as $idTalle) {
+			$query2 = "INSERT INTO talles_productos (idProducto,idTalle) values (:idProducto, :idTalle)";
+		 
+			$stmt = DBConnection::getStatement($query2);
+			
+			$stmt->bindParam(':idProducto', $id,PDO::PARAM_INT );
+			$stmt->bindParam(':idTalle', $idTalle,PDO::PARAM_INT );
+			
+			if(!$stmt->execute()) {
+				throw new Exception("Error en el insertado de la relacion con los talles.");
+			}
+		}
+	}
+     
+     
+	/**
+	 * Inserta los colores en la tabla relacional
+	 *
+	 * @return  
+	 */
+	private static function insertarColores($producto) {
+		
+		$id = $producto->id;
+		
+		$query1 = "DELETE FROM colores_productos WHERE idProducto = :idProducto";
+		$stmt = DBConnection::getStatement($query1);
+		$stmt->bindParam(':idProducto', $id,PDO::PARAM_INT );
+		
+		if(!$stmt->execute()) {
+			throw new Exception("Error en el borrado de la relacion con los colores.");
+		}
+		
+		foreach($producto->color as $idColor) {
+			$query = "INSERT INTO colores_productos (idProducto,idColor) values (:idProducto, :idColor)";
+		 
+			$stmt = DBConnection::getStatement($query);
+			
+			$stmt->bindParam(':idProducto', $id,PDO::PARAM_INT );
+			$stmt->bindParam(':idColor', $idColor,PDO::PARAM_INT );
+			
+			if(!$stmt->execute()) {
+				throw new Exception("Error en el insertado de la relacion con los colores.");
+			}
+		}
+	}
+     
      
      
      //usort nativo de php le paso el array de objetos que quiero ordenar y el metodo de que clase quiero llamar para que ordene
@@ -481,6 +577,53 @@ require_once 'autoload.php';
 			}
 			return ($a->precio > $b->precio) ? +1 : -1;
 	}
+     
+    //EMPIEZA TODO LO REFERIDO A TALLE Y COLOR
+    private static function CorteControlTalles(&$producto, $row, &$idTalleAnterior) {
+		
+		if ($idTalleAnterior != $row['idTalle'] && !self::contieneElemento($producto->talle,$row['idTalle'])) {
+			$tal = new Talle($row['idTalle'],$row['descripcionTalle']);
+			$producto->addTalle($tal);
+			
+			$idTalleAnterior = $row['idTalle'];
+		}		
+	}
+	
+	private static function CorteControlColores(&$producto, $row, &$idColorAnterior) {
+		
+		if ($idColorAnterior != $row['idColor'] && !self::contieneElemento($producto->color,$row['idColor'])) {
+			$col = new Color($row['idColor'],$row['descripcionColor']);
+			$producto->addColor($col);
+			
+			$idColorAnterior = $row['idColor'];
+		}		
+	}
+     
+    private static function contieneElemento($elementos, $id) {
+		
+		foreach($elementos as $unElemento) {
+			if ($id == $unElemento->id) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+     
+    public function addTalle($talle) 
+	{
+		
+		$this->talle[] = $talle;
+		
+	}
+	
+	public function addColor($color) 
+	{
+		
+		$this->color[] = $color;
+		
+	}
+    //TERMINA TODO LO REFERIDO A TALLE Y COLOR
 	
 
 /*GETTER Y SETTER */

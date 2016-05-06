@@ -58,75 +58,7 @@ var Producto = {
         div_item.append(article);
         
         contenedor.append(div_item);
-        
-        /*var modelo = $("<span>");
-        modelo.addClass("modelo");
-        modelo.html(producto.modelo);
-        modelo.addClass('margen');
-        
-        var precio = $("<span>");
-        precio.addClass("precio");
-        precio.html(producto.precio);
-        precio.addClass('margen');
-        
-        var stock = $("<span>");
-        stock.addClass("stock");
-        stock.html(producto.stock);
-        stock.addClass('margen');
-        
-        var descripcion = $("<span>");
-        descripcion.addClass("descripcion");
-        descripcion.html(producto.descripcion);
-        descripcion.addClass('margen');
-        
-        var color = $("<span>");
-        color.addClass("color");
-        color.html(producto.color);
-        color.addClass('margen');
-        
-        var talle = $("<span>");
-        talle.addClass("talle");
-        talle.html(producto.talle);
-        talle.addClass('margen');
-        
-        var btnAgregar = $("<input>");
-        btnAgregar.attr("type","button");
-        btnAgregar.attr("value","Agregar a Carrito");
-        btnAgregar.attr("id","btnAgregarACarrito");
-        btnAgregar.addClass('margen');
-        
-        var btnVerMas = $("<input>");
-        btnVerMas.attr("type","button");
-        btnVerMas.attr("value","Mas informacion");
-        btnVerMas.addClass("btnVerMas");
-        btnVerMas.addClass('margen');
-        
-        var btnEditar = $("<input>");
-        btnEditar.attr("type","button");
-        btnEditar.attr("value","Editar");
-        btnEditar.addClass("btnEditar");
-        btnEditar.addClass('margen');
-        
-        var btnEliminar = $("<input>");
-        btnEliminar.attr("type","button");
-        btnEliminar.attr("value","Eliminar");
-        btnEliminar.addClass("btnEliminar");
-        btnEliminar.addClass('margen');
-        
-        
-        div_item.append(modelo);
-        div_item.append(descripcion);
-        div_item.append(precio);
-        div_item.append(stock);
-        div_item.append(talle);
-        div_item.append(color);
-        div_item.append(btnVerMas);
-        div_item.append(btnAgregar);
-        div_item.append(btnEditar);
-        div_item.append(btnEliminar);
-        
-        contenedor.append(div_item);*/
-        
+                
 		return div_item;
 			 
 	}, 
@@ -222,7 +154,7 @@ var Producto = {
 						_this.dibujarProductoEnPantalla($('#contendorProductos'), productos[i]);
                         
                         //dibujo el menu del costado
-                        $('#listaProductos').append("<li><a href='producto.html?id=" + productos[i].id + "&categoria=" + productos[i].categoria + "' >" + productos[i].modelo + "</a></li>");
+                        $('#listaProductos').append("<li><a href='producto.html?id=" + productos[i].id + "&categoria=" + productos[i].categoria.id + "' >" + productos[i].modelo + "</a></li>");
 					}
                     _this.bindearBotones();
 			  },
@@ -240,10 +172,8 @@ var Producto = {
 		producto.Modelo = $("#modelo").val();
 		producto.Descripcion = $("#descripcion").val();
 		producto.Categoria = $("#categoria option:selected").val();
-        producto.Talle = "XS";
-        producto.Color = "Rojo";
-		//producto.Talle = this.recorrerCheckbox('talles');//$("#talle option:selected").val();
-		//producto.Color = this.recorrerCheckbox('colores');//$("#color option:selected").val();
+		producto.Talle = this.recorrerCheckbox('talles');//$("#talle option:selected").val();
+		producto.Color = this.recorrerCheckbox('colores');//$("#color option:selected").val();
 		producto.Stock = $("#stock").val();
 		producto.Precio = $("#precio").val();
 		
@@ -255,9 +185,7 @@ var Producto = {
         $("#id").val(producto.id);
         $("#modelo").val(producto.modelo);
         $("#descripcion").val(producto.descripcion);
-        $("#categoria").val(producto.categoria);
-        $("#talle").val(producto.talle);
-        $("#color").val(producto.color);
+        $("#categoria").val(producto.categoria.id);
         $("#stock").val(producto.stock);
         $("#precio").val(producto.precio);
     },
@@ -271,9 +199,7 @@ var Producto = {
         } else {
             $("#imgPrincipal").attr('src',"img/productos/sin_imagen.png");
         }
-           
-        
-        
+
         for (i=1; i < producto.fotos.length;i++){
             var link = $("<a>");
             link.attr('href','');
@@ -285,6 +211,28 @@ var Producto = {
             link.append(img);          
             $(".preview").append(link);
         }
+        
+        //dibujo los colores
+        for (i=0; i < producto.colores.length;i++){
+            var div = $("<div>");
+            div.addClass('circle');
+            div.attr('style','background:' + producto.colores[i].descripcion);
+            div.attr('data-color',producto.colores[i].id);
+
+            $('.colores').append(div);
+        }
+
+        
+        //dibujo los talles
+        for (i=0; i < producto.talles.length;i++){
+            var span = $("<span>");
+            span.addClass('talle');
+            span.attr('data-talle',producto.talles[i].id);
+            span.html(producto.talles[i].descripcion);
+
+            $('.talla').append(span);
+        }
+        
             
         //para dibujar si tiene o no stock
         if(producto.stock > 0) {

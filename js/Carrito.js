@@ -97,13 +97,13 @@ var Carrito = {
         var p_color = $('<p>');
         var color = $("<span>");
         color.addClass("color");
-        color.html(producto.color);
+        color.html(producto.colores);
         p_color.append("<span class='detalle-items'>Color:</span> " + color.html());
         
         var p_talla = $('<p>');
         var talla = $("<span>");
         talla.addClass("talla");
-        talla.html(producto.talle);
+        talla.html(producto.talles);
         p_talla.append("<span class='detalle-items'>Talla:</span> " + talla.html());
         
         var p_cantidad = $('<p>');       

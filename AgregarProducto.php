@@ -13,6 +13,20 @@ session_start();
 	<head>
 		<meta charset="utf-8">
 		<title>Producto</title>
+		 <!-- Estilos -->
+	<link rel="stylesheet" href="css/normalize.css" />
+	<link rel="stylesheet" href="css/normalize.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/lib/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+	<!-- Google Font -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- Estilos -->
+	<link rel="stylesheet" href="css/estilos.css">
 	</head>
 	
 	<body>
@@ -32,27 +46,13 @@ session_start();
                 <option value="5">Indumentaria</option>
             </select>
             <br><br>
+            <p>Elija los talles disponibles: </p>
             <div id="talles" class="grupo_chk">
 			</div>
-          
+           <p>Elija los colores disponibles: </p>
             <div id="colores" class="grupo_chk">
 			</div>
            
-<!--
-            <select id="talle">
-                <option value="1">L</option>
-                <option value="2">M</option>
-                <option value="3">S</option>
-                <option value="4">XS</option>
-            </select>
-            <input id="talle" type="text" placeholder="Talle" value="" />
-           <select id="color">
-                <option value="1">Blanco</option>
-                <option value="2">Azul</option>
-                <option value="3">Negro</option>
-            </select>
--->
-<!--            <input id="color" type="text" placeholder="Color" value="" />-->
             <input id="stock" type="text" placeholder="Stock" value="" /><br><br>
             <input id="precio" type="text" placeholder="Precio" value="" /><br><br>
             <label for="fotos">Seleccione (una o más imágnees): </label>
@@ -67,8 +67,8 @@ session_start();
 	<script src="js/ConstructorDeCheck.js"></script>
 	<script>
 		$( document ).ready(function() { 
-            //ConstructorDeCheck.armarCheckBox('#talles','talles');
-            //ConstructorDeCheck.armarCheckBox('#colores','colores');
+            ConstructorDeCheck.armarCheckBox('#talles','talles');
+            ConstructorDeCheck.armarCheckBoxColores('#colores','colores');
             //cuando presiona guardar
             $("#btnAltaProducto").click(function() {
                 if( Producto.validarCampos()) {

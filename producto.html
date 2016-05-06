@@ -74,9 +74,11 @@
 
 						<div class="colores">
 							<h4>Colores:</h4>
+<!--
 							<div data-color="1" class="circle color-blanco"></div>
 							<div data-color="2" class="circle color-celeste"></div>
 							<div data-color="3" class="circle color-negro"></div>
+-->
 							<span id="msgColor"></span>
 							<input type="hidden" id="color" value="" />
 						</div>
@@ -84,10 +86,12 @@
 
 						<div class="talla">
 							<h4>Talla:</h4>
+<!--
 							<span data-talle="1" class="talle" href="">L</span>
 							<span data-talle="2" class="talle" href="">M</span>
 							<span data-talle="3" class="talle" href="">S</span>
 							<span data-talle="4" class="talle" href="">XS</span>
+-->
 							<input type="hidden" id="talle" value="" />
 						</div>
 
@@ -189,8 +193,8 @@
             $( ".circle" ).click(function() {
                 var codigoColor = $(this).data("color");
                 $( "#color" ).val(codigoColor);
-                $( ".circle" ).attr('style','');
-                $(this).attr('style','width:50px; height:50px;');
+                $( ".circle" ).removeClass('colorSeleccionado');
+                $(this).addClass('colorSeleccionado');
                 //$( "#msgColor" ).html("Color: " + codigoColor + " seleccionado.");
                 
             });
