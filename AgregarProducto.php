@@ -19,10 +19,10 @@ session_start();
        <input value="Cerrar Sesion" id="btnCerrarSesion" type="button" style="float:right;" />
         
         <h3 id="nombre_formulario">Crear Producto</h3>
-        <form id="">
+        <form id="agregarProducto">
             <input id="id" type="hidden" value="" />
-            <input id="modelo" type="text" placeholder="Modelo" value="" />
-            <textarea id="descripcion" placeholder="Descripcion" value="" ></textarea>
+            <input id="modelo" type="text" placeholder="Modelo" value="" /><br><br>
+            <textarea id="descripcion" placeholder="Descripcion" value="" ></textarea><br><br>
 <!--            <input id="descripcion" type="text" placeholder="Descripcion" value="" />-->
             <select id="categoria">
                 <option value="1">Waterrower</option>
@@ -31,6 +31,7 @@ session_start();
                 <option value="4">Accesorios</option>
                 <option value="5">Indumentaria</option>
             </select>
+            <br><br>
             <div id="talles" class="grupo_chk">
 			</div>
           
@@ -52,8 +53,12 @@ session_start();
             </select>
 -->
 <!--            <input id="color" type="text" placeholder="Color" value="" />-->
-            <input id="stock" type="text" placeholder="Stock" value="" />
-            <input id="precio" type="text" placeholder="Precio" value="" />
+            <input id="stock" type="text" placeholder="Stock" value="" /><br><br>
+            <input id="precio" type="text" placeholder="Precio" value="" /><br><br>
+            <label for="fotos">Seleccione (una o más imágnees): </label>
+            <input type="file" id="fotos" name="files[]" multiple onchange="PreviewImage();"/>
+            <p>Nota: Formatos de imágnes soportados: .jpeg, .jpg, .png, .gif</p>
+            <div id="visor"></div><br>
             <input type="button" id="btnAltaProducto" value="Guardar" />
         </form>
 
@@ -61,16 +66,17 @@ session_start();
 	<script src="js/Producto.js"></script>
 	<script src="js/ConstructorDeCheck.js"></script>
 	<script>
-		$( document ).ready(function() {
-
-            ConstructorDeCheck.armarCheckBox('#talles','talles');
-            ConstructorDeCheck.armarCheckBox('#colores','colores');
+		$( document ).ready(function() { 
+            //ConstructorDeCheck.armarCheckBox('#talles','talles');
+            //ConstructorDeCheck.armarCheckBox('#colores','colores');
             //cuando presiona guardar
             $("#btnAltaProducto").click(function() {
                 if( Producto.validarCampos()) {
                     var producto = Producto.armarObjetoProducto();
                     //producto.Id = null;
-                    Producto.insert(producto);
+                    // OJO, NO cambiar el método nativo de JS por JQuery
+                    var form = document.querySelector("form");
+                    Producto.insert(producto, form);
                 }  
             });
             
@@ -89,15 +95,8 @@ session_start();
                 }
                 $("#btnAltaProducto").attr('value','Editar');
             } 
-            
-            
-
 		});
-        
-                    
-            
-            
-            
+   
         function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
                 sURLVariables = sPageURL.split('&'),
@@ -113,8 +112,26 @@ session_start();
             }
         };
         
-        
-	
+        // Previsualizador de múltiples imágenes
+        var PreviewImage = (function(){
+            var counter = 0;
+            var visor = $("#visor");
+            var fotos = document.getElementById("fotos");
+            
+            return function (){
+                var oFReader = new FileReader();
+                var idImag = "uploadPreview" + counter;
+                oFReader.readAsDataURL(fotos.files[0]);
+
+                var img = "<img id='" + idImag + "' style='width: 100px; height: 100px; border: 1px solid black; margin-right: 5px;' />";
+                visor.append(img)
+
+                oFReader.onload = function (oFREvent) {
+                    document.getElementById(idImag).src = oFREvent.target.result;
+                };
+                counter++;
+            };
+        })();
 	</script>	
 	</body>
 

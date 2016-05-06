@@ -15,7 +15,7 @@ require_once 'autoload.php';
     private $fotos;
     
 	
-	public function __construct($id=null, $modelo, $descripcion, $categoria, $talle=null, $color, $stock, $precio) {
+	public function __construct($id=null, $modelo, $descripcion, $categoria, $talle=null, $color=null, $stock, $precio) {
        $this->id = $id;
 	   $this->modelo = $modelo;
 	   $this->descripcion = $descripcion;
