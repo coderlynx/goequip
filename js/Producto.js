@@ -130,13 +130,38 @@ var Producto = {
 		return div_item;
 			 
 	}, 
-    insert: function (producto) {
+    insert: function (producto, form) {
         var _this = this;
 
         //Parseo a JSON el obj Producto
         var jsonProducto = JSON.stringify(producto);
+        var formData = new FormData(form);
+        
+        // Agrego las propiedades del objeto producto al form con las imágenes
+        formData.append("producto", jsonProducto);
 
         // guardo el producto
+        $.ajax({
+            url: 'php/controllerProducto.php',
+            type: 'POST',
+            data: formData,
+            cache: false,
+            mimeType:"multipart/form-data",
+            contentType: false,
+            processData: false,
+            success: function (respuestaJson) {
+                var rta = JSON.parse(respuestaJson);
+                if(rta == "exito") {
+                    alert("El producto ha sigo guardado con exito.");
+                    $("#visor").empty();
+                }
+            },
+            error: function(e){
+                console.log('Error al ejecutar la petición por:' + e);
+            }
+        });
+
+        /*
         $.post('php/controllerProducto.php', {producto:jsonProducto}, function(respuestaJson) {
             var rta = JSON.parse(respuestaJson);
             if(rta == "exito") {
@@ -146,6 +171,7 @@ var Producto = {
                 console.log('Error al ejecutar la petición por:' + e);
             }
         );
+        */
 
         return false;
 
@@ -214,9 +240,10 @@ var Producto = {
 		producto.Modelo = $("#modelo").val();
 		producto.Descripcion = $("#descripcion").val();
 		producto.Categoria = $("#categoria option:selected").val();
-
-		producto.Talle = this.recorrerCheckbox('talles');//$("#talle option:selected").val();
-		producto.Color = this.recorrerCheckbox('colores');//$("#color option:selected").val();
+        producto.Talle = "XS";
+        producto.Color = "Rojo";
+		//producto.Talle = this.recorrerCheckbox('talles');//$("#talle option:selected").val();
+		//producto.Color = this.recorrerCheckbox('colores');//$("#color option:selected").val();
 		producto.Stock = $("#stock").val();
 		producto.Precio = $("#precio").val();
 		

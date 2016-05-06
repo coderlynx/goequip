@@ -37,22 +37,19 @@ switch ($metodo) {
  
         break;
     case 'post':
-        $prod = json_decode($_POST['producto']);
-
-	   $producto = new Producto($prod->Id, $prod->Modelo, $prod->Descripcion, $prod->Categoria, $prod->Talle, $prod->Color, $prod->Stock, $prod->Precio);
-    
-						
-	   $validator = new Validator;
-
-	   $validator->validate($producto, Producto::$reglas);
-
-	   if($validator->tuvoExito() && Producto::insert($producto)) {
-		  echo json_encode("exito");
-		  exit;
-	   }
-	
-	   echo json_encode($validator->getErrores());
+        // Si se cargaron imágenes...
+        if(!(empty($_FILES))) moverImagenes();
         
+        $prod = json_decode($_POST['producto']);
+        $producto = new Producto($prod->Id, $prod->Modelo, $prod->Descripcion, $prod->Categoria, $prod->Talle, $prod->Color, $prod->Stock, $prod->Precio);
+
+        $validator = new Validator;
+        $validator->validate($producto, Producto::$reglas);
+        if($validator->tuvoExito() && Producto::insert($producto)) {
+          echo json_encode("exito");
+          exit;
+        }
+        echo json_encode($validator->getErrores());
         break;
     case 'put':
     case 'delete':
@@ -76,4 +73,40 @@ switch ($metodo) {
     default:
         echo 'Metodo no reconocible';
 
+}
+
+function moverImagenes() {
+    // Creo un array para almacenar errores
+    $error = array();
+    // Almaceno formatos permitidos
+    $extensions_allowed = array("jpeg", "jpg", "png", "gif");
+    
+    foreach($_FILES["files"]["tmp_name"] as $key => $tmp_name){
+        // ["name"] --> nombre archivo + extensión
+        $file_name = $_FILES["files"]["name"][$key];
+        // ["tmp_name"] --> ubicación temporal donde se almacena
+        $file_tmp = $_FILES["files"]["tmp_name"][$key];
+        // Extraigo la extensión del archivo
+        $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
+        // Carpeta destino
+        $destination = "..\\img\\productos\\";
+        
+        // Si el formato de la extensión del archivo está permitido...
+        if(in_array($file_ext, $extensions_allowed)){
+            // Si el archivo no existe en la carpeta entonces lo muevo del temporal
+            if(!file_exists("$destination".$file_name)){
+                move_uploaded_file($file_tmp, "$destination".$file_name);
+            }else{
+                // Obtengo el componente de la ruta, sin la extensión
+                $filename = basename($file_name, $file_ext);
+                // Creo una copia del archivo con la fecha unix actual
+                $newFileName = $filename.time().".".$file_ext;
+                // Muevo el archivo a la carpeta destino
+                move_uploaded_file($file_tmp = $_FILES["files"]["tmp_name"][$key],"$destination".$newFileName);
+            }
+        }else{
+            // Si el archivo no tiene un formato valido, almaceno el archivo en el array 'error'
+            array_push($error, "$file_name, ");
+        }
+    }
 }
