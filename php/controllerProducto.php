@@ -37,14 +37,18 @@ switch ($metodo) {
  
         break;
     case 'post':
-        // Si se cargaron imágenes...
-        if(!(empty($_FILES))) moverImagenes();
+        $rutasImagenes = array();
+        // Si se cargaron imágenes, almaceno el array retornado con las rutas
+        if(!(empty($_FILES))) {
+            $rutasImagenes = moverImagenes();
+        }
         
         $prod = json_decode($_POST['producto']);
-        $producto = new Producto($prod->Id, $prod->Modelo, $prod->Descripcion, $prod->Categoria, $prod->Talle, $prod->Color, $prod->Stock, $prod->Precio);
+        $producto = new Producto($prod->Id, $prod->Modelo, $prod->Descripcion, $prod->Categoria, $prod->Talle, $prod->Color, $prod->Stock, $prod->Precio, $rutasImagenes);
 
         $validator = new Validator;
         $validator->validate($producto, Producto::$reglas);
+        
         if($validator->tuvoExito() && Producto::insert($producto)) {
           echo json_encode("exito");
           exit;
@@ -75,10 +79,13 @@ switch ($metodo) {
 
 }
 
+// Valida formato, mueve imágenes y retorna un array con las rutas
 function moverImagenes() {
+    // Creo un array para almacenar las rutas
+    $rutasImagenes = array();
     // Creo un array para almacenar errores
     $error = array();
-    // Almaceno formatos permitidos
+    // Creo un array con los formatos permitidos
     $extensions_allowed = array("jpeg", "jpg", "png", "gif");
     
     foreach($_FILES["files"]["tmp_name"] as $key => $tmp_name){
@@ -96,6 +103,7 @@ function moverImagenes() {
             // Si el archivo no existe en la carpeta entonces lo muevo del temporal
             if(!file_exists("$destination".$file_name)){
                 move_uploaded_file($file_tmp, "$destination".$file_name);
+                array_push($rutasImagenes, "$destination".$file_name);
             }else{
                 // Obtengo el componente de la ruta, sin la extensión
                 $filename = basename($file_name, $file_ext);
@@ -103,10 +111,13 @@ function moverImagenes() {
                 $newFileName = $filename.time().".".$file_ext;
                 // Muevo el archivo a la carpeta destino
                 move_uploaded_file($file_tmp = $_FILES["files"]["tmp_name"][$key],"$destination".$newFileName);
+                array_push($rutasImagenes, "$destination".$newFileName);
             }
         }else{
             // Si el archivo no tiene un formato valido, almaceno el archivo en el array 'error'
+            // En principio no lo retorno...
             array_push($error, "$file_name, ");
         }
     }
+    return $rutasImagenes;
 }

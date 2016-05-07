@@ -276,7 +276,7 @@ var Producto = {
         
         for (i=1; i < producto.fotos.length;i++){
             var link = $("<a>");
-            link.attr('href','');
+            link.attr({href: producto.fotos[i], "data-lightbox": "images"});
             
             var img = $("<img>");
             img.attr('src',producto.fotos[i]);

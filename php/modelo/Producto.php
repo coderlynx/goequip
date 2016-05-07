@@ -14,8 +14,8 @@ require_once 'autoload.php';
 	private $precio;
     private $fotos;
     
-	
-	public function __construct($id=null, $modelo, $descripcion, $categoria, $talle=null, $color=null, $stock, $precio) {
+	public function __construct($id=null, $modelo, $descripcion, $categoria, $talle=null, $color=null, $stock, 
+                                $precio, $fotos = null) {
        $this->id = $id;
 	   $this->modelo = $modelo;
 	   $this->descripcion = $descripcion;
@@ -24,7 +24,7 @@ require_once 'autoload.php';
 	   $this->color = $color;
 	   $this->stock = $stock;
 	   $this->precio = $precio;
-	  
+	   $this->fotos = $fotos;
     }
 	
 	public static $reglas = [
@@ -35,7 +35,6 @@ require_once 'autoload.php';
 		'stock' => ['required'],
 		'precio' => ['required']
 	];
-	
 	
 	/**
 	 * Retorna el array con los datos de mi clase. Se implementó el método de JsonSerializable para poder acceder a los métodos privados de mi clase, ya que el json_encode al cual le paso mi lista de productos respetaba el acceso y no lo pasaba al front.
@@ -56,10 +55,8 @@ require_once 'autoload.php';
 			'stock' => $this->stock,
 			'precio' => $this->precio,
             'fotos' => $this->fotos
-		];
-		
+		];		
 	}
-	
 
 	/**
 	 * Retorna el aviso con id si fue guardado o editado con exito, si no un mensaje con la excepcion
@@ -74,7 +71,8 @@ require_once 'autoload.php';
 			try	{
 				$db->beginTransaction();
 				
-				$query = "UPDATE productos SET modelo = :modelo, descripcion = :descripcion, categoria = :categoria, talle = :talle, color = :color, stock = :stock, precio = :precio WHERE id = :id";
+				$query = "UPDATE productos SET modelo = :modelo, descripcion = :descripcion, idCategoria = :idCategoria, 
+                stock = :stock, precio = :precio WHERE id = :id";
 				 
 				$stmt = DBConnection::getStatement($query);
 				
@@ -100,8 +98,8 @@ require_once 'autoload.php';
 			try	{
 				$db->beginTransaction();
 				
-				$query = "INSERT INTO productos (modelo, descripcion, categoria, talle, color, stock, precio)
-				VALUES(:modelo, :descripcion, :categoria, :talle, :color, :stock, :precio)";
+				$query = "INSERT INTO productos (modelo, descripcion, idCategoria, stock, precio)
+				VALUES(:modelo, :descripcion, :idCategoria, :stock, :precio)";
 
 				$stmt = DBConnection::getStatement($query);
 															
@@ -114,7 +112,18 @@ require_once 'autoload.php';
 				$id = $db->lastInsertId();
 
 				$producto->setId($id);
-				
+                
+                // Insert de las imágenes del producto
+                // OJO, no estoy usando el 'orden' ni tampoco estoy bindeando los datos...
+                for($i = 0; $i < count($producto->fotos); $i++){
+                    $ruta = addslashes(str_replace("..\\","",$producto->fotos[$i]));
+                    $query = "INSERT INTO imagenes (ruta, idProducto) VALUES('$ruta', $producto->id)";
+				    $stmt = DBConnection::getStatement($query);									
+                			 
+                    if(!$stmt->execute()) {
+                        throw new Exception("Error en el insertado de la imagen.");
+                    }
+                }
                 //$_SESSION['idProducto'] = $producto->id;
 			
 				$db->commit();
@@ -127,10 +136,8 @@ require_once 'autoload.php';
 				  $db->rollBack();
 				}
 		}
-
 	}
 	
-
 	/**
 	 * Retorna el statement con todos los datos bindeados
 	 *
@@ -140,16 +147,14 @@ require_once 'autoload.php';
 		
 		 $stmt->bindParam(':modelo', $producto->modelo,PDO::PARAM_STR);
 		 $stmt->bindParam(':descripcion', $producto->descripcion,PDO::PARAM_STR);
-		 $stmt->bindParam(':categoria', $producto->categoria,PDO::PARAM_INT);
-		 $stmt->bindParam(':talle', $producto->talle,PDO::PARAM_STR);
-		 $stmt->bindParam(':color', $producto->color,PDO::PARAM_STR);
+		 $stmt->bindParam(':idCategoria', $producto->categoria,PDO::PARAM_INT);
+		 //$stmt->bindParam(':talle', $producto->talle,PDO::PARAM_STR);
+		 //$stmt->bindParam(':color', $producto->color,PDO::PARAM_STR);
 		 $stmt->bindParam(':stock', $producto->stock,PDO::PARAM_INT);
 		 $stmt->bindParam(':precio', $producto->precio);
 		
 		 return $stmt;
 	}
-	
-	
 	/**
 	 * Retorna un mensaje si fue eliminado correctamente o una excepcion
 	 *
@@ -209,7 +214,6 @@ require_once 'autoload.php';
 	 */
     public static function getById($id){
 		try{
-			
 			$listaProductos = Producto::getAll();
 			
 			$prod = null;
@@ -226,10 +230,9 @@ require_once 'autoload.php';
 			
 			return $prod;
 
-		   } catch(PDOException $e)
-			{
-			  echo 'Error: ' . $e->getMessage();
-			}
+        }catch(PDOException $e){
+            echo 'Error: ' . $e->getMessage();
+        }
     }
      
     /**
@@ -239,8 +242,7 @@ require_once 'autoload.php';
 	 */
     public static function getByCategoria($id, $orden){
 		try{
-			
-			$listaProductos = Producto::getAll();
+            $listaProductos = Producto::getAll();
 			
 			$productosPorCategoria = [];
 			foreach($listaProductos as $producto) {
@@ -254,10 +256,9 @@ require_once 'autoload.php';
 			
 			return $productosPorCategoria;
 
-		   } catch(PDOException $e)
-			{
+        }catch(PDOException $e){
 			  echo 'Error: ' . $e->getMessage();
-			}
+        }
     }
 	
 
@@ -269,10 +270,10 @@ require_once 'autoload.php';
 	public static function getAll(){
 		try {
 			 
-			$query = "SELECT prod.id, prod.modelo, prod.descripcion, prod.talle, prod.color, prod.stock, prod.precio, 
-                      cat.id idCategoria, cat.descripcion descripcionCategoria
+			$query = "SELECT prod.id, prod.modelo, prod.descripcion, prod.stock, prod.precio, 
+                      cat.id idCategoria, cat.descripcion descripcionCategoria 
 					  FROM productos prod 
-                      INNER JOIN categorias cat ON prod.categoria = cat.id
+                      INNER JOIN categorias cat ON prod.idCategoria = cat.id 
                       WHERE baja = 0";
 											
 		   $stmt = DBConnection::getStatement($query);
@@ -290,7 +291,7 @@ require_once 'autoload.php';
                 $fotos = self::getFotos($row['id']);
                 
                 $categoria = new Categoria($row['idCategoria'], $row['descripcionCategoria']);
-                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $categoria, $row['talle'], $row['color'], $row['stock'], $row['precio']);
+                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $categoria->id, null, null, $row['stock'], $row['precio']);
                 
                 $producto->fotos = $fotos;
 
@@ -298,13 +299,12 @@ require_once 'autoload.php';
 
 			}
 		
-			 return $productos;
+            return $productos;
 
 
-	   } catch(PDOException $e)
-			{
+        }catch(PDOException $e){
 			  echo 'Error: ' . $e->getMessage();
-			}
+        }
     }
      
     /**
@@ -334,7 +334,7 @@ require_once 'autoload.php';
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
 
-                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['categoria'], $row['talle'], $row['color'], $row['stock'], $row['precio']);
+                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['idCategoria'], $row['stock'], $row['precio']);
 
                 $productos[] = $producto;
 
@@ -484,13 +484,11 @@ require_once 'autoload.php';
 	
 
 /*GETTER Y SETTER */
-	public function &__get($propiedad)
-	{
+	public function &__get($propiedad){
 		return $this->$propiedad;
 	}
 	
-	public function __set($propiedad, $valor)
-	{
+	public function __set($propiedad, $valor){
 		
 		if(!property_exists($this, $propiedad)) {
 			throw new Exception('La propiedad <b>' . $propiedad . "</b> no existe.");
@@ -509,10 +507,8 @@ require_once 'autoload.php';
 	 *
 	 * @return boolean 
 	 */
-	public function __isset($propiedad)
-	{
+	public function __isset($propiedad){
 		return isset($this->$propiedad);
-		
 	}
 	
 	
@@ -527,7 +523,5 @@ require_once 'autoload.php';
      public function setFotos($valor) {
 		$this->fotos = $valor;
     }
-	
  }
-	
 ?>

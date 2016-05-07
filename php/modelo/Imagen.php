@@ -6,13 +6,13 @@ require_once 'autoload.php';
 class Imagen { 
   public $id;
   public $ruta;
-  public $orden; 
   public $idProducto;
-  
-  public function __construct($ruta, $orden, $idProducto) {
-     $this->ruta = ruta;
-     $this->orden = orden; 
-     $this->idProducto = idProducto;
+  public $orden; 
+
+  public function __construct($ruta, $idProducto, $orden) {
+    $this->ruta = ruta;
+    $this->idProducto = idProducto;
+    $this->orden = orden;
   }
 }
 ?>
