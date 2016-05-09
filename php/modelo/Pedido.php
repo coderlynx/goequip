@@ -240,7 +240,7 @@ require_once 'autoload.php';
                     $pedido = new Pedido($row['id'], $row['nroPedido'], $cliente, $row['total'], $row['cantidad'], $row['formaDePago'], $row['formaDeEnvio'], $row['estadoDePago'], null, $row['fecha']);               
                 }
                                         
-                $producto = new Producto(null, $row['modelo'], '', '', Constantes::TALLE[$row['talle']], Constantes::COLOR[$row['color']], $row['cantidad'], $row['precioUnitario']); 
+                $producto = new Producto(null, $row['modelo'], '', '', Constantes::$TALLE[$row['talle']], Constantes::$COLOR[$row['color']], $row['cantidad'], $row['precioUnitario']); 
                 
                 $productos[] = $producto;
                 

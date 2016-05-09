@@ -23,6 +23,7 @@ var Carrito = {
 			  },
 			  error:function(objXMLHttpRequest){
 				  var e = objXMLHttpRequest;
+				  console.log('Error al ejecutar la petición por:' + e);
 			  }
 			});
         

@@ -15,6 +15,7 @@ var Pedido = {
                 Pedido.dibujarTabla(rta, $('#div_tabla'))
               },
               error:function(objXMLHttpRequest){
+				  var e = objXMLHttpRequest;
                    console.log('Error al ejecutar la petición por:' + e);
               }
         });

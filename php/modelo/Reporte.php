@@ -31,7 +31,7 @@ require_once 'autoload.php';
                 
                 $un_registro = new StdClass;
                 
-                $un_registro->mes = Constantes::MES[$row['Mes']];
+                $un_registro->mes = Constantes::$MES[$row['Mes']];
                 $un_registro->total = $row['Total'];
                 
                 $datos[] = $un_registro;

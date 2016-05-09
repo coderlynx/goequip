@@ -12,7 +12,7 @@ class Constantes {
     const PAGO_FACTURA = 2;
     const PAGO_FACTURA_DESCRIPCION = "Factura";
     
-    const MES = [
+    static $MES = [
         1 => 'Enero',
         2 => 'Febrero',
         3 => 'Marzo',
@@ -27,14 +27,14 @@ class Constantes {
         12 => 'Diciembre'
     ];
     
-    const TALLE = [
+    static $TALLE = [
         1 => 'L',
         2 => 'M',
         3 => 'S',
         4 => 'XS'
     ];
         
-    const COLOR = [
+    static $COLOR = [
         1 => 'Blanco',
         2 => 'Azul',
         3 => 'Negro'
