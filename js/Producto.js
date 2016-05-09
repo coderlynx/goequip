@@ -202,7 +202,10 @@ var Producto = {
 
         for (i=1; i < producto.fotos.length;i++){
             var link = $("<a>");
-            link.attr({href: producto.fotos[i], "data-lightbox": "images"});
+            var ruta = producto.fotos[i];
+            var filename = producto.fotos[i].replace(/^.*[\\\/]/, '');
+            link.attr({href: ruta, "data-lightbox": filename,
+                      "data-title": filename.substring(1,filename.lastIndexOf('.'))});
             
             var img = $("<img>");
             img.attr('src',producto.fotos[i]);

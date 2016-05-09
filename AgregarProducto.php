@@ -55,9 +55,10 @@ session_start();
            
             <input id="stock" type="text" placeholder="Stock" value="" /><br><br>
             <input id="precio" type="text" placeholder="Precio" value="" /><br><br>
-            <label for="fotos">Seleccione (una o más imágnees): </label>
-            <input type="file" id="fotos" name="files[]" multiple onchange="PreviewImage();"/>
+            <label for="fotos">Seleccione (una o más imágnees, al mismo tiempo): </label>
             <p>Nota: Formatos de imágnes soportados: .jpeg, .jpg, .png, .gif</p>
+            <input type="file" id="fotos" name="files[]" multiple />
+            <p id="cantArchivos" style="margin-top: 10px"></p>
             <div id="visor"></div><br>
             <input type="button" id="btnAltaProducto" value="Guardar" />
         </form>
@@ -66,7 +67,7 @@ session_start();
 	<script src="js/Producto.js"></script>
 	<script src="js/ConstructorDeCheck.js"></script>
 	<script>
-		$( document ).ready(function() { 
+		$(document).ready(function() { 
             ConstructorDeCheck.armarCheckBox('#talles','talles');
             ConstructorDeCheck.armarCheckBoxColores('#colores','colores');
             //cuando presiona guardar
@@ -79,6 +80,7 @@ session_start();
                     Producto.insert(producto, form);
                 }  
             });
+            $("#fotos").change(previewFiles);
             
             var id = getUrlParameter('id');
             
@@ -113,25 +115,37 @@ session_start();
         };
         
         // Previsualizador de múltiples imágenes
-        var PreviewImage = (function(){
-            var counter = 0;
-            var visor = $("#visor");
-            var fotos = document.getElementById("fotos");
+        function previewFiles() {
+            var preview = $('#visor');
+            var files   = document.querySelector('input[type=file]').files;
+            var cantFotos = files.length;
+            $("#cantArchivos").text("Cantidad de archivos cargardos: " + cantFotos);
+            preview.empty();
             
-            return function (){
-                var oFReader = new FileReader();
-                var idImag = "uploadPreview" + counter;
-                oFReader.readAsDataURL(fotos.files[0]);
+            function readAndPreview(file) {
+                // Make sure `file.name` matches our extensions criteria
+                if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+                    var cssString = "border: 1px solid black; margin-right: 10px;";
+                    var reader = new FileReader();
 
-                var img = "<img id='" + idImag + "' style='width: 100px; height: 100px; border: 1px solid black; margin-right: 5px;' />";
-                visor.append(img)
+                  reader.addEventListener("load", function () {
+                    var image = new Image();
+                    image.width = 100;
+                    image.height = 100;
+                    image.style.cssText = cssString;
+                    image.title = file.name;
+                    image.src = this.result;
+                    preview.append(image);
+                  }, false);
 
-                oFReader.onload = function (oFREvent) {
-                    document.getElementById(idImag).src = oFREvent.target.result;
-                };
-                counter++;
-            };
-        })();
+                  reader.readAsDataURL(file);
+                }
+            }
+
+            if (files) {
+                [].forEach.call(files, readAndPreview);
+            }
+        }
 	</script>	
 	</body>
 
