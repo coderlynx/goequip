@@ -18,7 +18,7 @@
     <div class="form-group">
       <input id="txtBusqueda" type="text" class="form-control busqueda-input" placeholder="Búsqueda">
     </div>
-    <button id="btnBuscarProducto" class="btn btn-default busqueda-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+    <button id="btnBuscarProducto" class="btn btn-default busqueda-btn"><i class="fa fa-search" aria-hidden="true"></i>Buscar</button>
   </form>
    <a href="AgregarProducto.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Crear producto</a>
    
