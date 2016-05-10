@@ -365,8 +365,10 @@ require_once 'autoload.php';
 			
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
-
-                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], $row['idCategoria'], $row['stock'], $row['precio']);
+                
+                $fotos = self::getFotos($row['id']);
+                $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], '', null, null, $row['stock'], $row['precio']);
+                $producto->fotos = $fotos;
 
                 $productos[] = $producto;
 

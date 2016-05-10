@@ -56,6 +56,19 @@ var Producto = {
         article.append(h3);
         article.append(p);
         div_item.append(article);
+
+        if($('#pantalla').val() == 'pantallaProductos'){
+            var btnEditar = $("<button>");
+            btnEditar.addClass('btnEditar');
+            btnEditar.html('Editar');
+
+            var btnEliminar = $("<button>");
+            btnEliminar.addClass('btnEliminar');
+            btnEliminar.html('Eliminar');
+
+            div_item.append(btnEditar);
+            div_item.append(btnEliminar);  
+        }
         
         contenedor.append(div_item);
                 
