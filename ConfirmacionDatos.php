@@ -72,7 +72,7 @@ if(!isset($_SESSION["nombre"]))	{
                     $.post('php/controllerPedido.php', {idCliente:idCliente}, function(respuesta) {
                         //var rta = JSON.parse(respuestaJson);
                         if(respuesta == 'ok') {
-                           window.location.href = "FormaDeEntrega.php";
+                           window.location.href = "Pagar.php";
                         } else {
                             alert(respuesta);
                         }

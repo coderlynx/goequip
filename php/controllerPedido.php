@@ -24,6 +24,9 @@ switch ($metodo) {
 
         //PASO 2: cuando el cliente confirma sus datos o los crea
         if (isset($_POST['idCliente'])) {
+            //valido el stock antes de comprar
+            Pedido::validateStockDelPedido($_SESSION['pedido']['productos']);
+            
             if(!isset($_SESSION['idUsuario'])) die("Usuario no logueado");
             $_SESSION['pedido']['cliente'] = json_encode(Cliente::getByIdUsuario($_SESSION['idUsuario'])); 
             echo 'ok';
@@ -32,10 +35,14 @@ switch ($metodo) {
         
         //PASO 3: cuando elijo la forma de entrega y valido que haya stock antes de comprar
         if (isset($_POST['formaDeEntrega'])) {
-            //$productos = $_SESSION['pedido']['productos']; 
-            //die(json_encode($productos));
-            Pedido::validateStockDelPedido($_SESSION['pedido']['productos']);
-            $_SESSION["pedido"]["formaDeEntrega"] = $_POST['formaDeEntrega'];
+            
+            
+            $entrega = json_decode($_POST['formaDeEntrega']);
+            
+            $_SESSION['entrega']->costo = $entrega->costo;
+            $_SESSION['entrega']->idZona = $entrega->idLugar;
+            $_SESSION['entrega']->nombreZona = $entrega->nombreLugar;
+            $_SESSION["pedido"]["formaDeEntrega"] = $_SESSION['entrega'];
             echo 'ok';
             break;
         }
@@ -48,7 +55,7 @@ switch ($metodo) {
         $cantidadTotal = $_SESSION['pedido']['cantidad'];
         $idCliente =  json_decode($_SESSION['pedido']['cliente'])->id;
         $productos = $_SESSION['pedido']['productos']; 
-        $formaDeEntrega = $_SESSION["pedido"]["formaDeEntrega"];
+        $formaDeEntrega =  $_SESSION["pedido"]["formaDeEntrega"];
 
         $ped = json_decode($_POST['pedido']);
 

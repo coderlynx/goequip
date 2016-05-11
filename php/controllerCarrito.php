@@ -12,6 +12,9 @@ switch ($metodo) {
            if (isset($_SESSION['carrito'])) {
                $total['monto'] = $_SESSION['carrito']->calculateMontoTotal();
                $total['cantidad'] = $_SESSION['carrito']->calculateCantidadTotal();
+               $total['envio'] = $_SESSION['entrega']->costo;
+               $total['montoTotal'] = $total['monto'] + $_SESSION['entrega']->costo;
+               
                
                echo json_encode($total);
             } 
@@ -30,7 +33,7 @@ switch ($metodo) {
 
 
 
-            $_SESSION['pedido']['total'] = $_SESSION['carrito']->calculateMontoTotal();
+            $_SESSION['pedido']['total'] = $_SESSION['carrito']->calculateMontoTotal() + $_SESSION['entrega']->costo;
             $_SESSION['pedido']['cantidad'] = $_SESSION['carrito']->calculateCantidadTotal();
             $_SESSION['pedido']['productos'] = $_SESSION['carrito']->showProductos();
 
@@ -39,12 +42,15 @@ switch ($metodo) {
         } else {//cuando agrego al carrito productos o inicializo si no existe
            if(empty($_SESSION['carrito'])) {
                 $carrito = new Carrito();  
-                $_SESSION["carrito"] = $carrito; 
+                $entrega = new Entrega(null,0,0,'',0);
+                $_SESSION["carrito"] = $carrito;
+                $_SESSION['entrega'] = $entrega;
             }
 
 
             $prod = json_decode($_POST['producto']);
 
+            //NOTA: por ahora el talle y color los manejo con las constantes porque en la pantalla muestro el nombre y no el id. En pedido despues busco el id por la constante
             $producto = new Producto($prod->id, $prod->modelo, $prod->descripcion, $prod->categoria, Constantes::$TALLE[ $prod->talle], Constantes::$COLOR[$prod->color], $prod->stock, $prod->precio);
             $producto->fotos = $prod->foto;
 

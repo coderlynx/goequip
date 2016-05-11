@@ -6,23 +6,30 @@ var Autenticacion = {
 		_this.capturarEnter();
 
 		//botones de los formularios de registro y login y logout
-		$('#btn_form_registrar').click( function() {
-		
+		$('#formRegistrar').submit( function(e) {
+		  
+            e.preventDefault();
 			var registro = {};
-			registro.nombre = $('#form_reg_usuario').val();
-			registro.mail = $('#form_reg_mail').val();
-			registro.password = $('#form_reg_password').val();
+			registro.nombre = $('#inputNombre').val();
+			registro.mail = $('#inputEmail').val();
+			registro.password = $('#inputPassword').val();
 			
 			
 			//Utilizamos una expresion regular para validar mail
 			var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
 		 
 			//Se utiliza la funcion test() nativa de JavaScript
-			if (!regex.test($('#form_reg_mail').val().trim())) {
+			if (!regex.test($('#inputEmail').val().trim())) {
 				//mensaje de invalido
                 alert("formato de mail invalido");
 				return;
 			}
+            
+            //valido campos email iguales
+            if ($('#inputEmail').val() != $('#inputREmail').val()) {
+                alert('Los emails deben coincidir.');
+                return;
+            } 
 			
 			var registro_json = JSON.stringify(registro);
 			
@@ -39,12 +46,13 @@ var Autenticacion = {
 					console.log('Error al registrarse');
 				}
 			);
+            
 		});
 		
-		$('#btn_form_login').click( function() {
+		$('#formLogin').submit( function(e) {
 			var login = {};
-			login.nombre = $('#form_log_usuario').val();
-			login.password = $('#form_log_password').val();
+			login.email = $('#inputEmail').val();
+			login.password = $('#inputPassword').val();
 			
             var login_json = JSON.stringify(login);
 		
@@ -52,12 +60,12 @@ var Autenticacion = {
 				var rta = JSON.parse(respuestaJson);
 					if(rta == "") 
 						{
-							alert('No se encontro al usuario o el mail');
+							alert('No se encontro el usuario o el mail');
 						} else if (rta == "exito"){
-							$('#nombreUsuario').text(login.nombre);
+							$('#nombreUsuario').text(login.email);
                             //$('#btnComprar').attr("style","display:inline");
                             
-							alert('Bienvenido ' + login.nombre);
+							alert('Bienvenido ' + login.email);
 							return;
 						} 
 						
@@ -66,6 +74,7 @@ var Autenticacion = {
 						console.log('Error al ejecutar la peticion');
 					}
 			);
+            e.preventDefault();
 		});
 		
 		$('#btnCerrarSesion').click( function() {

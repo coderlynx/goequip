@@ -26,9 +26,9 @@ class Usuario implements JsonSerializable
     }
     
     //uso este metodo porque PHP no acepta sobrecarga de metodos, entonce lo simulo
-    public static function soloNombreYUsuario($nombre, $password)
+    public static function soloMailYClave($email, $password)
     {
-        return new self('n',$nombre,$password,0,'n','n');
+        return new self('n','n',$password,0,$email,'n');
     }
     
     public static $reglasLogin = [
@@ -68,10 +68,10 @@ class Usuario implements JsonSerializable
 		try {
 			
 			//$query = "SELECT * from usuarios WHERE nombre = :nombre AND password = :password";
-			$query = "SELECT * from usuarios WHERE nombre = :nombre";
+			$query = "SELECT * from usuarios WHERE mail = :mail";
 			$stmt = DBConnection::getStatement($query);
 
-			$stmt->bindValue(':nombre',$usuario->nombre);
+			$stmt->bindValue(':mail',$usuario->mail);
 			//$stmt->bindValue(':password',$password_encriptado, PDO::PARAM_STR);
 			
 			$stmt->execute();
@@ -129,7 +129,7 @@ class Usuario implements JsonSerializable
 			{				 
 				 //$fila  = $stmt->fetch();
 				 //$_SESSION['nombre'] = $fila['nombre'];
-                die('Ya existe ese usuario.');
+                die('Ya existe ese nombre de usuario.');
 				 //return 'Ya existe ese usuario';
 				 //return TRUE;
 			}
@@ -144,7 +144,7 @@ class Usuario implements JsonSerializable
 			//si existe el usuario con ese mail
 			if($stmt->rowCount() == 1)
 			{				 
-				die('Ya existe ese mail.');
+				die('Ya existe un mail igual en la base.');
 			}
 
 			$query = "INSERT INTO usuarios VALUES (null, :nombre, :password, :mail,:perfil, :fecha)";
@@ -164,7 +164,7 @@ class Usuario implements JsonSerializable
 				throw new Exception("Error en la creacion del usuario.");
 			}
 			
-			die("exito");
+			die("Se ha creado la cuenta con exito.");
 			//return $usuario;
 			
 		}catch(PDOException $e){

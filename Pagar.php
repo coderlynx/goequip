@@ -144,7 +144,7 @@ print_r ($search_result);*/
             } else if(json.collection_status=='in_process'){    
                 alert ('El pago está siendo revisado');    
             } else if(json.collection_status=='rejected'){
-                alert ('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
+                alert ('El pago fué rechazado. Se ha producido una incidencia en el pago y el pedido ha sido cancelado. Le rogamos que contacte con su entidad financiera para resolver la situación y realizar el nuevo pedido.');
             } else if(json.collection_status==null){
                 alert ('El usuario no completó el proceso de pago, no se ha generado ningún pago');
             }

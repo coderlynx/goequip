@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     
     $login = json_decode($_POST['login']);
     //$log = new Login($login->nombre, $login->password);
-    $usuario = Usuario::soloNombreYUsuario($login->nombre, $login->password);
+    $usuario = Usuario::soloMailYClave($login->email, $login->password);
 
     $validator = new Validator;
 

@@ -81,16 +81,56 @@
 			</div>
 
 			<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 detalle-carrito">
-				<article class="detalle-carrito-resumen">
+				<article id="formaEnvio" class="detalle-carrito-resumen">
 					<h2><i class="fa fa-truck" aria-hidden="true"></i> Envío:</h2>
 					<div class="row">
-						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Retiro personalmente</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>sin costo <input type="radio" name="optradio"></label></div>
-						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Capital Federal</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
-						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Gran Buenos Aires</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
-						<div class="col-lg-9 col-sm-9 col-xs-9"><p>NOA</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
-						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Chaco</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
-						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Mesopotamia</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
-						<div class="col-lg-9 col-sm-9 col-xs-9"><p>Cuyo</p></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><label>$100 <input type="radio" name="optradio"></label></div>
+						<div class="col-lg-9 col-sm-9 col-xs-9">
+						    <p class="formaDeEntrega">Retiro personalmente</p>
+				        </div>
+				        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
+				            <label>$ <span>0</span> <input value="1" type="radio" name="optradio"></label>
+				        </div>
+				        
+						<div class="col-lg-9 col-sm-9 col-xs-9">
+						    <p class="formaDeEntrega">Capital Federal</p>
+				        </div>
+				        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
+				            <label>$ <span>100</span> <input value="2" type="radio" name="optradio"></label>
+				        </div>
+				        
+						<div class="col-lg-9 col-sm-9 col-xs-9">
+						    <p class="formaDeEntrega">Gran Buenos Aires</p>
+				        </div>
+				        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
+				            <label>$ <span>120</span> <input value="3" type="radio" name="optradio"></label>
+				        </div>
+				        
+						<div class="col-lg-9 col-sm-9 col-xs-9">
+						    <p class="formaDeEntrega">NOA</p>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
+						    <label>$ <span>200</span> <input value="4" type="radio" name="optradio"></label>
+						</div>
+						
+						<div class="col-lg-9 col-sm-9 col-xs-9">
+						    <p class="formaDeEntrega">Chaco</p>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
+						    <label>$ <span>200</span> <input value="5" type="radio" name="optradio"></label>
+						</div>
+						
+						<div class="col-lg-9 col-sm-9 col-xs-9">
+						    <p class="formaDeEntrega">Mesopotamia</p>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
+						    <label>$ <span>200</span> <input value="6" type="radio" name="optradio"></label>
+						</div>
+						<div class="col-lg-9 col-sm-9 col-xs-9">
+						    <p class="formaDeEntrega">Cuyo</p>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
+						    <label>$ <span>300</span> <input value="7" type="radio" name="optradio"></label>
+						</div>
 						
 					</div>
 				</article>
@@ -106,10 +146,10 @@
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p>$ <span class="totalPedido">0</span></p></div>
 
 					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Envío:</span></p></div>
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ 0</p></div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ <span class="totalEnvio" id="valorEnvio">0</span></p></div>
 
 					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total + envio:</span></p></div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p class="precio"> $ <span class="totalPedido">0</span></p></div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p class="precio"> $ <span class="totalPedidoFinal">0</span></p></div>
 					</div>
 					<div class="row text-center div-comprar">
 						<div>
@@ -118,8 +158,12 @@
 						    <i class="fa fa-money" aria-hidden="true"></i> Pagar con <span class="detalle-items">Mercado Pago</span>
 						   </button> 
 						  </div>
-						<div><a class="btn btn-default btn-comprar" href="#" role="button"><i class="fa fa-paypal" aria-hidden="true"></i> Pagar con <span class="detalle-items">Paypal</span></a></div>
+						<div><a class="btn btn-default btn-comprar" href="#" role="button"><i class="fa fa-paypal" aria-hidden="true"></i> Pagar con <span class="detalle-items">Paypal (aún no disponible)</span></a></div>
 					</div>
+					<label class="">
+                        <input id="terminos" type="checkbox" required="required">
+                        Acepto los <span><a href="Terminos.php">términos y condiciones</a></span> de la compra.
+                    </label>
 				</article>
 			</div>
 		</section>
@@ -158,11 +202,11 @@
              $( "#destacados" ).load( "codigoComun.html #destacados" );
 
             
-            
-            
             //temporal en este lugar
             $("#comprarMP").click(function() {
-                 $.ajax({
+                if($("#terminos").is(':checked')) {  
+                    
+                    $.ajax({
                       async:false,    
                       cache:false,   
                       type: 'POST', 
@@ -178,10 +222,50 @@
                       error:function(objXMLHttpRequest){
                            console.log('Error al ejecutar la petición por:' + e);
                       }
-                    });
-            });//fin btnComprar
+                    });//fin btnComprar
+                } else {
+                    alert("Debe aceptar los terminos y condiciones para continuar");
+                }
 
 		});
+        
+        
+            //temporal en este lugar
+            $("#formaEnvio input").change(function() {
+
+                    var envio = {
+                        idLugar: $('input[name=optradio]:checked', '#formaEnvio').val(),
+                        nombreLugar: $('input[name=optradio]:checked', '#formaEnvio').parent().parent().prev().children().html(),
+                        costo: $('input[name=optradio]:checked', '#formaEnvio').prev().html()
+                    }
+                    
+                    var envioJson = JSON.stringify(envio);
+                    /*if(!radioFormaDeEntrega) {
+                        alert("Debe seleccionar una forma de entrega");
+                        return;
+                    }*/
+
+                    $.post('php/controllerPedido.php', {formaDeEntrega:envioJson}, function(respuesta) {
+                        //var rta = JSON.parse(respuestaJson);
+                        if(respuesta == 'ok') {
+                            Carrito.getTotal();
+                        } else {
+                            alert(respuesta);
+                        }
+                            
+                        
+
+                    }).error(function(e){
+                            console.log('Error al ejecutar la petición por:' + e);
+                        }
+                    );
+               
+                
+                //$("#valorEnvio").html(envio.costo);
+ 
+
+		  });
+        });
   
         function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),

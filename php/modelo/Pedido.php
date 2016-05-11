@@ -113,8 +113,9 @@ require_once 'autoload.php';
 
                     $stmt = DBConnection::getStatement($query);
                     
-                    $idColor = array_search($prod->color, Constantes::COLOR);
-                    $idTalle = array_search($prod->talle, Constantes::TALLE);
+                    //por ahora lo dejo asi porque viene del carrito que muestra el nombre del talle y color
+                    $idColor = array_search($prod->color, Constantes::$COLOR);
+                    $idTalle = array_search($prod->talle, Constantes::$TALLE);
 
                     $stmt->bindParam(':idPedido', $id,PDO::PARAM_INT );
                     $stmt->bindParam(':idProducto', $prod->id,PDO::PARAM_INT );
@@ -163,7 +164,7 @@ require_once 'autoload.php';
 		 $stmt->bindParam(':total', $pedido->total,PDO::PARAM_STR);
 		 $stmt->bindParam(':cantidad', $pedido->cantidad,PDO::PARAM_INT);
 		 $stmt->bindParam(':formaDePago', $pedido->formaDePago,PDO::PARAM_INT);
-		 $stmt->bindParam(':formaDeEnvio', $pedido->formaDeEnvio,PDO::PARAM_INT);
+		 $stmt->bindParam(':formaDeEnvio', $pedido->formaDeEnvio->idZona,PDO::PARAM_INT);
          $stmt->bindParam(':estadoDePago', $pedido->estadoDePago,PDO::PARAM_STR);
 		 $stmt->bindParam(':fecha',  $fecha);
 		

@@ -241,6 +241,8 @@ var Carrito = {
                     if (rta) {
                         $(".totalPedido").html(rta.monto);
                         $(".totalCantidad").html(rta.cantidad);
+                        $(".totalEnvio").html(rta.envio);
+                        $(".totalPedidoFinal").html(rta.montoTotal);
                     }
 			  },
 			  error:function(objXMLHttpRequest){
