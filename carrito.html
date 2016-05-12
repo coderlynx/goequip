@@ -204,7 +204,17 @@
             
             //temporal en este lugar
             $("#comprarMP").click(function() {
-                if($("#terminos").is(':checked')) {  
+                
+                if (!$("#terminos").is(':checked')) {
+                        alert("Debe aceptar los terminos y condiciones para continuar");
+                        return;
+                    }
+                    
+                    if (!$('input[name=optradio]:checked', '#formaEnvio').val()) {
+                        alert("Debe seleccionar forma de entrega");
+                        return;
+                    }
+             
                     
                     $.ajax({
                       async:false,    
@@ -223,10 +233,7 @@
                            console.log('Error al ejecutar la petición por:' + e);
                       }
                     });//fin btnComprar
-                } else {
-                    alert("Debe aceptar los terminos y condiciones para continuar");
-                }
-
+               
 		});
         
         

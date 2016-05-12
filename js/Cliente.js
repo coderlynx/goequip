@@ -35,7 +35,7 @@ var Cliente = {
         cliente.Depto = $("#depto").val();
         cliente.Localidad = $("#localidad").val();
         cliente.Provincia = $("#provincia").val();
-        cliente.Pais = $("#pais").val();
+        cliente.Pais = "Argentina";//TEMPORAL SI SE USA UN COMBO $("#pais").val();
         cliente.CP = $("#cp").val();
 		
 		return cliente;
@@ -97,6 +97,7 @@ var Cliente = {
             var rta = JSON.parse(respuestaJson);
             if(rta == "exito") {
                 alert("El cliente ha sigo guardado con exito.");
+                location.reload();
             } else {
               alert(rta);
             }

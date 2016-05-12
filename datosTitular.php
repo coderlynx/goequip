@@ -52,11 +52,12 @@ if(!isset($_SESSION["nombre"]))	{
 		<div class="container-fluid">
 		<div class="row text-center">
 			<h1><i class="fa fa-shopping-cart" aria-hidden="true"></i> Datos para tu compra</h1>
-			 <p id="mensaje_cliente" style="color:red;"></p>
+			 
 		</div>
 		<section class="row">
 			<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 col-lg-offset-1 col-md-offset-1 detalle-compra datos-compra">
 				<h2><i class="fa fa-user" aria-hidden="true"></i> Datos del titular:</h2>
+				<p id="mensaje_cliente" style="color:red;"></p>
 				<form action="">
                     <input id="idCliente" type="hidden">
 					<fieldset class="form-group">
@@ -91,22 +92,22 @@ if(!isset($_SESSION["nombre"]))	{
 					<fieldset class="form-group">
 					    <div>
 						    <div class="row">
-						    	<div class="col-lg-3">
+						    	<div class="col-lg-6">
 						    		<fieldset class="form-group">
 									    <label for="dni-tipo">DNI</label>
 									    <select class="form-control" id="dni-tipo">
 									      <option>-Tipo-</option>
 									      <option>DNI</option>
-									      <option>DNI</option>
-									      <option>DNI</option>
-									      <option>DNI</option>
+									      <option>LC</option>
+									      <option>LE</option>
 									    </select>
 									</fieldset>
 						    	</div>
-						    	<div class="col-lg-5">
+						    	<div class="col-lg-6">
 						    		<label for="dni-nro">Número</label>
 						    		<input type="text" class="form-control" id="dni" placeholder="Número">
 						    	</div>
+<!--
 						    	<div class="col-lg-4">
 						    		<fieldset class="form-group">
 									    <label for="dni-tipo">Sexo</label>
@@ -117,15 +118,27 @@ if(!isset($_SESSION["nombre"]))	{
 									    </select>
 									</fieldset>
 						    	</div>
+-->
 						    </div>
 					    </div>
 					</fieldset>
 
 					<fieldset class="form-group">
-					    <label for="cuit">Cuit/Cuil</label>
-					    <input type="text" class="form-control" id="cuil" placeholder="Ingrese su cuit/cuil">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="cuil">Cuit/Cuil</label>
+					        <input type="text" class="form-control" id="cuil" placeholder="Ingrese su cuit/cuil" />
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="fechaNacimiento">Fecha de Nacimiento</label>
+					        <input type="date" class="form-control" id="fechaNacimiento" placeholder="Fecha" />
+                        </div>
+                        
+                    </div>
+					    
 					</fieldset>
 
+<!--
 					<fieldset class="form-group">
 					    <div>
 						    <div class="row">
@@ -178,14 +191,23 @@ if(!isset($_SESSION["nombre"]))	{
 						    </div>
 					    </div>
 					</fieldset>
+-->
 
 				<hr>	
 					
 					<h2>Domicilio de facturación</h2>
 
 					<fieldset class="form-group">
-					    <label for="barrio">Ingrese su ciudad, barrio o localidad</label>
-					    <input type="text" class="form-control" id="barrio" placeholder="Barrio, ciudad o localidad...">
+                        <div class="row">
+                           <div class="col-lg-6">
+					            <label for="provincia">Provincia</label>
+					            <input type="text" class="form-control" id="provincia" placeholder="CABA, Buenos Aires, Santa Fe, etc">
+                            </div>
+                            <div class="col-lg-6">
+					            <label for="localidad">Ciudad, barrio o localidad</label>
+					            <input type="text" class="form-control" id="localidad" placeholder="Barrio, ciudad o localidad...">
+                            </div>
+                        </div>
 					</fieldset>
 
 					<fieldset class="form-group">
@@ -196,15 +218,15 @@ if(!isset($_SESSION["nombre"]))	{
 						    		<input type="text" class="form-control" id="calle" placeholder="Ej. Av. Centenario">
 						    	</div>
 						    	<div class="col-lg-4">
-						    		<label for="nro-calle">Nro.</label>
+						    		<label for="numero">Nro.</label>
 						    		<input type="text" class="form-control" id="numero" placeholder="Ej. 1458">
 						    	</div>
 						    	<div class="col-lg-2">
-						    		<label for="nro-piso">Piso</label>
+						    		<label for="piso">Piso</label>
 						    		<input type="text" class="form-control" id="piso" placeholder="Ej. 12">
 						    	</div>
 						    	<div class="col-lg-2">
-						    		<label for="nro-depto">Depto</label>
+						    		<label for="depto">Depto</label>
 						    		<input type="text" class="form-control" id="depto" placeholder="Ej. D">
 						    	</div>
 						    </div>
@@ -221,7 +243,7 @@ if(!isset($_SESSION["nombre"]))	{
 					    </div>
 					</fieldset>
 
-					<a class="btn btn-default btn-custom" href="#" role="button">Ingresar datos</a>
+					<a class="btn btn-default btn-custom" href="#" id="btnAltaCliente" role="button">Guardar datos</a>
                     <a class="btn btn-default btn-custom" role="button" id="btnDatosPersonales">Continuar</a>
 				</form>
 			</div>
