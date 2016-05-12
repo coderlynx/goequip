@@ -14,7 +14,7 @@ a, a:hover{text-decoration: none;}
 .inb{display: inline-block;}
 .activo a{color: #e61654!important;}
 .btn-custom{background-color: #e61654;color: #fff;}
-.btn-custom:hover{background-color: #1d1d1b;color: #e61654;}
+.btn-custom:hover{background-color: #1d1d1b;color: #c5c5c5;}
 .vinculo-custom{color: #e61654;}
 
 
@@ -155,7 +155,7 @@ ul.icon_list li a:hover{color: #e61654; border-color:#e61654; }
 .carrito{padding: 15px; padding-top: 0;}
 .carrito h1{padding-bottom: 20px; padding-top: 0; margin: 0; text-transform: uppercase;font-size: 2em;}
 .detalle-compra{background-color: #F9F9F9;}
-.detalle-compra h2, .detalle-carrito h2{padding: 0; margin: 0; font-size: 1.3em; font-weight: 700; margin-top: 25px; margin-bottom: 25px;}
+.detalle-compra h2, .detalle-carrito h2, .detalle-exito h2{padding: 0; margin: 0; font-size: 1.3em; font-weight: 700; margin-top: 25px; margin-bottom: 25px;}
 .detalle-compra img{width: 250px; height: auto; padding-right: 30px; padding-bottom: 10px;}
 .detalle-compra article{padding-bottom: 30px;}
 .info-detalle-compra{display: inline-block; vertical-align: top;}
@@ -178,6 +178,17 @@ ul.icon_list li a:hover{color: #e61654; border-color:#e61654; }
 /*CREAR CUENTA*/
 .crear-condiciones a{display: inline-block; color: #E61654; font-size: 1em; margin: 0;}
 .crear-condiciones p{color: #9f9f9f; font-size: .9em; margin-top: 20px;}
+
+/*EXITO*/
+.info-exito i{color: #E61654; font-size: 5em; margin-bottom: 20px; float: left; padding-right: 20px;}
+.info-exito p{font-size: .9em; padding-top: 10px; width: 85%;}
+.nro-pedido{font-weight: 700; color: #E61654; text-transform: uppercase;}
+
+
+/*DATOS COMPRA*/
+.datos-compra{padding-bottom: 50px; background-color: #F9F9F9;}
+
+
 
 /*QUERYS*/
 
@@ -202,7 +213,6 @@ ul.icon_list li a:hover{color: #e61654; border-color:#e61654; }
 	.navbar{min-height:10px; margin-bottom:0px;}
 	.news form{width: 60%;}
 	.eventos-img img{width: 100%;}
-
 	.detalle-producto{margin-top: 20px;}
 	.form-signin{width: 90%;}
 }
@@ -226,7 +236,11 @@ ul.icon_list li a:hover{color: #e61654; border-color:#e61654; }
 	.pie{padding-top: 25px; padding-left: 10px;}
 	.pie ul li a, .pie p{font-size: .9em;}
 	.contenedor-productos{padding-left: 40px; padding-right: 40px; padding-bottom: 20px; margin-bottom: 20px;}
+	.detalle-compra{padding-left: 20px;}
 	.form-signin{width: 100%; padding: 0px;}
+	.detalle-exito{padding-left: 20px;}
+	.exito h1{padding-bottom: 0px;}
+	.info-exito p{font-size: .9em; padding-top: 5px; width: 95%;}
 }
 
 @media all and (max-width: 300px){

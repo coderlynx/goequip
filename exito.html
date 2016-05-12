@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Outlet Gym</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="css/normalize.css" />
+	<link rel="stylesheet" href="css/normalize.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/lib/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+	<!-- Google Font -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- Estilos -->
+	<link rel="stylesheet" href="css/estilos.css">
+
+</head>
+<body>
+	<!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <main>
+    <div class="contenedor">
+        <header id="header">
+    		
+    	</header>
+
+	    <nav id="nav" class="navbar navbar-default">
+		  
+		</nav>
+
+	<!-- /.CATEGORIA -->
+	<div class="contenedor carrito exito">	
+		<div class="container-fluid">
+		<div class="row text-center">
+			<h1><i class="fa fa-shopping-cart" aria-hidden="true"></i> Tu carrito</h1>
+		</div>
+		<section class="row">
+			<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 col-lg-offset-1 col-md-offset-1 detalle-exito">
+				<h2>¡Compra realizada con éxito!</h2>
+				<article>
+					<div class="info-detalle-compra info-exito">
+						<i class="fa fa-check-circle" aria-hidden="true"></i>
+						<p>Estarás recibiendo un mail con el resúmen de tu compra en la dirección de correo ingresada. ¡Muchas gracias!.</p>
+						<p class="nro-pedido">Número de pedido: <span id="nroPedido"></span> </p>
+					</div>
+				</article>
+			</div>
+
+			
+			<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 detalle-carrito">
+				<article class="detalle-carrito-resumen">
+					<h2><i class="fa fa-shopping-cart" aria-hidden="true"></i> Resúmen de tu compra:</h2>
+					<div class="row">
+					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Cantidad:</span></p></div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p class="totalCantidad"> 3</p></div>
+
+					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total:</span></p></div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ <span class="totalPedido"></span></p></div>
+
+					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Envío:</span></p></div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ <span class="totalEnvio"></span></p></div>
+
+					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total:</span></p></div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p class="precio"> $ <span class="totalPedidoFinal"></span></p></div>
+					</div>
+					
+				</article>
+			</div>
+		</section>
+		</div>
+	</div>
+
+
+	
+    </div><!-- /.contenedor global -->
+    
+	<footer id="footer" class="pie">
+		
+	</footer>
+
+	
+	<script src="js/lib/jquery.js"></script>
+	<!--<script src="http://code.jquery.com/jquery-latest.js"></script><!-->
+	<script src="js/lib/bootstrap.min.js"></script>
+	<script src="js/Carrito.js"></script>
+	<script>
+		$( document ).ready(function() {
+            
+             //codigo repetido extraido
+             $( "#header" ).load( "codigoComun.html #header", function() {
+                Carrito.getTotal();
+                //Autenticacion.init();
+             }); 
+             $( "#nav" ).load( "codigoComun.html #nav" );
+             $( "#footer" ).load( "codigoComun.html #footer" );
+
+
+            $("#nroPedido").html(getUrlParameter('nroPedido'))
+
+
+		});
+  
+        function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+        
+	
+	</script>	
+</body>
+</html>

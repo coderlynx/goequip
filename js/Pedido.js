@@ -37,7 +37,7 @@ var Pedido = {
         $.post('php/controllerPedido.php', {pedido:jsonPedido }, function(respuestaJson) {
             var rta = JSON.parse(respuestaJson);
             if(rta) {
-                window.location.href = "CompraFinalizada.php?nroPedido=" + rta;
+                window.location.href = "exito.html?nroPedido=" + rta;
                 //alert("El nro de pedido es: " + rta);
             }
         }).error(function(e){
