@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Outlet Gym</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="css/normalize.css" />
+	<link rel="stylesheet" href="css/normalize.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+	<!-- Google Font -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- Estilos -->
+	<link rel="stylesheet" href="css/estilos.css">
+
+</head>
+<body>
+	<!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <main>
+    <div class="contenedor">
+    	<header>
+    		<div class="container-fluid">
+    			<div class="row">
+    				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 logo">
+    					<h1><a href="index.html" title="Tienda"><img src="img/logo.jpg" alt="Tienda"></a></h1>
+    				</div>
+    				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    					<div class="user">
+    						<!-- Single button -->
+							<div class="btn-group">
+							  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <i class="fa fa-user" aria-hidden="true"></i> <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu pull-right">
+							    <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i> Iniciar sesión</a></li>
+							    <li role="separator" class="divider"></li>
+							    <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> Registrarse</a></li>
+							    <li role="separator" class="divider"></li>
+							    <li><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i> Mis datos</a></li>
+							    <li role="separator" class="divider"></li>
+							    <li><a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i> Salir</a></li>
+							  </ul>
+							</div>
+    						<!-- <p><span class="hide-767">Bienvenido a tu Tienda de Fitness on-line</span></p><a href=""><i class="fa fa-user" aria-hidden="true"></i> <i class="fa fa-angle-down" aria-hidden="true"></i></a> -->
+    					</div>
+    					<div class="total-header">
+    						<a href="">Total $0 <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="badge">0</span></a>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+    	</header>
+
+	    <nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		    </div>
+
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li><a href="#">Waterrower</a></li>
+		        <li><a href="#">Kangoo Jumps</a></li>
+		        <li><a href="#">Equipos Cardio</a></li>
+		        <li><a href="#">Accesorios</a></li>
+		        <li><a href="#">Indumentaria</a></li>
+		      </ul>
+		      <form class="navbar-form navbar-right" role="search">
+		        <div class="form-group">
+		          <input type="text" class="form-control busqueda-input" placeholder="Búsqueda">
+		        </div>
+		        <button type="submit" class="btn btn-default busqueda-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+		      </form>
+		    </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+		</nav>
+
+		<!-- /.CATEGORIA -->
+		<div class="contenedor carrito">	
+			<div class="container-fluid">
+				<div class="row text-center">
+					<h1><i class="fa fa-usd" aria-hidden="true"></i></i> Realizar el pago</h1>
+					<a class="btn btn-default btn-custom btn-pagar" href="#" role="button">PAGAR</a>
+				</div>
+				<section class="row">
+					<div class="col-lg-4 col-md-4 col-sm-8 col-xs-12 detalle-carrito col-lg-push-4 col-md-push-4 col-sm-push-2">
+						<article class="detalle-carrito-resumen">
+							<h2><i class="fa fa-shopping-cart" aria-hidden="true"></i> Resúmen de tu compra:</h2>
+							<div class="row">
+								<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Cantidad:</span></p></div>
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> 3</p></div>
+
+								<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total:</span></p></div>
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ 37.900</p></div>
+
+								<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Envío:</span></p></div>
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ 200</p></div>
+
+								<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total:</span></p></div>
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p class="precio"> $ 38.100</p></div>
+							</div>
+						</article>
+					</div>
+				</section>
+			</div>
+		</div>
+    </div><!-- /.contenedor global -->
+    
+	<footer class="pie">
+		<div class="contenedor">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+						<ul>
+							<li><a href="">Aviso legal</a></li>
+							<li><a href="">Condiciones generales</a></li>
+							<li><a href="">Política de cookies</a></li>
+						</ul>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+						<ul>
+							<li><a href="">Contacto</a></li>
+							<li><p>Atención al cliente: 4747-4747</p></li>
+							<li><a href="mailto:info@tiendafit.com.ar"><span class="vinculo-custom">info@tiendafit.com.ar</span></a></li>
+						</ul>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+						<div class="social">
+                        <img src="img/titulos.gif" alt=" ">
+                        <h2>Seguinos:</h2>
+                        <ul class="icon_list">
+                            <li><a href="#"target="_blank"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"target="_blank"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	
+	<script src="js/lib/jquery.js"></script>
+	<!--<script src="http://code.jquery.com/jquery-latest.js"></script><!-->
+	<script src="js/lib/bootstrap.min.js"></script>
+</body>
+</html>

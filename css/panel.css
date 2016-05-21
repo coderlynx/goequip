@@ -1,0 +1,42 @@
+/*HEADER*/
+header{padding: 10px; padding-bottom: 10px;}
+main{padding: 10px;}
+h1, h2, h3, h4, p, a, ul, li {font-family: 'Roboto', sans-serif;}
+
+h2{font-size: 1.7em; font-weight: 700; text-transform: uppercase; margin: 0;}
+h3{font-size: 1.5em; margin: 0;}
+
+.btn-custom{background-color: #e61654;color: #fff; padding-left: 40px; padding-right: 40px;}
+.btn-custom:hover{background-color: #1d1d1b;color: #c5c5c5;}
+
+.logo img{width: 300px; height: auto; padding-top: 10px;}
+.logo h1{padding: 0; margin:0;}
+
+.btn-sesion{margin-top: 8px;}
+
+/*PRODUCTOS*/
+.producto img{padding: 10px 0px;}
+.producto button{margin-bottom: 10px;}
+.producto button{margin-right: 10px;}
+
+/*CREAR PRODUCTO*/
+.producto-crear{padding-top: 20px;}
+.circle{
+	width:30px;
+	height:30px;
+	border-radius:50px;
+	line-height:100px;
+	border: 1px solid #ccc;
+	display: inline-block;
+    cursor: pointer;
+}
+.color-blanco{background-color: #fff;}
+.color-gris{background-color: #ccc;}
+.color-negro{background-color: #000;}
+
+.producto-crear .row{margin-bottom: 20px;}
+.producto-crear p{font-weight: 700;}
+
+/*FOOTER*/
+.pie{background-color: #1d1d1b; padding-top: 50px; padding-bottom: 30px; margin-top: 30px;}
+.pie p{color: #ccc; text-transform: uppercase; letter-spacing: 2px; font-size: .9em;}

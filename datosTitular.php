@@ -312,9 +312,9 @@ if(!isset($_SESSION["nombre"]))	{
                 
                 $("#btnDatosPersonales").click(function() {
                     
-                    var idCliente = 1;
+                    //var idCliente = 1;
                     
-                    $.post('php/controllerPedido.php', {idCliente:idCliente}, function(respuesta) {
+                    $.post('php/controllerPedido.php', {idCliente:true}, function(respuesta) {
                         //var rta = JSON.parse(respuestaJson);
                         if(respuesta == 'ok') {
                            window.location.href = "Pagar.php";

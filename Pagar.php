@@ -111,19 +111,98 @@ print_r ($search_result);*/
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Pagar</title>
-       
-    </head>
+<head>
+	<meta charset="UTF-8">
+	<title>Outlet Gym</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="css/normalize.css" />
+	<link rel="stylesheet" href="css/normalize.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/lib/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+	<!-- Google Font -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- Estilos -->
+	<link rel="stylesheet" href="css/estilos.css">
+
+</head>
     <body>
-        <a href="<?php echo $preference['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-rn-m" onreturn="execute_my_onreturn">Comprar</a>
-        <script type="text/javascript" src="https://www.mercadopago.com/org-img/jsapi/mptools/buttons/render.js"></script>
+       <main>
+    <div class="contenedor">
+    	<header id="header">  	</header>
+
+	    <nav id="nav" class="navbar navbar-default">
+		  
+		</nav>
+
+		<!-- /.CATEGORIA -->
+		<div class="contenedor carrito">	
+			<div class="container-fluid">
+				<div class="row text-center">
+					<h1><i class="fa fa-usd" aria-hidden="true"></i></i> Realizar el pago</h1>
+<!--					<a href="<?php echo $preference['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-rn-m" onreturn="execute_my_onreturn">Comprar</a>-->
+					<a href="<?php echo $preference['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="btn btn-default btn-custom btn-pagar" role="button" onreturn="execute_my_onreturn">Pagar</a>
+<!--					<a class="btn btn-default btn-custom btn-pagar" href="#" role="button">PAGAR</a>-->
+				</div>
+				<section class="row">
+					<div class="col-lg-4 col-md-4 col-sm-8 col-xs-12 detalle-carrito col-lg-push-4 col-md-push-4 col-sm-push-2">
+						<article class="detalle-carrito-resumen">
+							<h2><i class="fa fa-shopping-cart" aria-hidden="true"></i> Resúmen de tu compra:</h2>
+							<div class="row">
+								<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Cantidad:</span></p></div>
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p class="totalCantidad"> </p></div>
+
+								<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total:</span></p></div>
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ <span class="totalPedido"></span></p></div>
+
+								<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Envío:</span></p></div>
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ <span class="totalEnvio"></span></p></div>
+
+								<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total:</span></p></div>
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p class="precio"> $ <span class="totalPedidoFinal"></span></p></div>
+							</div>
+						</article>
+					</div>
+				</section>
+			</div>
+		</div>
+    </div><!-- /.contenedor global -->
+    
+	<footer id="footer"></footer>
+       
+       
+       
+        
+    
     
     </body>
     
     <?php include('scripts.html') ?>
+    <script type="text/javascript" src="https://www.mercadopago.com/org-img/jsapi/mptools/buttons/render.js"></script>
+    <script src="js/lib/jquery.js"></script>
+	<script src="js/lib/bootstrap.min.js"></script>
     <script src="js/Pedido.js"></script>
+    <script src="js/Carrito.js"></script>
     <script type="text/javascript">
+        $( document ).ready(function() {
+            
+             //codigo repetido extraido
+             $( "#header" ).load( "codigoComun.html #header", function() {
+                Carrito.getTotal();
+             }); 
+            
+             $( "#nav" ).load( "codigoComun.html #nav" );
+             $( "#footer" ).load( "codigoComun.html #footer" );
+             $( "#destacados" ).load( "codigoComun.html #destacados" );
+
+		});
+  
+        
+        
       
         function execute_my_onreturn (json) {
               /*{

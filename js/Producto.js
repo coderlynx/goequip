@@ -33,9 +33,10 @@ var Producto = {
                 
         var div_item = $('<div>');
 			div_item.attr('id',producto.id);
-			div_item.addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12');
+			div_item.addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12 producto');
         
-        var article = $("<article>");
+        
+       
         
         var link = $("<a>");
         link.attr('href','producto.html?id=' + producto.id + '&categoria=' + producto.categoria.id);
@@ -49,25 +50,30 @@ var Producto = {
         h3.html(producto.modelo);
         
         var p = $("<p>");
-        p.html(producto.precio);
+        p.html('Precio: $ ' + producto.precio);
+        
         
         link.append(foto);
-        article.append(link);
-        article.append(h3);
-        article.append(p);
-        div_item.append(article);
+        div_item.append(link);
+        div_item.append(h3);
+        div_item.append(p);
+        //div_item.append(article);
 
         if($('#pantalla').val() == 'pantallaProductos'){
+            var div_btn = $("<div>");
+            
             var btnEditar = $("<button>");
-            btnEditar.addClass('btnEditar');
-            btnEditar.html('Editar');
-
+            btnEditar.addClass('btn btn-info btn-editar btnEditar');
+            btnEditar.html('<i class="fa fa-pencil" aria-hidden="true"></i> Editar');            
+            
             var btnEliminar = $("<button>");
-            btnEliminar.addClass('btnEliminar');
-            btnEliminar.html('Eliminar');
+            btnEliminar.addClass('btn btn-danger btn-eliminar btnEliminar');
+            btnEliminar.html('<i class="fa fa-trash" aria-hidden="true"></i> Eliminar');
 
-            div_item.append(btnEditar);
-            div_item.append(btnEliminar);  
+            
+            div_btn.append(btnEditar);
+            div_btn.append(btnEliminar);  
+            div_item.append(div_btn);  
         }
         
         contenedor.append(div_item);
@@ -99,6 +105,9 @@ var Producto = {
                 if(rta == "exito") {
                     alert("El producto ha sigo guardado con exito.");
                     $("#visor").empty();
+                }
+                else {
+                    alert(respuestaJson);
                 }
             },
             error: function(e){
@@ -281,13 +290,13 @@ var Producto = {
         
         
         $(".btnEditar").click(function() {
-            var idProducto = this.parentNode.id;
+            var idProducto = this.parentNode.parentNode.id;
         
             $.get('php/controllerProducto.php', {id:idProducto}, function(respuestaJson) {
                 var rta = JSON.parse(respuestaJson);
                 if(rta) {
                     //alert(rta.modelo);
-                    window.location.href = 'AgregarProducto.php?id='+rta.id;
+                    window.location.href = 'crear-producto.php?id='+rta.id;
                 } else {
                     alert("Producto no encontrado");
                 }
@@ -302,7 +311,7 @@ var Producto = {
             var r = confirm("¿Está seguro de querer eliminar el producto " + this.parentNode.id + "?");
             
             if (r == true) {
-                var idProducto = this.parentNode.id;
+                var idProducto = this.parentNode.parentNode.id;
                // borro el producto
                 $.ajax({ 
                     type: 'DELETE',   

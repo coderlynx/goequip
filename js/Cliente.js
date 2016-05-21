@@ -97,7 +97,9 @@ var Cliente = {
             var rta = JSON.parse(respuestaJson);
             if(rta == "exito") {
                 alert("El cliente ha sigo guardado con exito.");
-                location.reload();
+                $("#btnDatosPersonales").click();
+                //window.location.href = "Pagar.php";
+                //location.reload();
             } else {
               alert(rta);
             }

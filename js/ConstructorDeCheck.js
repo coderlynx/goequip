@@ -40,7 +40,7 @@ var ConstructorDeCheck = {
 				
 					for(i = 0; i < rta.length; i++) {
 						var res =  rta[i].descripcion.replace(" ", "_");
-						$(contenedor).append('<p class="chk" ><input class="check" type="checkbox" data-descripcion=' + res + ' name=' + atributo +'[]  value=' + rta[i].id + ' />' + rta[i].descripcion + '</p>');
+						$(contenedor).append('<label class="checkbox-inline" ><input class="check" type="checkbox" data-descripcion=' + res + ' name=' + atributo +'[]  value=' + rta[i].id + ' />' + rta[i].descripcion + '</label>');
 					}
 			  },
 			  error:function(e){
@@ -52,7 +52,7 @@ var ConstructorDeCheck = {
 	armarCheckBoxColores: function(contenedor, atributo) {
         //tuve que hacer otro muy parecido a talles, pero como dibuja distinto lo cambie
 		var json = JSON.stringify(atributo);
-		
+        
 		
 		$.ajax({
 			  async:false,    
@@ -65,7 +65,7 @@ var ConstructorDeCheck = {
 				
 					for(i = 0; i < rta.length; i++) {
 						var res =  rta[i].descripcion.replace(" ", "_");
-						$(contenedor).append('<p class="chk" ><input class="check" type="checkbox" data-descripcion=' + res + ' name=' + atributo +'[]  value=' + rta[i].id + ' /><span class="circle" style="background:' + rta[i].descripcion + '"></p>');
+						$(contenedor).append('<label class="checkbox-inline" ><input class="check" type="checkbox" data-descripcion=' + res + ' name=' + atributo +'[]  value=' + rta[i].id + ' /><div class="circle" style="background:' + rta[i].descripcion + '"></div></label>');
 					}
 			  },
 			  error:function(e){
