@@ -50,7 +50,7 @@ if(isset($_SESSION['pedido']['total'])) {
                 "name"=> $cliente->nombre,
                 "surname"=> $cliente->apellido,
                 "email"=> $cliente->email,
-                "date_created"=> "2015-06-02T12:58:41.425-04:00",
+                "date_created"=> date('Y/m/d H:i:s'),
                 "phone"=>[
                     "area_code"=> "11",
                     "number"=> $cliente->telefono

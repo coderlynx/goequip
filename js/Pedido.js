@@ -35,10 +35,12 @@ var Pedido = {
 
         // guardo el producto
         $.post('php/controllerPedido.php', {pedido:jsonPedido }, function(respuestaJson) {
-            var rta = JSON.parse(respuestaJson);
-            if(rta) {
-                window.location.href = "exito.html?nroPedido=" + rta;
-                //alert("El nro de pedido es: " + rta);
+            //var rta = JSON.parse(respuestaJson);
+            
+            if($.isNumeric(respuestaJson)) {
+                window.location.href = "exito.html?nroPedido=" + rta; 
+            } else {
+                alert("Error: " + respuestaJson);
             }
         }).error(function(e){
                 console.log('Error al ejecutar la petición por:' + e);

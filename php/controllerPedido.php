@@ -37,11 +37,11 @@ switch ($metodo) {
         if (isset($_POST['formaDeEntrega'])) {
             
             
-            $entrega = json_decode($_POST['formaDeEntrega']);
+            $entrega_json = json_decode($_POST['formaDeEntrega']);
             
-            $_SESSION['entrega']->costo = $entrega->costo;
-            $_SESSION['entrega']->idZona = $entrega->idLugar;
-            $_SESSION['entrega']->nombreZona = $entrega->nombreLugar;
+            $_SESSION['entrega']->costo = $entrega_json->costo;
+            $_SESSION['entrega']->idZona = $entrega_json->idLugar;
+            $_SESSION['entrega']->nombreZona = $entrega_json->nombreLugar;
             $_SESSION["pedido"]["formaDeEntrega"] = $_SESSION['entrega'];
             echo 'ok';
             break;
@@ -63,16 +63,25 @@ switch ($metodo) {
 
         if($ped->formaDePago != 'credit_card') $formaDePago = Constantes::PAGO_FACTURA;
 
+        //creo el pedido
         $pedido = new Pedido(null, $ped->nroPedido, $idCliente ,$montoTotal, $cantidadTotal, $formaDePago, $formaDeEntrega,$ped->estadoDePago, $productos,null);
-
 
         $validator = new Validator;
 
         $validator->validate($pedido, Pedido::$reglas);
-
+        //$entrega = new Entrega(null, $formaDeEntrega->costo, $formaDeEntrega->idZona, $pedido->nroPedido, null);
+        //die(var_dump($entrega->idZona));
+        
         if($validator->tuvoExito() && Pedido::insert($pedido)) {
-            echo $pedido->nroPedido;
-            exit;
+            //si pude crear el pedido creo la entrega
+            //$entrega = new Entrega(null, $formaDeEntrega->costo, $formaDeEntrega->idZona, $pedido->nroPedido, null);
+            //$validator_entrega = new Validator;
+            //$validator->validate($entrega, Entrega::$reglas);
+        
+            //if($validator->tuvoExito() && Entrega::insert($entrega)) {
+                echo $pedido->nroPedido;
+                exit;
+           // } 
         }
 
         echo json_encode($validator->getErrores());
