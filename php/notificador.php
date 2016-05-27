@@ -6,6 +6,9 @@ session_start();
 $mp = new MP ("5836268351908133", "8q3o4CY9gQKTx8LCz9clL4wQdMCBb1Zq");
 $mp->sandbox_mode(false);
 $MAIL_DUENIO = 'fernandocaino84@gmail.com';
+$headers = "MIME-Version: 1.0" . "\r\n";
+$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+$headers .= 'From: <outletgym@outletgym.com>' . "\r\n";
 
 //$db = DBConnection::getConnection();
 // VAMOS A BUSCAR A MP LOS DATOS DE LA OPERACION
@@ -51,20 +54,17 @@ try
                 }
 
 
-               $mensaje_cliente = "Estimado " . $data['payer']['first_name'] . ' ' . $data['payer']['last_name'] + ',<br/><br/> 
-                Este es su recibo de pago de la factura ' . $data['id'] . 'enviada el ' . $fecha . ' de su compra en GOEQUIP por un total de $ ' . $data['transaction_amount'] . '.<br />Estado: ' . $data['status'] . '<br /><br />Este correo servirá como comprobante oficial de este pago.';
+               $mensaje_cliente = "Estimado " . $data['payer']['first_name'] . ' ' . $data['payer']['last_name'] + ',<br/><br/>Este es su recibo de pago de la factura ' . $data['id'] . ' enviada el ' . $fecha . ' de su compra en GOEQUIP por un total de $ ' . $data['transaction_amount'] . '.<br />Estado: ' . $data['status'] . '<br /><br />Este correo servirá como comprobante oficial de este pago.';
 
                 $mensaje_duenio = "Has concretado una venta.<br /><br />El cliente " . $data['payer']['first_name'] . ' ' . $data['payer']['last_name'] . ', ha realizado el pago por un total de $ ' . $data['transaction_amount'] . '.<br />El estado del pago es: ' . $data['status'] . '.';
 
                 $msg = print_r($data,1);
                 // send email a cliente
                 $mail_cliente = $data['payer']['email'];
-                
-               
-                mail($mail_cliente,"Confirmación de Pago GOEQUIP",$mensaje_cliente);
+                mail($MAIL_DUENIO,"Confirmación de Pago GOEQUIP",$mensaje_cliente,$headers);
                 //send mail a dueño
                 $mail_duenio = $data['collector']['email'];
-                mail($mail_duenio,"Notificación de Venta realizada",$mensaje_duenio);
+                mail($mail_duenio,"Notificación de Venta realizada",$mensaje_duenio,$headers);
            } else {
                ## ESTE ES IMPORTANTE
                 ## SI EL ID DEL PAGO YA LO TENIAMOS REGISTRADO, ENTONCES ES QUE ####EXISTIO#### UN CAMBIO DE ESTADO ( $data["status"] y $data["status_detail"] lo explican ) 
@@ -88,20 +88,19 @@ try
                     //throw new Exception("Error en buscar el pago.");
                 }
 
-              $mensaje_cliente = "Estimado " . $data['payer']['first_name'] . ' ' . $data['payer']['last_name'] . ',<br/><br/> 
-                Este es su recibo de pago de la factura ' . $data['id'] . 'enviada el ' . $fecha . ' de su compra en GOEQUIP por un total de $ ' . $data['transaction_amount'] . '.<br />Estado: ' . $data['status'] . '<br /><br />Este correo servirá como comprobante oficial de este pago.';
+              $mensaje_cliente = "Estimado " . $data['payer']['first_name'] . ' ' . $data['payer']['last_name'] . ',<br/><br/>Este es su recibo de pago de la factura ' . $data['id'] . ' enviada el ' . $fecha . ' de su compra en GOEQUIP por un total de $ ' . $data['transaction_amount'] . '.<br />Estado: ' . $data['status'] . '<br /><br />Este correo servirá como comprobante oficial de este pago.';
 
-                $mensaje_duenio = "Has concretado una venta pendiente.<br /><br />El cliente " . $data['payer']['first_name'] . ' ' . $data['payer']['last_name'] . ', ha realizado el pago por un total de $ ' . $data['transaction_amount'] . ' del pedido número ' . $data['id'] + ' que se encontraba pendiente.<br />El estado del pago es: ' . $data['status'] . '.';
+                $mensaje_duenio = "Has concretado una venta pendiente.<br /><br />El cliente " . $data['payer']['first_name'] . ' ' . $data['payer']['last_name'] . ', ha realizado el pago por un total de $ ' . $data['transaction_amount'] . ' del pedido número ' . $data['id'] . ' que se encontraba pendiente.<br />El estado del pago es: ' . $data['status'] . '.';
 
                
                 $msg = print_r($data,1);
                //die($mensaje_cliente);
                 // send email a cliente
                 $mail_cliente = $data['payer']['email'];
-                mail($mail_cliente,"Confirmación de Pago GOEQUIP",$mensaje_cliente);
+                mail($MAIL_DUENIO,"Confirmación de Pago GOEQUIP",$mensaje_cliente,$headers);
                 //send mail a dueño
                 $mail_duenio = $data['collector']['email'];
-                mail($mail_duenio,"Notificación de Venta realizada",$mensaje_duenio);
+                mail($mail_duenio,"Notificación de Venta realizada",$mensaje_duenio,$headers);
 
            }
 
@@ -180,7 +179,7 @@ try
     $msg = "GET:\n".print_r($_GET,1)."\n".$e->getMessage();
     // send email
     $mail_duenio = $MAIL_DUENIO;
-    mail($mail_duenio,"Error de conectividad",$msg);
+    mail($mail_duenio,"Error de conectividad",$msg,$headers);
     
 	/*$sendmail = new PHPMailer();
 	$sendmail->IsHTML(false);
@@ -212,7 +211,7 @@ header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
 $msg = "GET:\n".print_r($_GET,1)."\n"."SERVER:\n".print_r($_SERVER,1);
 // send email
 $mail_duenio = $MAIL_DUENIO;
-mail($mail_duenio,"Error: hubo un movimiento en la cuenta pero no se reconocio",$msg);
+mail($mail_duenio,"Error: hubo un movimiento en la cuenta pero no se reconocio",$msg,$headers);
 
 /*$sendmail = new PHPMailer();
 $sendmail->IsHTML(false);
