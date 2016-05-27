@@ -38,7 +38,7 @@ var Pedido = {
             //var rta = JSON.parse(respuestaJson);
             
             if($.isNumeric(respuestaJson)) {
-                window.location.href = "exito.html?nroPedido=" + rta; 
+                window.location.href = "exito.html?nroPedido=" + respuestaJson; 
             } else {
                 alert("Error: " + respuestaJson);
             }
