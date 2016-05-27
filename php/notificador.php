@@ -59,7 +59,7 @@ try
                 $msg = print_r($data,1);
                 // send email a cliente
                 $mail_cliente = $data['payer']['email'];
-                die($mensaje_cliente);
+                
                
                 mail($mail_cliente,"Confirmación de Pago GOEQUIP",$mensaje_cliente);
                 //send mail a dueño
