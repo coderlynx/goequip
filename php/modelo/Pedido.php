@@ -131,6 +131,12 @@ require_once 'autoload.php';
                     Producto::updateStock($prod);
                     
                 }
+            
+            
+                //Inserto la entrega
+                $entrega = new Entrega(null, $pedido->formaDeEnvio->costo, $pedido->formaDeEnvio->idZona, $pedido->nroPedido, null);
+            
+                Entrega::insert($entrega);
 
                 //$_SESSION['idProducto'] = $producto->id;
 			
