@@ -201,7 +201,7 @@ session_start();
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
-							    <label for="exampleInputFile">Seleccione (una o más imágnees, al mismo tiempo):</label>
+							    <label for="fotos">Seleccione (una o más imágnees, al mismo tiempo):</label>
 							    <input type="file" id="fotos" name="files[]" multiple >
 							    <p class="help-block">Nota: Formatos de imágnes soportados: .jpeg, .jpg, .png, .gif</p>
 							    <p id="cantArchivos" style="margin-top: 10px"></p>
@@ -237,7 +237,7 @@ session_start();
                     var producto = Producto.armarObjetoProducto();
                     //producto.Id = null;
                     // OJO, NO cambiar el método nativo de JS por JQuery
-                    var form = document.querySelector("form");
+                    var form = document.getElementById("agregarProducto");
                     Producto.insert(producto, form);
                 }  
             });

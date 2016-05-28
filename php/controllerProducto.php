@@ -41,6 +41,8 @@ switch ($metodo) {
         // Si se cargaron imágenes, almaceno el array retornado con las rutas
         if(!(empty($_FILES))) {
             $rutasImagenes = moverImagenes();
+        } else {
+            echo json_encode("No hay imágenes cargadas.");
         }
         
         $prod = json_decode($_POST['producto']);
