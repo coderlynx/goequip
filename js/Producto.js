@@ -212,33 +212,35 @@ var Producto = {
         $("#precio").val(producto.precio);
     },
     completarDetalle: function(producto) {
+        var length = producto.fotos.length,
+            categoria = producto.categoria['descripcion'],
+            modelo = producto.modelo,
+            link = {}, ruta = "", img = {};
+
         $(".divProducto").attr('id',producto.id);
         $("#modelo").html(producto.modelo);
         $("#precio").html(producto.precio);
         $("#descripcion").html(producto.descripcion);
-        if (producto.fotos[0]) {
-            $("#imgPrincipal").attr('src',producto.fotos[0]);
-        } else {
-            $("#imgPrincipal").attr('src',"img/productos/sin_imagen.png");
-        }
-
-        for (i=1; i < producto.fotos.length;i++){
-            var link = $("<a>");
-            var ruta = producto.fotos[i];
-            var filename = producto.fotos[i].replace(/^.*[\\\/]/, '');
-            link.attr({href: ruta, "data-lightbox": filename,
-                      "data-title": filename.substring(1,filename.lastIndexOf('.'))});
+        
+        (producto.fotos[0]) ? $("#imgPrincipal").attr('src',producto.fotos[0]) : $("#imgPrincipal").attr('src',"img/productos/sin_imagen.png");
+        
+        // Dibuja imágenes
+        for (i = 1 ; i < length; i++) {
+            link = $("<a>");
+            ruta = producto.fotos[i];
+            link.attr({href: ruta, "data-lightbox": categoria, "data-title": modelo});
+            link.css({display: 'inline-block', marginLeft: '10px'});
             
-            var img = $("<img>");
-            img.attr('src',producto.fotos[i]);
-            img.attr('alt',producto.modelo);
+            img = $("<img>");
+            img.attr({'src': producto.fotos[i], 'alt': modelo});
+            img.addClass('img-responsive');
             
             link.append(img);          
             $(".preview").append(link);
         }
         
         //dibujo los colores
-        for (i=0; i < producto.colores.length;i++){
+        for (i = 0; i < producto.colores.length; i++){
             var div = $("<div>");
             div.addClass('circle');
             div.attr('style','background:' + producto.colores[i].descripcion);
@@ -247,9 +249,8 @@ var Producto = {
             $('.colores').append(div);
         }
 
-        
         //dibujo los talles
-        for (i=0; i < producto.talles.length;i++){
+        for (i=0 ; i < producto.talles.length; i++){
             var span = $("<span>");
             span.addClass('talle');
             span.attr('data-talle',producto.talles[i].id);
@@ -257,8 +258,7 @@ var Producto = {
 
             $('.talla').append(span);
         }
-        
-            
+         
         //para dibujar si tiene o no stock
         if(producto.stock > 0) {
             for (i=1; i < producto.stock; i++) {

@@ -203,7 +203,8 @@ session_start();
 							<div class="form-group">
 							    <label for="fotos">Seleccione (una o más imágnees, al mismo tiempo):</label>
 							    <input type="file" id="fotos" name="files[]" multiple >
-							    <p class="help-block">Nota: Formatos de imágnes soportados: .jpeg, .jpg, .png, .gif</p>
+							    <p class="help-block">Formato: tipos de imágnes soportados: .jpeg, .jpg, .png, .gif</p>
+							    <p class="help-block">Tamaño: se recomienda utilizar imágenes de 350 x 300 (pixels)</p>
 							    <p id="cantArchivos" style="margin-top: 10px"></p>
                                 <div id="visor"></div><br>
 							</div>
