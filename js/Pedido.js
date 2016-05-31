@@ -70,13 +70,16 @@ var Pedido = {
         columnas.push(new Columna('Detalle', {
             generar: function (un_pedido) {
                 var btn_accion = $('<a>');
+                btn_accion.html('Ver ');
                 var img = $('<img>');
                 img.attr('src', 'css/img/lupa.png');
                 img.attr('width', '15px');
                 img.attr('height', '15px');
+                img.attr('style', 'padding: 0px 0px;');
+                img.attr('alt', 'ver');
                 btn_accion.append(img);
                 btn_accion.click(function () {
-                    $('#div_tabla_Detalle').show();
+                    $('#div_detalle').show();
                     _this.getPedido(un_pedido.id);
                 });
                 return btn_accion;
@@ -116,7 +119,7 @@ var Pedido = {
     dibujarTablaDetalle: function (pedido, div_tabla) {
         var _this = this;
         $("#div_tabla_detalle").empty();
-        $('#div_detalle_pedido').show();
+        $('#div_tabla_detalle').show();
         $("#detalleNroPedido").html(pedido.nroPedido);
         $("#detalleCliente").html(pedido.idCliente);
         $("#detalleFecha").html(pedido.fecha);
