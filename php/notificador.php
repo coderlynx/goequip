@@ -54,7 +54,7 @@ try
                 }
 
 
-               $mensaje_cliente = "Estimado " . $data['payer']['first_name'] . ' ' . $data['payer']['last_name'] + ',<br/><br/>Este es su recibo de pago de la factura ' . $data['id'] . ' enviada el ' . $fecha . ' de su compra en GOEQUIP por un total de $ ' . $data['transaction_amount'] . '.<br />Estado: ' . $data['status'] . '<br /><br />Este correo servirá como comprobante oficial de este pago.';
+               $mensaje_cliente = "Estimado " . $data['payer']['first_name'] . ' ' . $data['payer']['last_name'] . ',<br/><br/>Este es su recibo de pago de la factura ' . $data['id'] . ' enviada el ' . $fecha . ' de su compra en GOEQUIP por un total de $ ' . $data['transaction_amount'] . '.<br />Estado: ' . $data['status'] . '<br /><br />Este correo servirá como comprobante oficial de este pago.';
 
                 $mensaje_duenio = "Has concretado una venta.<br /><br />El cliente " . $data['payer']['first_name'] . ' ' . $data['payer']['last_name'] . ', ha realizado el pago por un total de $ ' . $data['transaction_amount'] . '.<br />El estado del pago es: ' . $data['status'] . '.';
 
