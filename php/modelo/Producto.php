@@ -91,13 +91,23 @@ require_once 'autoload.php';
                 // OJO, no estoy usando el 'orden' ni tampoco estoy bindeando los datos...
                 for($i = 0; $i < count($producto->fotos); $i++){
                     $ruta = addslashes(str_replace("..\\","",$producto->fotos[$i]));
+                    $query = "INSERT INTO imagenes (ruta, idProducto) VALUES('$ruta', $producto->id)";
+				    $stmt = DBConnection::getStatement($query);									
+                			 
+                    if(!$stmt->execute()) {
+                        throw new Exception("Error en el insertado de la imagen.");
+                    }
+                }
+                
+                /*for($i = 0; $i < count($producto->fotos); $i++){
+                    $ruta = addslashes(str_replace("..\\","",$producto->fotos[$i]));
                     $query = "UPDATE imagenes SET ruta = '$ruta' WHERE idProducto = $producto->id";
 				    $stmt = DBConnection::getStatement($query);									
                 			 
                     if(!$stmt->execute()) {
                         throw new Exception("Error en el editado de la imagen.");
                     }
-                }
+                }*/
                 
 				$db->commit();
 				 
@@ -197,31 +207,30 @@ require_once 'autoload.php';
 		    echo 'Error: ' . $e->getMessage();
 		    $db->rollBack();
 		}	
-        
-		/*try{
-			$db = DBConnection::getConnection();
-			
-			$db->beginTransaction();
-			
-			//BORRO EL PRODUCTO
-			$query = "DELETE FROM productos WHERE id = :id";
+        		
+    }
+     
+     public static function borrarImagen ($nombreImagen,$idProducto) {
+		try	{
 		
+			$query = "DELETE FROM imagenes WHERE idProducto = :idProducto AND ruta = :ruta";
+					 
 			$stmt = DBConnection::getStatement($query);
 			
-			$stmt->bindParam(':id', $idProducto,PDO::PARAM_INT);
+			$stmt->bindParam(':idProducto', $idProducto,PDO::PARAM_INT);
+			$stmt->bindParam(':ruta', $nombreImagen,PDO::PARAM_STR);
 			
 			if(!$stmt->execute()) {
-				throw new Exception("Error al eliminar el producto");
-			}
-		   
-		    $db->commit();
-			echo "Producto eliminado correctamente";
+					throw new Exception("Error en el borrado de la foto.");
+				}
+            echo 'Imagen borrada con exito.';
+				
 		} catch (PDOException $e)
-			{
-			  echo 'Error: ' . $e->getMessage();
-			  $db->rollBack();
-			}	*/
-    }
+		{
+		  echo 'Error: ' . $e->getMessage();
+		  
+		}
+	}
    
    	/**
 	 * Retorna un producto especifico, buscado por id. De no encontrar retorna una excepcion
@@ -241,7 +250,7 @@ require_once 'autoload.php';
 			}
 			
 			if (!isset($prod)) {
-				throw new Exception("No se encontro el producto.");
+				die(json_encode("error"));
 			}
 			
 			return $prod;

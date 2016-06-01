@@ -249,6 +249,9 @@ session_start();
             
             if(id) {
                 var prod = Producto.getById(id);
+                if(prod.id == 0)
+                    return;
+                
                 Producto.completarInputs(prod);
                 //talles
                 for(i = 0; i < prod.talles.length; i++) {

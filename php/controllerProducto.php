@@ -48,13 +48,40 @@ switch ($metodo) {
         echo json_encode($validator->getErrores());
         break;
     case 'put':
-    case 'delete':
+    case 'delete':        
         //parseo a un array la data que viene por delete
         parse_str(file_get_contents("php://input"),$delete_vars);
         $id = $delete_vars['id'];
+        $rutaFoto = $delete_vars['ruta'];
+        
+        //si el delete viene de querer borrar la foto
+        if (isset($rutaFoto)) {
+            //$ruta_orig = "../img/productos/";
+            $ruta_orig = "..\\";
+            //$ruta_thumbs = "../img/thumbs/";//si manejamos carpeta de thumbs
+            
+            $rutaFoto=str_replace("..",".",$rutaFoto); //required. if somebody is trying parent folder files	
+            //$filePathThumbs = $ruta_thumbs. $rutaFoto;//ruta de thumbs
+            $filePathOrig = $ruta_orig . $rutaFoto;//concateno la ruta con el nombre del archivo
+            /*if (file_exists($filePathThumbs)) 
+            {
+                unlink($filePathThumbs);
+            }*/
+            //die($filePathOrig);
+            
+            if (file_exists($filePathOrig)) 
+            {
+                unlink($filePathOrig);//borra la imagen
+            }
+            
+            Producto::borrarImagen($rutaFoto, $id);
+            break;
+        } 
         
         if (!isset($id)) die("Error: no hay un id");
         if (Producto::delete($id)) die("exito");
+        
+
         break;
         /*if (method_exists($recurso, $metodo)) {
 			//debemos realizar una generalización de métodos a través de la función call_user_func(), ya que no sabemos que recurso fue accedido desde la url. Con esto evitamos usar estructuras de decisión y solo llamamos el método de la clase necesitada.

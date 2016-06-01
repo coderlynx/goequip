@@ -97,10 +97,11 @@ var Producto = {
             contentType: false,
             processData: false,
             success: function (respuestaJson) {
-                var rta = JSON.parse(respuestaJson);
-                if(rta == "exito") {
+                //var rta = JSON.parse(respuestaJson);
+                if(respuestaJson) {
                     alert("El producto ha sigo guardado con exito.");
                     $("#visor").empty();
+                    //window.location.href = "listado-productos.php";
                 }
                 else {
                     alert(respuestaJson);
@@ -135,7 +136,10 @@ var Producto = {
 			  url: "php/controllerProducto.php",
 			  success:  function(respuestaJson){  
 					var producto = JSON.parse(respuestaJson);
-                    if(producto) {
+                    if(producto === "error") {
+                        alert("Producto no encontrado");
+                        prod = { id:0};
+                    } else {
                         prod = producto;
                     }
 			  },
@@ -209,11 +213,13 @@ var Producto = {
         // Dibuja imágenes
         for (i = 0 ; i < length; i++) {
             link = $("<a>");
+            
             ruta = producto.fotos[i];
             
             link.css({display: 'inline-block', marginLeft: '20px'});
             
             close = $("<span>");
+            close.attr('data-id',producto.id);
             close.addClass("glyphicon glyphicon-remove");
             close.css('cursor', 'pointer')
             close.click(_this.eliminarImagen);
@@ -391,6 +397,27 @@ var Producto = {
 		});
 	},
     eliminarImagen: function() {
-        alert("Está seguro que desea eliminar la imagen?");
+        var r = confirm("¿Está seguro de querer eliminar la imagen  " + this.parentNode.id + "?");
+            
+            if (r == true) {
+                var idProducto = $(this).data('id');
+                var rutaFoto = $(this).next().attr('src');
+               // borro el producto
+                $.ajax({ 
+                    type: 'DELETE',   
+                    url: "php/controllerProducto.php",
+                    data : {id:idProducto, ruta:rutaFoto},
+                    success:  function(respuestaJson){  
+                        //var rta = JSON.parse(respuestaJson);
+                        //if(rta == "exito") {
+                            alert(respuestaJson);
+                            location.reload();
+                        //}
+                    },
+                    error:function(objXMLHttpRequest){
+                      console.log('Error al ejecutar la petición por:' + e);
+                    }
+                });
+            }       
     }
 }
