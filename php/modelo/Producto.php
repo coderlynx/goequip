@@ -86,7 +86,19 @@ require_once 'autoload.php';
 				//$_SESSION['idProducto'] = $producto->id;
                 self::insertarTalles($producto);
 				self::insertarColores($producto);
-
+                
+                // Update de las imágenes del producto
+                // OJO, no estoy usando el 'orden' ni tampoco estoy bindeando los datos...
+                for($i = 0; $i < count($producto->fotos); $i++){
+                    $ruta = addslashes(str_replace("..\\","",$producto->fotos[$i]));
+                    $query = "UPDATE imagenes SET ruta = '$ruta' WHERE idProducto = $producto->id";
+				    $stmt = DBConnection::getStatement($query);									
+                			 
+                    if(!$stmt->execute()) {
+                        throw new Exception("Error en el editado de la imagen.");
+                    }
+                }
+                
 				$db->commit();
 				 
 				 return $producto;

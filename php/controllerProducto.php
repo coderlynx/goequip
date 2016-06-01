@@ -10,50 +10,40 @@ switch ($metodo) {
     case 'get':
         if (isset($_GET["id"])) {
             $producto = Producto::getById($_GET["id"]);
-            echo json_encode($producto);
-            
+            echo json_encode($producto);  
             break;
         }
-        
         if (isset($_GET["buscar"])) {
             $productos = Producto::getByTexto($_GET["buscar"]);
-            echo json_encode($productos);
-            
+            echo json_encode($productos);   
             break;
         }
-        
         if (isset($_GET["idCategoria"])) {
             $orden = 'ordenarPor' . $_GET["orden"];
             $productos = Producto::getByCategoria($_GET["idCategoria"],$orden);
-            echo json_encode($productos);
-            
+            echo json_encode($productos);   
             break;
         }
-        
         $productos = Producto::getAll();
-
         echo json_encode($productos);
-       
- 
         break;
     case 'post':
         $rutasImagenes = array();
         // Si se cargaron imágenes, almaceno el array retornado con las rutas
-        if(!(empty($_FILES))) {
-            $rutasImagenes = moverImagenes();
+        if (!(empty($_FILES))) {
+            $rutasImagenes = Funciones::moverImagenes($_FILES);
         } else {
             echo json_encode("No hay imágenes cargadas.");
         }
-        
         $prod = json_decode($_POST['producto']);
         $producto = new Producto($prod->Id, $prod->Modelo, $prod->Descripcion, $prod->Categoria, $prod->Talle, $prod->Color, $prod->Stock, $prod->Precio, $rutasImagenes);
 
         $validator = new Validator;
         $validator->validate($producto, Producto::$reglas);
         
-        if($validator->tuvoExito() && Producto::insert($producto)) {
-          echo json_encode("exito");
-          exit;
+        if ($validator->tuvoExito() && Producto::insert($producto)) {
+            echo json_encode("exito");
+            exit;
         }
         echo json_encode($validator->getErrores());
         break;
@@ -64,12 +54,8 @@ switch ($metodo) {
         $id = $delete_vars['id'];
         
         if (!isset($id)) die("Error: no hay un id");
-
-        if(Producto::delete($id)) {
-		  die("exito");
-	   }
+        if (Producto::delete($id)) die("exito");
         break;
-        
         /*if (method_exists($recurso, $metodo)) {
 			//debemos realizar una generalización de métodos a través de la función call_user_func(), ya que no sabemos que recurso fue accedido desde la url. Con esto evitamos usar estructuras de decisión y solo llamamos el método de la clase necesitada.
             $respuesta = call_user_func(array($recurso, $metodo), $peticion);
@@ -78,99 +64,5 @@ switch ($metodo) {
         }*/
     default:
         echo 'Metodo no reconocible';
-
 }
-
-// Valida formato, mueve imágenes y retorna un array con las rutas
-function moverImagenes() 
-{
-    // Creo un array para almacenar las rutas
-    $rutasImagenes = array();
-    // Creo un array para almacenar errores
-    $error = array();
-    // Creo un array con los formatos permitidos
-    $extensions_allowed = array("jpeg", "jpg", "png", "gif");
-    
-    foreach($_FILES["files"]["tmp_name"] as $key => $tmp_name) {
-        // ["name"] --> nombre archivo + extensión
-        $file_name = $_FILES["files"]["name"][$key];
-        // ["type"] --> MIME
-        $type = $_FILES["files"]["type"][$key];
-        // ["tmp_name"] --> ubicación temporal donde se almacena
-        $file_tmp = $_FILES["files"]["tmp_name"][$key];
-        // Extraigo la extensión del archivo
-        $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
-        // Carpeta destino
-        $destination = "..\\img\\productos\\";
-        
-        // Si el formato de la extensión del archivo está permitido...
-        if (in_array($file_ext, $extensions_allowed)) {
-            // Si el archivo no existe en la carpeta entonces lo muevo del temporal
-            if (!file_exists("$destination".$file_name)) {
-                move_uploaded_file($file_tmp, "$destination".$file_name);
-                array_push($rutasImagenes, "$destination".$file_name);
-                $image = $file_name;
-            } else {
-                // Obtengo el componente de la ruta, sin la extensión
-                $filename = basename($file_name, $file_ext);
-                // Creo una copia del archivo con la fecha unix actual
-                $newFileName = $filename.time().".".$file_ext;
-                // Muevo el archivo a la carpeta destino
-                move_uploaded_file($file_tmp, "$destination".$newFileName);
-                array_push($rutasImagenes, "$destination".$newFileName);
-                $image = $newFileName;
-            }
-            // Resize de la imágen
-            // Tratamiento archivo
-            resizeImage($destination.$image, 450, 350, $type);
-        } else {
-            // Si el archivo no tiene un formato valido, almaceno el archivo en el array 'error'
-            // En principio no lo retorno...
-            array_push($error, "$file_name, ");
-            echo json_encode(var_dump($error));
-        }
-    }
-    return $rutasImagenes;
-}
-/*
-* @param: $filename, example 'test.jpg'
-* @params: set a maximum $height and $width
-*/
-function resizeImage($filename, $width, $height, $type) 
-{
-// Content type
-//header('Content-Type: '.$type);
-
-// Get new dimensions
-list($width_orig, $height_orig) = getimagesize($filename);
-
-$ratio_orig = $width_orig / $height_orig;
-
-if ($width / $height > $ratio_orig) {
-   $width = $height * $ratio_orig;
-} else {
-   $height = $width / $ratio_orig;
-}
-
-// Resample
-$image_p = imagecreatetruecolor($width, $height);
-    
-if($type == 'image/png'){
-    $image = imagecreatefrompng($filename);
-    imagesavealpha($image, true);
-    imagesavealpha($image_p, true);
-    $trans_colour = imagecolorallocatealpha($image_p, 0, 0, 0, 127);
-    imagefill($image_p, 0, 0, $trans_colour);
-}
-elseif($type == 'image/jpg'){$image = imagecreatefromjpeg($filename);}
-elseif($type == 'image/jpeg'){$image = imagecreatefromjpeg($filename);}
-elseif($type == 'image/pjpeg'){$image = imagecreatefromjpeg($filename);}
-    
-imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-
-// Output
-if($type == 'image/png'){$result = imagepng($image_p, $filename);}
-elseif($type == 'image/jpg'){$result = imagejpeg($image_p, $filename);}
-elseif($type == 'image/jpeg'){$result = imagejpeg($image_p, $filename);}
-elseif($type == 'image/pjpeg'){$result = imagejpeg($image_p, $filename);}
-}
+?>

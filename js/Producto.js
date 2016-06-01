@@ -29,14 +29,11 @@ var Producto = {
 			  }
 			});
     },
-	dibujarProductoEnPantalla: function(contenedor, producto) {
+	dibujarProductoEnPantalla: function (contenedor, producto) {
                 
         var div_item = $('<div>');
-			div_item.attr('id',producto.id);
-			div_item.addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12 producto');
-        
-        
-       
+        div_item.attr('id',producto.id);
+        div_item.addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12 producto');
         
         var link = $("<a>");
         link.attr('href','producto.html?id=' + producto.id + '&categoria=' + producto.categoria.id);
@@ -44,6 +41,7 @@ var Producto = {
         var foto = $("<img>");
         foto.attr('src', producto.fotos[0]);
         foto.attr('alt', producto.modelo);
+        foto.css({height: '300px'})
         foto.addClass('img-responsive');
         
         var h3 = $("<h3>");
@@ -52,14 +50,13 @@ var Producto = {
         var p = $("<p>");
         p.html('Precio: $ ' + producto.precio);
         
-        
         link.append(foto);
         div_item.append(link);
         div_item.append(h3);
         div_item.append(p);
         //div_item.append(article);
 
-        if($('#pantalla').val() == 'pantallaProductos'){
+        if ($('#pantalla').val() == 'pantallaProductos') {
             var div_btn = $("<div>");
             
             var btnEditar = $("<button>");
@@ -70,7 +67,6 @@ var Producto = {
             btnEliminar.addClass('btn btn-danger btn-eliminar btnEliminar');
             btnEliminar.html('<i class="fa fa-trash" aria-hidden="true"></i> Eliminar');
 
-            
             div_btn.append(btnEditar);
             div_btn.append(btnEliminar);  
             div_item.append(div_btn);  
@@ -114,7 +110,6 @@ var Producto = {
                 console.log('Error al ejecutar la petición por:' + e);
             }
         });
-
         /*
         $.post('php/controllerProducto.php', {producto:jsonProducto}, function(respuestaJson) {
             var rta = JSON.parse(respuestaJson);
@@ -126,12 +121,7 @@ var Producto = {
             }
         );
         */
-
         return false;
-
-		
-		
-		
     },
     getById: function(idProducto) {
         var _this = this;
@@ -183,8 +173,7 @@ var Producto = {
 			  error:function(objXMLHttpRequest){
 				  console.log('Error al ejecutar la petición por:' + e);
 			  }
-        });
-        
+        });    
     },
 	armarObjetoProducto: function() {
 				
@@ -199,17 +188,44 @@ var Producto = {
 		producto.Stock = $("#stock").val();
 		producto.Precio = $("#precio").val();
 		
-
-		return producto;
-		
+		return producto;	
 	},
     completarInputs: function(producto) {
+        var _this = this;
+        
         $("#id").val(producto.id);
         $("#modelo").val(producto.modelo);
         $("#descripcion").val(producto.descripcion);
         $("#categoria").val(producto.categoria.id);
         $("#stock").val(producto.stock);
         $("#precio").val(producto.precio);
+        
+        // Cargar Imágenes
+        var length = producto.fotos.length,
+            categoria = producto.categoria['descripcion'],
+            modelo = producto.modelo,
+            link = {}, ruta = "", img = {}, div = {}, close = {};
+        
+        // Dibuja imágenes
+        for (i = 0 ; i < length; i++) {
+            link = $("<a>");
+            ruta = producto.fotos[i];
+            
+            link.css({display: 'inline-block', marginLeft: '20px'});
+            
+            close = $("<span>");
+            close.addClass("glyphicon glyphicon-remove");
+            close.css('cursor', 'pointer')
+            close.click(_this.eliminarImagen);
+            
+            link.append(close);
+            
+            img = $("<img>");
+            img.attr({'src': producto.fotos[i], 'alt': modelo, width: '100px', height: '100px'});
+            
+            link.append(img);   
+            $("#visorEdicion").append(link);
+        }
     },
     completarDetalle: function(producto) {
         var length = producto.fotos.length,
@@ -273,21 +289,17 @@ var Producto = {
             $('#cantidad').hide();
             $('#btnAgregarACarrito').hide();
             $('#msgStock').html('Sin Stock');
-            $('#msgStock').addClass('disponibilidad-out');
-            
-        }
-        
+            $('#msgStock').addClass('disponibilidad-out');    
+        }  
     },
     bindearBotones: function(){
         var _this = this;
-        
         
         $(".btnVerMas").click(function() {
             var idProducto = this.parentNode.id;
             window.location.href = 'DetalleProducto.php?id='+idProducto;
                    
         });
-        
         
         $(".btnEditar").click(function() {
             var idProducto = this.parentNode.parentNode.id;
@@ -303,8 +315,7 @@ var Producto = {
             }).error(function(e){
                     console.log('Error al ejecutar la petición por:' + e);
                 }
-            );
-           
+            );   
         });
         
         $(".btnEliminar").click(function() {
@@ -329,7 +340,6 @@ var Producto = {
                     }
                 });
             } 
-          
         });
         
         $("#btnBuscarProducto").click(function(e){
@@ -362,8 +372,6 @@ var Producto = {
 					$('#btnBuscarProducto').click();
 				}
 			});
-		
-		
 	},
 	recorrerCheckbox: function(name) {
 		
@@ -372,10 +380,8 @@ var Producto = {
 		$('input[name="'+name+'[]"]:checked').each(function() {
 			//$(this).val() es el valor del checkbox correspondiente
 			checkboxValues.push($(this).val());
-		});
-		
+		});	
 		return checkboxValues;
-
 	},
 	tildarCheckbox: function(elemento, name) {
 		
@@ -383,6 +389,8 @@ var Producto = {
 			//$(this).val() es el valor del checkbox correspondiente
 			if($(this).val() == elemento.id ) $(this)[0].checked =true;
 		});
-		
 	},
+    eliminarImagen: function() {
+        alert("Está seguro que desea eliminar la imagen?");
+    }
 }
