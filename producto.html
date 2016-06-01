@@ -139,7 +139,9 @@
                 Carrito.init();
                 Autenticacion.init();
              }); 
-             $( "#nav" ).load( "codigoComun.html #nav" );
+              $( "#nav" ).load( "codigoComun.html #nav", function() {
+               Producto.bindearBuscadorProductos();
+             } );
              $( "#footer" ).load( "codigoComun.html #footer" );
              $( "#destacados" ).load( "codigoComun.html #destacados" );
             

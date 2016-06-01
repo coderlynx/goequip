@@ -2,6 +2,15 @@ var Autenticacion = {
     init: function () {
 
         var _this = this;
+        
+        $.get('php/controllerAutenticacion.php', function(rta) {
+				//var rta = JSON.parse(respuestaJson);
+                $('#nombreUsuario').text(rta);
+                return;
+			}).error(function(e){
+						console.log('Error al ejecutar la peticion');
+					}
+			);
 		
 		_this.capturarEnter();
 
@@ -64,7 +73,7 @@ var Autenticacion = {
 						} else if (rta == "exito"){
 							$('#nombreUsuario').text(login.email);
                             //$('#btnComprar').attr("style","display:inline");
-                            
+                            window.location.href = "index.html";
 							alert('Bienvenido ' + login.email);
 							return;
 						} 
@@ -78,7 +87,31 @@ var Autenticacion = {
 		});
 		
 		$('#btnCerrarSesion').click( function() {
-			$.get('php/controllerAutenticacion.php', function(respuestaJson) {
+            $.ajax({
+                url: 'php/controllerAutenticacion.php',
+                type: 'DELETE',
+                success: function (respuestaJson) {
+                    //var rta = JSON.parse(respuestaJson);
+                    if(respuestaJson) {
+                       $('#nombreUsuario').text('');
+                        $('.totalPedido').text('0');
+                        $('.totalCantidad').text('0');
+                        $('#contenedorCarro').text('');
+                        //$('#btnComprar').attr("style","display:none");
+                        window.location.href = "index.html";
+                        //alert('Log out');
+                        return;
+                    }
+                    else {
+                        alert(respuestaJson);
+                    }
+                },
+                error: function(e){
+                    console.log('Error al ejecutar la petición por:' + e);
+                }
+            });
+			
+           /* $.get('php/controllerAutenticacion.php', function(respuestaJson) {
 				//var rta = JSON.parse(respuestaJson);
                 $('#nombreUsuario').text('');
                 $('.totalPedido').text('0');
@@ -91,7 +124,7 @@ var Autenticacion = {
 			}).error(function(e){
 						console.log('Error al ejecutar la peticion');
 					}
-			);
+			);*/
 		});
 		
     },

@@ -348,7 +348,10 @@ var Producto = {
             } 
         });
         
-        $("#btnBuscarProducto").click(function(e){
+       _this.bindearBuscadorProductos();
+
+        
+        /*$("#btnBuscarProducto").click(function(e){
 														
 				var texto = $("#txtBusqueda").val();
 
@@ -368,16 +371,45 @@ var Producto = {
 					console.log('Error al ejecutar la petición.' + e);
                 });
                 e.preventDefault();
-				});
+				});*/
        
+    },
+    buscarProductos: function(texto) {
+        var _this = this;
+        $('#textoBuscado').html(texto);
+        $.get('php/controllerProducto.php', {buscar:texto },function(respuestaJson) {
+                var productos = JSON.parse(respuestaJson);
+                    if(productos.length > 0) {
+                        $('#contendorProductos').empty();
+                        for (i=0; i < productos.length; i++) {
+                            _this.dibujarProductoEnPantalla($('#contendorProductos'), productos[i]);
+                        }
+                        _this.bindearBotones();
+
+                    } else {
+                        alert('No se encontraron resultados.');
+                    }
+            }).error(function(e){
+                console.log('Error al ejecutar la petición.' + e);
+            });
     },
 	bindearBuscadorProductos: function() {
 		var _this = this;
-			$('#txtBusqueda').keypress(function(e){
+			
+         $("#formBusqueda").submit(function(e){
+            e.preventDefault();
+            var texto = $("#txtBusqueda").val();
+            window.location.href = "productos.html?q=" + texto;
+            //_this.buscarProductos(texto);
+            
+           
+            return false;
+        });
+        /*$('#txtBusqueda').keypress(function(e){
 				if(e.which == 13) {
 					$('#btnBuscarProducto').click();
 				}
-			});
+			});*/
 	},
 	recorrerCheckbox: function(name) {
 		

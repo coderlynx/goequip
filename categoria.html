@@ -145,25 +145,27 @@
 	<script src="js/Autenticacion.js"></script>
 	<script>
 		$( document ).ready(function() {
-            
+             
              //codigo repetido extraido
              $( "#header" ).load( "codigoComun.html #header", function() {
                 Carrito.init();
                 Autenticacion.init();
+                
+               
              }); 
-             $( "#nav" ).load( "codigoComun.html #nav" );
+             $( "#nav" ).load( "codigoComun.html #nav", function() {
+                var id = getUrlParameter('id');
+                 
+                if(id) {
+                    Producto.getByCategoria(id, 'PrecioMenor');
+                }
+             } );
              $( "#footer" ).load( "codigoComun.html #footer" );
              $( "#destacados" ).load( "codigoComun.html #destacados" );
 
             
-            
-            var id = getUrlParameter('id');
-            
-            if(id) {
-                Producto.getByCategoria(id, 'PrecioMenor');
-            }
-            
             $('.ordenar').click(function() {
+                var id = getUrlParameter('id');
                //var orden = $('[name="filtro"]:checked').data('filtro');
                var orden = $(this).data('orden');//  $('#ordenar option:selected').data('orden');
                $('#contendorProductos').empty();
