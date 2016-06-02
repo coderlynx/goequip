@@ -58,20 +58,20 @@
          $( document ).ready(function() {
              var texto = getUrlParameter('q');
              
-             $( "#header" ).load( "codigoComun.html #header", function() {
+             $( "#header" ).load( "codigoComun.php #header", function() {
                 Carrito.init();
                 Autenticacion.init();
                 Producto.buscarProductos(texto);
 
              }); 
-             $( "#nav" ).load( "codigoComun.html #nav", function() {
+             $( "#nav" ).load( "codigoComun.php #nav", function() {
                 var id = getUrlParameter('id');
                  
                 if(id) {
                     Producto.getByCategoria(id, 'PrecioMenor');
                 }
              } );
-             $( "#footer" ).load( "codigoComun.html #footer" );
+             $( "#footer" ).load( "codigoComun.php #footer" );
              
              
             

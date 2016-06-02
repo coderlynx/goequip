@@ -57,6 +57,14 @@ var Carrito = {
             _this.postAgregar(producto);
 
         });
+
+        $('#btnIrACarrito').click(function() {
+            if($(".totalPedido").html() == 0) {
+                alert('No hay productos para ver en el detalle del carrito')
+            } else {
+                window.location.href = "carrito.html";
+            }
+        });
     
     },
     dibujarProductoEnCarrito: function(contenedor, producto){

@@ -31,10 +31,14 @@ switch ($metodo) {
         $rutasImagenes = array();
         // Si se cargaron imágenes, almaceno el array retornado con las rutas
         if (!(empty($_FILES))) {
+            
             $rutasImagenes = Funciones::moverImagenes($_FILES);
+            
         } else {
             echo json_encode("No hay imágenes cargadas.");
         }
+        
+        //die(json_encode($rutasImagenes));
         $prod = json_decode($_POST['producto']);
         $producto = new Producto($prod->Id, $prod->Modelo, $prod->Descripcion, $prod->Categoria, $prod->Talle, $prod->Color, $prod->Stock, $prod->Precio, $rutasImagenes);
 
@@ -42,9 +46,11 @@ switch ($metodo) {
         $validator->validate($producto, Producto::$reglas);
         
         if ($validator->tuvoExito() && Producto::insert($producto)) {
+            
             echo json_encode("exito");
             exit;
         }
+        
         echo json_encode($validator->getErrores());
         break;
     case 'put':

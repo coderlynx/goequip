@@ -1,3 +1,13 @@
+<?php
+session_start();
+    
+
+if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
+  header("Location: index.html");  //Si no hay sesión activa, lo direccionamos al index.php (inicio de sesión) 
+  
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

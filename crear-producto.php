@@ -1,10 +1,9 @@
 <?php
-require_once ('php/autoload.php');
 session_start();
     
 
-//if(!isset($_SESSION["nombre"]))	
-  //header("Location: home");  //Si no hay sesión activa, lo direccionamos al index.php (inicio de sesión) 
+if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
+  header("Location: index.html");  //Si no hay sesión activa, lo direccionamos al index.php (inicio de sesión) 
   
 ?>
 
@@ -44,6 +43,7 @@ session_start();
     					<h1><a href="index.html" title="Outlet Gym"><img src="img/logo.jpg" alt="Outlet Gym"></a></h1>
     				</div>
     				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-right">
+    				    <span style="font-family: 'Roboto', sans-serif;" id="nombreUsuario"></span>
     					<button id="btnCerrarSesion" type="button" class="btn btn-default btn-sesion">Cerrar sesión</button>
     				</div>
     			</div>
@@ -226,13 +226,16 @@ session_start();
 	<script src="js/lib/jquery.js"></script>
 	<!--<script src="http://code.jquery.com/jquery-latest.js"></script><!-->
 	<script src="js/lib/bootstrap.min.js"></script>
-
+    <script src="js/Autenticacion.js"></script>
 	<script src="js/Producto.js"></script>
 	<script src="js/ConstructorDeCheck.js"></script>
 	<script>
 		$(document).ready(function() { 
             ConstructorDeCheck.armarCheckBox('#talles','talles');
             ConstructorDeCheck.armarCheckBoxColores('#colores','colores');
+            
+            Autenticacion.init();
+            Autenticacion.bindearBtnCerrarSesion();
             //cuando presiona guardar
             $("#btnAltaProducto").click(function() {
                 if( Producto.validarCampos()) {

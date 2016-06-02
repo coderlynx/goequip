@@ -135,15 +135,15 @@
 		$( document ).ready(function() {
             
             //codigo repetido extraido
-             $( "#header" ).load( "codigoComun.html #header", function() {
+             $( "#header" ).load( "codigoComun.php #header", function() {
                 Carrito.init();
                 Autenticacion.init();
              }); 
-              $( "#nav" ).load( "codigoComun.html #nav", function() {
+              $( "#nav" ).load( "codigoComun.php #nav", function() {
                Producto.bindearBuscadorProductos();
              } );
-             $( "#footer" ).load( "codigoComun.html #footer" );
-             $( "#destacados" ).load( "codigoComun.html #destacados" );
+             $( "#footer" ).load( "codigoComun.php #footer" );
+             $( "#destacados" ).load( "codigoComun.php #destacados" );
             
             
             

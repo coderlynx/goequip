@@ -143,7 +143,7 @@ var Producto = {
                         prod = producto;
                     }
 			  },
-			  error:function(objXMLHttpRequest){
+			  error:function(e){
 				  console.log('Error al ejecutar la petición por:' + e);
 			  }
         });
@@ -174,7 +174,7 @@ var Producto = {
 					}
                     _this.bindearBotones();
 			  },
-			  error:function(objXMLHttpRequest){
+			  error:function(e){
 				  console.log('Error al ejecutar la petición por:' + e);
 			  }
         });    
@@ -341,7 +341,7 @@ var Producto = {
                             location.reload();
                         //}
                     },
-                    error:function(objXMLHttpRequest){
+                    error:function(e){
                       console.log('Error al ejecutar la petición por:' + e);
                     }
                 });
@@ -446,7 +446,7 @@ var Producto = {
                             location.reload();
                         //}
                     },
-                    error:function(objXMLHttpRequest){
+                    error:function(e){
                       console.log('Error al ejecutar la petición por:' + e);
                     }
                 });

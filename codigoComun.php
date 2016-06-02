@@ -1,4 +1,10 @@
-<header id="header">
+<?php
+session_start();
+
+?>
+   
+
+   <header id="header">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 logo">
@@ -17,12 +23,18 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="crearcuenta.html"><i class="fa fa-user-plus" aria-hidden="true"></i> Registrarse</a></li>
                         <li><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i> Mis datos</a></li>
-
+                        <?php
+                          if(isset($_SESSION["perfil"]) &&  $_SESSION["perfil"] == 1) {
+                            
+                        ?>
                         <li role="separator" class="divider"></li>
                         <li><a href="listado-productos.php"><i class="fa fa-user-plus" aria-hidden="true"></i> ABM Productos</a></li>
-                        <li><a href="AgregarCliente.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Crear Cliente</a></li>
-                        <li><a href="pedidos.html"><i class="fa fa-user-plus" aria-hidden="true"></i> Pedidos</a></li>
+<!--                        <li><a href="AgregarCliente.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Crear Cliente</a></li>-->
+                        <li><a href="pedidos.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Pedidos</a></li>
                         <li><a href="Graficos.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Estadisticas</a></li>
+                        <?php
+                            }
+                        ?>	
 
                         <li role="separator" class="divider"></li>
                         <li><a id="btnCerrarSesion" href="#"><i class="fa fa-sign-out" aria-hidden="true"></i> Salir</a></li>
@@ -32,7 +44,7 @@
                 </div>
                 <div class="total-header">
 
-                    <a href="carrito.html">Total $ <span class="totalPedido">0</span> <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="totalCantidad" class="badge">0</span></a>
+                    <a id="btnIrACarrito" href="#">Total $ <span class="totalPedido">0</span> <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="totalCantidad" class="badge">0</span></a>
 <!--                    <a class="btn btn-default btn-custom" >Comprar</a> -->
                 </div>
             </div>

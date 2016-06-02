@@ -46,7 +46,7 @@ var Autenticacion = {
 				//var rta = JSON.parse(respuestaJson);
 				//if(rta == "exito") { 
 					alert(respuestaJson);
-					
+					window.location.href = "index.html";
 					return;
 				//} 
 				
@@ -71,10 +71,10 @@ var Autenticacion = {
 						{
 							alert('No se encontro el usuario o el mail');
 						} else if (rta == "exito"){
-							$('#nombreUsuario').text(login.email);
+							//$('#nombreUsuario').text(login.email);
                             //$('#btnComprar').attr("style","display:inline");
                             window.location.href = "index.html";
-							alert('Bienvenido ' + login.email);
+							//alert('Bienvenido ' + login.email);
 							return;
 						} 
 						
@@ -86,7 +86,27 @@ var Autenticacion = {
             e.preventDefault();
 		});
 		
-		$('#btnCerrarSesion').click( function() {
+		_this.bindearBtnCerrarSesion();
+			
+           /* $.get('php/controllerAutenticacion.php', function(respuestaJson) {
+				//var rta = JSON.parse(respuestaJson);
+                $('#nombreUsuario').text('');
+                $('.totalPedido').text('0');
+                $('.totalCantidad').text('0');
+                $('#contenedorCarro').text('');
+                //$('#btnComprar').attr("style","display:none");
+				alert('Log out');
+                return;
+				//$('#nombre_usuario').text("anonimo");
+			}).error(function(e){
+						console.log('Error al ejecutar la peticion');
+					}
+			);*/
+		//});
+		
+    },
+    bindearBtnCerrarSesion:function(){
+        $('#btnCerrarSesion').click( function() {
             $.ajax({
                 url: 'php/controllerAutenticacion.php',
                 type: 'DELETE',
@@ -110,23 +130,7 @@ var Autenticacion = {
                     console.log('Error al ejecutar la petición por:' + e);
                 }
             });
-			
-           /* $.get('php/controllerAutenticacion.php', function(respuestaJson) {
-				//var rta = JSON.parse(respuestaJson);
-                $('#nombreUsuario').text('');
-                $('.totalPedido').text('0');
-                $('.totalCantidad').text('0');
-                $('#contenedorCarro').text('');
-                //$('#btnComprar').attr("style","display:none");
-				alert('Log out');
-                return;
-				//$('#nombre_usuario').text("anonimo");
-			}).error(function(e){
-						console.log('Error al ejecutar la peticion');
-					}
-			);*/
-		});
-		
+        });
     },
 	capturarEnter: function() {
 	
