@@ -46,6 +46,7 @@
 	          </label>
 	        </div>
 	        <button class="btn btn-default btn-custom" type="submit">Ingresar</button>
+	        <div id="mensaje"></div>
 	        <a href="">Olvidé mi contraseña</a>
 
 	        <div>
@@ -79,14 +80,14 @@
       
          $( document ).ready(function() {
              //codigo repetido extraido
-             $( "#header" ).load( "codigoComun.html #header", function() {
+             $( "#header" ).load( "codigoComun.php #header", function() {
                 Carrito.init();
                 Autenticacion.init();
              }); 
              
-             $( "#nav" ).load( "codigoComun.html #nav" );
-             $( "#footer" ).load( "codigoComun.html #footer" );
-             $( "#destacados" ).load( "codigoComun.html #destacados" );
+             $( "#nav" ).load( "codigoComun.php #nav" );
+             $( "#footer" ).load( "codigoComun.php #footer" );
+             $( "#destacados" ).load( "codigoComun.php #destacados" );
      
               $( "#btnCrearCuenta" ).click(function() {
                        window.location = 'crearcuenta.html';

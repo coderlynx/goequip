@@ -44,15 +44,17 @@ var Carrito = {
             producto.talle = $(this).parent().find("#talle").val();
             producto.color = $(this).parent().find("#color").val();
             
+            if(producto.color == ''){
+                $('#mensaje').html('Debe seleccionar un color.');
+                return false;
+            }
+            
             if(producto.talle == ''){
-                alert("Debe seleccionar un talle.");
+                $('#mensaje').html('Debe seleccionar un talle.');
                 return false;
             } 
             
-            if(producto.color == ''){
-                alert("Debe seleccionar un color.");
-                return false;
-            }
+
                
             _this.postAgregar(producto);
 
@@ -202,7 +204,7 @@ var Carrito = {
                         _this.dibujarProductoEnCarrito($('#contenedorDetalleCarro'), rta);
                         
                         _this.getTotal();
-                        alert("Producto agregado");
+                        $('#mensaje').html('Producto agregado al carrito.');
                     }
                     
 			  },

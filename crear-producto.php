@@ -89,7 +89,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 					<div class="row">
 						<div class="col-lg-6">
 							<label>Categoría:</label>
-                            <select id="categoria" class="form-control">
+                            <select id="categoria" class="form-control" required>
                                 <option value="1">Waterrower</option>
                                 <option value="2">Kangoo Jumps</option>
                                 <option value="3">Equipos Cardio</option>
@@ -111,7 +111,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 						<div class="col-lg-6">
 						  <div class="form-group">
 						    <label for="descripcion">Descripción:</label>
-						    <textarea id="descripcion" class="form-control" rows="3"></textarea>
+						    <textarea id="descripcion" class="form-control" rows="3" required></textarea>
 						  </div>
 						</div>
 					</div>
@@ -119,7 +119,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 						<div class="col-lg-6">
 						  <div class="form-group">
 						    <label for="modelo">Modelo:</label>
-						    <input id="modelo" type="text" class="form-control" id="modelo" placeholder="Modelo">
+						    <input id="modelo" type="text" class="form-control" id="modelo" placeholder="Modelo" required>
 						  </div>
 						</div>
 					</div>
@@ -176,7 +176,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 					<div class="row">
 						<div class="col-lg-6">
 							<label>Stock:</label>
-							<input id="stock" type="text" class="form-control" placeholder="Stock" value="" />
+							<input id="stock" type="number" class="form-control" placeholder="Stock" value="" required />
 <!--
 							<select class="form-control">
 							  <option>En Stock</option>
@@ -192,7 +192,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 						    <label class="sr-only" for="precio">Precio (Pesos Argentinos)</label>
 						    <div class="input-group">
 						      <div class="input-group-addon">$</div>
-						      <input id="precio" type="text" class="form-control" id="precio" placeholder="Precio (Pesos Argentinos)">
+						      <input id="precio" type="number" class="form-control" id="precio" placeholder="Precio (Pesos Argentinos)" required>
 						    </div>
 						  </div>
 						</div>
@@ -214,7 +214,8 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 
 					<div class="row">
 						<div class="col-lg-6">
-							<button id="btnAltaProducto" class="btn btn-custom">Guardar</button>
+							<button id="btnAltaProducto" type="submit" class="btn btn-custom">Guardar</button>
+							<div id="mensaje"></div>
 						</div>
 					</div>
 				</form>
@@ -237,7 +238,8 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
             Autenticacion.init();
             Autenticacion.bindearBtnCerrarSesion();
             //cuando presiona guardar
-            $("#btnAltaProducto").click(function() {
+            $("#agregarProducto").submit(function(e) {
+                e.preventDefault();
                 if( Producto.validarCampos()) {
                     var producto = Producto.armarObjetoProducto();
                     //producto.Id = null;

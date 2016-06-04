@@ -19,9 +19,16 @@ session_start();
                         <i class="fa fa-user" aria-hidden="true"></i> <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu pull-right">
+                        <?php
+                          if(!isset($_SESSION["perfil"])) {
+                            
+                        ?>
                         <li><a href="login.html"><i class="fa fa-sign-in" aria-hidden="true"></i> Iniciar sesión</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="crearcuenta.html"><i class="fa fa-user-plus" aria-hidden="true"></i> Registrarse</a></li>
+                         <?php
+                            }
+                        ?>	
                         <li><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i> Mis datos</a></li>
                         <?php
                           if(isset($_SESSION["perfil"]) &&  $_SESSION["perfil"] == 1) {
@@ -160,7 +167,7 @@ session_start();
                     <ul>
                         <li><a href="">Contacto</a></li>
                         <li><p>Atención al cliente: 4747-4747</p></li>
-                        <li><a href="mailto:info@tiendafit.com.ar"><span class="vinculo-custom">info@tiendafit.com.ar</span></a></li>
+                        <li><a href="mailto:contacto@outletgym.com"><span class="vinculo-custom">contacto@outletgym.com</span></a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">

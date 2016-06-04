@@ -292,13 +292,13 @@ if(!isset($_SESSION["nombre"]))	{
 		$( document ).ready(function() {
             
              //codigo repetido extraido
-             $( "#header" ).load( "codigoComun.html #header", function() {
+             $( "#header" ).load( "codigoComun.php #header", function() {
                 Carrito.getTotal();
                 //Autenticacion.init();
              });
             
-             $( "#nav" ).load( "codigoComun.html #nav" );
-             $( "#footer" ).load( "codigoComun.html #footer" );
+             $( "#nav" ).load( "codigoComun.php #nav" );
+             $( "#footer" ).load( "codigoComun.php #footer" );
 
 
             Cliente.getClienteByIdUsuario();

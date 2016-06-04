@@ -192,13 +192,13 @@ print_r ($search_result);*/
         $( document ).ready(function() {
             
              //codigo repetido extraido
-             $( "#header" ).load( "codigoComun.html #header", function() {
+             $( "#header" ).load( "codigoComun.php #header", function() {
                 Carrito.getTotal();
              }); 
             
-             $( "#nav" ).load( "codigoComun.html #nav" );
-             $( "#footer" ).load( "codigoComun.html #footer" );
-             $( "#destacados" ).load( "codigoComun.html #destacados" );
+             $( "#nav" ).load( "codigoComun.php #nav" );
+             $( "#footer" ).load( "codigoComun.php #footer" );
+             $( "#destacados" ).load( "codigoComun.php #destacados" );
 
 		});
   

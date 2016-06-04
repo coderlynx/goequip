@@ -96,10 +96,17 @@ var Producto = {
             mimeType:"multipart/form-data",
             contentType: false,
             processData: false,
-            success: function (respuestaJson) {
+            success: function (rta) {
                 //var rta = JSON.parse(respuestaJson);
-                if(respuestaJson) {
-                    alert("El producto ha sigo guardado con exito.");
+                if(rta) {
+                    $('#mensaje').html(rta);
+                    $('#categoria').val("");
+                    $('#descripcion').val("");
+                    $('#modelo').val("");
+                    $('#talles').val("");
+                    $('#colores').val("");
+                    $('#stock').val("");
+                    $('#precio').val("");
                     $("#visor").empty();
                     //window.location.href = "listado-productos.php";
                 }
@@ -316,7 +323,7 @@ var Producto = {
                     //alert(rta.modelo);
                     window.location.href = 'crear-producto.php?id='+rta.id;
                 } else {
-                    alert("Producto no encontrado");
+                    $('#mensaje').html('"Producto no encontrado.');
                 }
             }).error(function(e){
                     console.log('Error al ejecutar la petición por:' + e);
@@ -442,6 +449,7 @@ var Producto = {
                     success:  function(respuestaJson){  
                         //var rta = JSON.parse(respuestaJson);
                         //if(rta == "exito") {
+                            //$('#mensaje').html(respuestaJson);
                             alert(respuestaJson);
                             location.reload();
                         //}

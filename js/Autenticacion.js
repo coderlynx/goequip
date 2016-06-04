@@ -22,33 +22,55 @@ var Autenticacion = {
 			registro.nombre = $('#inputNombre').val();
 			registro.mail = $('#inputEmail').val();
 			registro.password = $('#inputPassword').val();
-			
+            
+            //validamos el nombre de usuario
+            var regex_nombre = /[A-z_-]/;//cualquier caracter alfa incluido el _
+			if (!regex_nombre.test(registro.nombre.trim())) {
+				//mensaje de invalido
+                $('#mensaje').html("Nombre de usuario incorrecto (el nombre debe incluir letras)");
+				return;
+			}
 			
 			//Utilizamos una expresion regular para validar mail
 			var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
 		 
 			//Se utiliza la funcion test() nativa de JavaScript
-			if (!regex.test($('#inputEmail').val().trim())) {
+			if (!regex.test(registro.mail.trim())) {
 				//mensaje de invalido
-                alert("formato de mail invalido");
+                $('#mensaje').html("formato de mail invalido");
 				return;
 			}
             
             //valido campos email iguales
             if ($('#inputEmail').val() != $('#inputREmail').val()) {
-                alert('Los emails deben coincidir.');
+                $('#mensaje').html('Los emails deben coincidir.');
+                return;
+            } 
+            
+            //validamos clave
+             var regex_clave = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,8})$/;
+            if (!regex_clave.test(registro.password.trim())) {
+                $('#mensaje').html('Password incorrecto (debe contener entre 6 y 8 caracteres alfanumericos)'); 
                 return;
             } 
 			
 			var registro_json = JSON.stringify(registro);
 			
-			$.post('php/controllerAutenticacion.php', {registro:registro_json}, function(respuestaJson) {
+			$.post('php/controllerAutenticacion.php', {registro:registro_json}, function(rta) {
 				//var rta = JSON.parse(respuestaJson);
-				//if(rta == "exito") { 
-					alert(respuestaJson);
-					window.location.href = "index.html";
+				if(rta == "Se ha creado la cuenta con exito.") { 
+                    $('#mensaje').html(rta);
+                    $('#inputNombre').val("");
+                    $('#inputEmail').val("");
+                    $('#inputREmail').val("");
+                    $('#inputREmail').val("");
+                    $('#inputPassword').val("");
+					//alert(respuestaJson);
+					//window.location.href = "login.html";
 					return;
-				//} 
+				} else {
+                    $('#mensaje').html(rta);
+                }
 				
 			}).error(
 				function(e){
@@ -69,7 +91,7 @@ var Autenticacion = {
 				var rta = JSON.parse(respuestaJson);
 					if(rta == "") 
 						{
-							alert('No se encontro el usuario o el mail');
+							$('#mensaje').html('Email o clave incorrecto.');
 						} else if (rta == "exito"){
 							//$('#nombreUsuario').text(login.email);
                             //$('#btnComprar').attr("style","display:inline");

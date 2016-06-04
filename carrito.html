@@ -153,8 +153,8 @@
 					</div>
 					<div class="row text-center div-comprar">
 						<div>
+                           <div id="mensaje"></div>
                         <button id="comprarMP" class="btn btn-default btn-comprar">
-						    
 						    <i class="fa fa-money" aria-hidden="true"></i> Pagar con <span class="detalle-items">Mercado Pago</span>
 						   </button> 
 						  </div>
@@ -208,12 +208,12 @@
             $("#comprarMP").click(function() {
                 
                 if (!$("#terminos").is(':checked')) {
-                        alert("Debe aceptar los terminos y condiciones para continuar");
+                        $('#mensaje').html('Debe aceptar los terminos y condiciones para continuar');
                         return;
                     }
                     
                     if (!$('input[name=optradio]:checked', '#formaEnvio').val()) {
-                        alert("Debe seleccionar forma de entrega");
+                         $('#mensaje').html('Debe seleccionar forma de entrega');
                         return;
                     }
              

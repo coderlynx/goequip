@@ -37,7 +37,7 @@
 	      <form id="formRegistrar" class="form-signin">
 	        <h2>Crear cuenta</h2>
 	        <label for="inputNombre" class="sr-only">Usuario</label>
-	        <input type="text" id="inputNombre" class="form-control" placeholder="Usuario" required autofocus>
+	        <input type="text" id="inputNombre" class="form-control" placeholder="Usuario (debe contener al menos 4 caracteres alfanuméricos)" required autofocus pattern=".{4,}" title="4 caracteres mínimo">
 <!--
 	        <label for="inputApellido" class="sr-only">Apellido</label>
 	        <input type="text" id="inputApellido" class="form-control" placeholder="Tu apellido" required>
@@ -51,9 +51,9 @@
 	        <label for="inputTel" class="sr-only">Teléfono</label>
 -->
 	        <label for="inputPassword" class="sr-only">Crear clave</label>
-	        <input type="password" id="inputPassword" class="form-control" placeholder="Crear clave" required>
+	        <input type="password" id="inputPassword" class="form-control" placeholder="Crear clave (debe contener entre 6 y 8 caracteres alfanuméricos)" required pattern=".{6,8}" title="entre 6 y 8 caracteres">
 	        <button class="btn btn-default btn-custom" type="submit">Crear cuenta</button>
-			
+			<div id="mensaje"></div>
 	        <div class="crear-condiciones">
 		        <p>Al registrarme, declaro que soy mayor de edad y acepto las <a href="">condiciones legales</a></p>
 			</div>
@@ -83,14 +83,14 @@
       
          $( document ).ready(function() {
              //codigo repetido extraido
-             $( "#header" ).load( "codigoComun.html #header", function() {
+             $( "#header" ).load( "codigoComun.php #header", function() {
                 //Carrito.init();
                 Autenticacion.init();
              }); 
              
-             $( "#nav" ).load( "codigoComun.html #nav" );
-             $( "#footer" ).load( "codigoComun.html #footer" );
-             $( "#destacados" ).load( "codigoComun.html #destacados" );
+             $( "#nav" ).load( "codigoComun.php #nav" );
+             $( "#footer" ).load( "codigoComun.php #footer" );
+             $( "#destacados" ).load( "codigoComun.php #destacados" );
      
             
 		});

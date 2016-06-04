@@ -93,12 +93,12 @@
 		$( document ).ready(function() {
             
              //codigo repetido extraido
-             $( "#header" ).load( "codigoComun.html #header", function() {
+             $( "#header" ).load( "codigoComun.php #header", function() {
                 Carrito.getTotal();
                 //Autenticacion.init();
              }); 
-             $( "#nav" ).load( "codigoComun.html #nav" );
-             $( "#footer" ).load( "codigoComun.html #footer" );
+             $( "#nav" ).load( "codigoComun.php #nav" );
+             $( "#footer" ).load( "codigoComun.php #footer" );
 
 
             $("#nroPedido").html(getUrlParameter('nroPedido'))
