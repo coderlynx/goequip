@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="css/normalize.css" />
 	<link rel="stylesheet" href="css/normalize.min.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/lightbox.min.css">
+	<link rel="stylesheet" href="css/jquery.bxslider.css">
 	<script src="js/lib/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 
 	<!-- Google Font -->
@@ -50,17 +50,13 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-					<div id="fotoPrincipal" class="vista-grande">
-						<img id="imgPrincipal" src="" alt="A1 Home">
-					</div>
-					<div class="preview">
-<!--
-						<a href=""><img src="img/productos/a1home.jpg" alt="A1 Home"></a>
-						<a href=""><img src="img/productos/a1home.jpg" alt="A1 Home"></a>
-						<a href=""><img src="img/productos/a1home.jpg" alt="A1 Home"></a>
-						<a href=""><img src="img/productos/a1home.jpg" alt="A1 Home"></a>
--->
-					</div>
+                    <!-- INICIO CAROUSEL PRODUCTO -->
+                    <div class="slider">
+                        <ul class="bxslider"></ul>
+                        <div id="bx-pager"></div>
+                    </div>
+                    <!-- FIN CAROUSEL PRODUCTO -->
+                    
 					<div class="video-producto">
 						<iframe width="560" height="315" src="https://www.youtube.com/embed/mXBWTtd4pgs?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 					</div>
@@ -128,7 +124,7 @@
 	<script src="js/lib/jquery.js"></script>
 	<!--<script src="http://code.jquery.com/jquery-latest.js"></script><!-->
 	<script src="js/lib/bootstrap.min.js"></script>
-	<script src="js/lib/lightbox.min.js"></script>
+	<script src="js/lib/jquery.bxslider.min.js"></script>
 	<script src="js/Producto.js"></script>
 	<script src="js/Carrito.js"></script>
 	<script src="js/Autenticacion.js"></script>

@@ -32,7 +32,7 @@ switch ($metodo) {
         // Si se cargaron imágenes, almaceno el array retornado con las rutas
         if (!(empty($_FILES))) {
             
-            $rutasImagenes = Funciones::moverImagenes($_FILES);
+            $rutasImagenes = Funciones::tratarImagenes($_FILES);
             
         } else {
             echo json_encode("No hay imágenes cargadas.");
