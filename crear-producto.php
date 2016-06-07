@@ -199,13 +199,13 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 						</div>
 					</div>
 
-					<div class="row">
+                    <div class="row">
 						<div class="col-lg-6">
 							<button id="btnAltaProducto" type="submit" class="btn btn-custom">Guardar</button>
 							<div id="mensaje"></div>
 						</div>
-					</div>
-					
+					</div> 
+                
 					<div class="row">
 						<div class="col-lg-6">
                             <!--  INICIO FILE UPLOADER  -->
@@ -220,6 +220,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                                     <i class="icon-upload icon-white"></i> Upload Now
                                 </div>
                             </div> 
+                        </div>
 <!--
 							    <label for="fotos">Seleccione (una o más imágenes, al mismo tiempo):</label>
 							    <input type="file" id="fotos" name="files[]" multiple >
@@ -228,24 +229,9 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 							    <p id="cantArchivos" style="margin-top: 10px"></p>
                                 <div id="visor"></div><br>
                                 <div id="visorEdicion"></div>
-<<<<<<< HEAD
 -->
                                
                             <!--   FIN FILE UPLOADER   -->
-					    </div>
-                    </div>
-=======
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-lg-6">
-							<button id="btnAltaProducto" type="submit" class="btn btn-custom">Guardar</button>
-							<div class="mensajes" id="mensaje"></div>
-						</div>
-					</div>
->>>>>>> 0fc308d6c029a65a32cd025ebe491366e43adf83
 				</form>
 		</div>
 	</main>
