@@ -189,12 +189,14 @@ print_r ($search_result);*/
     <script src="js/Pedido.js"></script>
     <script src="js/Carrito.js"></script>
     <script src="js/Producto.js"></script>
+    <script src="js/Autenticacion.js"></script>
     <script type="text/javascript">
         $( document ).ready(function() {
             
              //codigo repetido extraido
              $( "#header" ).load( "codigoComun.php #header", function() {
                 Carrito.getTotal();
+                Autenticacion.init();
              }); 
             
              $( "#nav" ).load( "codigoComun.php #nav", function() {
