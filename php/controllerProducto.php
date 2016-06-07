@@ -1,7 +1,7 @@
 <?php
 require_once 'autoload.php';
-session_start();
 
+session_start();
 //EXTRAER el metodo de la peticion (GET,POST,PUT,DELETE)
 $metodo = strtolower($_SERVER['REQUEST_METHOD']);
 
@@ -27,30 +27,20 @@ switch ($metodo) {
         $productos = Producto::getAll();
         echo json_encode($productos);
         break;
-    case 'post':
-        $rutasImagenes = array();
-        // Si se cargaron imágenes, almaceno el array retornado con las rutas
-        if (!(empty($_FILES))) {
-            
-            $rutasImagenes = Funciones::tratarImagenes($_FILES);
-            
-        } else {
-            echo json_encode("No hay imágenes cargadas.");
-        }
-        
-        //die(json_encode($rutasImagenes));
+    case 'post':   
         $prod = json_decode($_POST['producto']);
-        $producto = new Producto($prod->Id, $prod->Modelo, $prod->Descripcion, $prod->Categoria, $prod->Talle, $prod->Color, $prod->Stock, $prod->Precio, $rutasImagenes);
+        $producto = new Producto($prod->Id, $prod->Modelo, $prod->Descripcion, $prod->Categoria, 
+                                 $prod->Talle, $prod->Color, $prod->Stock, $prod->Precio);
 
         $validator = new Validator;
         $validator->validate($producto, Producto::$reglas);
-        
+
         if ($validator->tuvoExito() && Producto::insert($producto)) {
+            $_SESSION['idProducto'] = $producto->id;
             
-            echo json_encode("exito");
+            echo json_encode($_SESSION['idProducto']);
             exit;
         }
-        
         echo json_encode($validator->getErrores());
         break;
     case 'put':
@@ -59,43 +49,12 @@ switch ($metodo) {
         parse_str(file_get_contents("php://input"),$delete_vars);
         $id = $delete_vars['id'];
         $rutaFoto = $delete_vars['ruta'];
-        
-        //si el delete viene de querer borrar la foto
-        if (isset($rutaFoto)) {
-            //$ruta_orig = "../img/productos/";
-            $ruta_orig = "..\\";
-            //$ruta_thumbs = "../img/thumbs/";//si manejamos carpeta de thumbs
-            
-            $rutaFoto=str_replace("..",".",$rutaFoto); //required. if somebody is trying parent folder files	
-            //$filePathThumbs = $ruta_thumbs. $rutaFoto;//ruta de thumbs
-            $filePathOrig = $ruta_orig . $rutaFoto;//concateno la ruta con el nombre del archivo
-            /*if (file_exists($filePathThumbs)) 
-            {
-                unlink($filePathThumbs);
-            }*/
-            //die($filePathOrig);
-            
-            if (file_exists($filePathOrig)) 
-            {
-                unlink($filePathOrig);//borra la imagen
-            }
-            
-            Producto::borrarImagen($rutaFoto, $id);
-            break;
-        } 
-        
+
         if (!isset($id)) die("Error: no hay un id");
         if (Producto::delete($id)) die("exito");
         
-
         break;
-        /*if (method_exists($recurso, $metodo)) {
-			//debemos realizar una generalización de métodos a través de la función call_user_func(), ya que no sabemos que recurso fue accedido desde la url. Con esto evitamos usar estructuras de decisión y solo llamamos el método de la clase necesitada.
-            $respuesta = call_user_func(array($recurso, $metodo), $peticion);
-            $vista->imprimir($respuesta);
-            break;
-        }*/
     default:
-        echo 'Metodo no reconocible';
+        echo "Request Method NO reconocible";
 }
 ?>
