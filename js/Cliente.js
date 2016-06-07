@@ -105,7 +105,7 @@ var Cliente = {
                 //window.location.href = "Pagar.php";
                 //location.reload();
             } else {
-              alert(rta);
+                $("#mensaje").html(rta);
             }
         }).error(function(e){
                 console.log('Error al ejecutar la petición por:' + e);
