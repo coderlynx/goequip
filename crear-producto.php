@@ -233,19 +233,6 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                                
                             <!--   FIN FILE UPLOADER   -->
 					    </div>
-                    </div>
-=======
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-lg-6">
-							<button id="btnAltaProducto" type="submit" class="btn btn-custom">Guardar</button>
-							<div class="mensajes" id="mensaje"></div>
-						</div>
-					</div>
->>>>>>> 0fc308d6c029a65a32cd025ebe491366e43adf83
 				</form>
 		</div>
 	</main>
