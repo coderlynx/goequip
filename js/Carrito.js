@@ -35,7 +35,7 @@ var Carrito = {
             producto.descripcion = $(this).parent().find("#descripcion").html();
             producto.categoria = 'categoria';
             producto.precio = $(this).parent().find("#precio").html();
-            producto.foto = $("#imgPrincipal").attr('src');
+            producto.foto = $('.bxslider')[0].childNodes[1].childNodes[0].src;//$("#imgPrincipal").attr('src');
             
             producto.stock = 1;//default 1 cantidad
             if($(this).parent().find("#cantidad option:selected").val())

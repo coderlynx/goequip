@@ -188,6 +188,7 @@ print_r ($search_result);*/
 	<script src="js/lib/bootstrap.min.js"></script>
     <script src="js/Pedido.js"></script>
     <script src="js/Carrito.js"></script>
+    <script src="js/Producto.js"></script>
     <script type="text/javascript">
         $( document ).ready(function() {
             
@@ -196,7 +197,9 @@ print_r ($search_result);*/
                 Carrito.getTotal();
              }); 
             
-             $( "#nav" ).load( "codigoComun.php #nav" );
+             $( "#nav" ).load( "codigoComun.php #nav", function() {
+               Producto.bindearBuscadorProductos();
+             } );
              $( "#footer" ).load( "codigoComun.php #footer" );
              $( "#destacados" ).load( "codigoComun.php #destacados" );
 

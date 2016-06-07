@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Outlet Gym - Login</title>
+	<title>Outlet Gym - Cambiar Password</title>
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<link rel="stylesheet" href="css/normalize.css" />
 	<link rel="stylesheet" href="css/normalize.min.css">
@@ -34,21 +34,13 @@
 	<!-- /.LOGIN -->
 	<section>
 		<div class="container">
-	      <form id="formLogin" class="form-signin">
-	        <h2>Ingresar a mi cuenta</h2>
-	        <label for="inputEmail" class="sr-only">Email</label>
-	        <input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-	        <label for="inputPassword" class="sr-only">Clave</label>
-	        <input type="password" id="inputPassword" class="form-control" placeholder="Clave" required>
-	        <div class="checkbox">
-	          <label>
-	            <input type="checkbox" value="remember-me"> Recordarme
-	          </label>
-	        </div>
-	        <button class="btn btn-default btn-custom" type="submit">Ingresar</button>
+	      <form id="formCambioConClave" class="form-signin">
+	        <h2>Ingrese la nueva clave</h2>
+	        <label for="inputClaveNueva" class="sr-only">Nueva Clave</label>
+	        <input type="password" id="inputClaveNueva" class="form-control" placeholder="Clave (entre 6 y 8 caracteres alfanuméricos)" required autofocus>
+	        <button class="btn btn-default btn-custom" id="btnCambiarClave" type="submit">Cambiar</button>
 	        <div class="mensajes" id="mensaje"></div>
-	        <a href="cambiarPassword.html">Olvidé mi contraseña</a>
-	        <div>
+	        <div style="margin-top: 20px;">
 		        <h2>¿No tenés cuenta?</h2>
 		        <button id="btnCrearCuenta" class="btn btn-default btn-custom">Crear cuenta</button>
 			</div>

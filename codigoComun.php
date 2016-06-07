@@ -29,7 +29,7 @@ session_start();
                          <?php
                             }
                         ?>	
-                        <li><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i> Mis datos</a></li>
+                        <li><a href="misDatos.php"><i class="fa fa-pencil" aria-hidden="true"></i> Mis datos</a></li>
                         <?php
                           if(isset($_SESSION["perfil"]) &&  $_SESSION["perfil"] == 1) {
                             

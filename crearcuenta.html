@@ -52,8 +52,10 @@
 -->
 	        <label for="inputPassword" class="sr-only">Crear clave</label>
 	        <input type="password" id="inputPassword" class="form-control" placeholder="Crear clave (debe contener entre 6 y 8 caracteres alfanuméricos)" required pattern=".{6,8}" title="entre 6 y 8 caracteres">
+	        <label for="inputPassword" class="sr-only">Repetir clave</label>
+	        <input type="password" id="inputPasswordRepetida" class="form-control" placeholder="Repetir clave" required pattern=".{6,8}" title="entre 6 y 8 caracteres">
 	        <button class="btn btn-default btn-custom" type="submit">Crear cuenta</button>
-			<div id="mensaje"></div>
+			<div class="mensajes" id="mensaje"></div>
 	        <div class="crear-condiciones">
 		        <p>Al registrarme, declaro que soy mayor de edad y acepto las <a href="">condiciones legales</a></p>
 			</div>

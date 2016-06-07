@@ -16,7 +16,7 @@ if(!isset($_SESSION["nombre"]))	{
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Outlet Gym</title>
+	<title>Outlet Gym - Mis Datos</title>
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<link rel="stylesheet" href="css/normalize.css" />
 	<link rel="stylesheet" href="css/normalize.min.css">
@@ -52,12 +52,12 @@ if(!isset($_SESSION["nombre"]))	{
 	<div class="contenedor carrito">	
 		<div class="container-fluid">
 		<div class="row text-center">
-			<h1><i class="fa fa-shopping-cart" aria-hidden="true"></i> Datos para tu compra</h1>
+			<h1><i class="fa fa-shopping-cart" aria-hidden="true"></i> Mis datos personales</h1>
 			 
 		</div>
 		<section class="row">
 			<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 col-lg-offset-1 col-md-offset-1 detalle-compra datos-compra">
-				<h2><i class="fa fa-user" aria-hidden="true"></i> Datos del titular:</h2>
+				<h2><i class="fa fa-user" aria-hidden="true"></i> Datos:</h2>
 				<p id="mensaje_cliente" style="color:red;"></p>
 				<form action="">
                     <input id="idCliente" type="hidden">
@@ -108,18 +108,7 @@ if(!isset($_SESSION["nombre"]))	{
 						    		<label for="dni-nro">Número</label>
 						    		<input type="text" class="form-control" id="dni" placeholder="Número">
 						    	</div>
-<!--
-						    	<div class="col-lg-4">
-						    		<fieldset class="form-group">
-									    <label for="dni-tipo">Sexo</label>
-									    <select class="form-control" id="dni-tipo">
-									      <option>-Sexo-</option>
-									      <option>Femenino</option>
-									      <option>Masculino</option>
-									    </select>
-									</fieldset>
-						    	</div>
--->
+
 						    </div>
 					    </div>
 					</fieldset>
@@ -136,66 +125,8 @@ if(!isset($_SESSION["nombre"]))	{
                         </div>
                         
                     </div>
-					    
 					</fieldset>
-
-<!--
-					<fieldset class="form-group">
-					    <div>
-						    <div class="row">
-						    	<div class="col-lg-12">
-						    		<label for="nac-dia">Fecha de nacimiento</label>
-						    	</div>
-						    </div>
-						    <div class="row">
-						    	<div class="col-lg-3">
-						    		<fieldset class="form-group">
-									    <select class="form-control" id="nac-dia">
-									      <option>-Día-</option>
-									      <option>1</option>
-									      <option>2</option>
-									      <option>3</option>
-									      <option>4</option>
-									    </select>
-									</fieldset>
-						    	</div>
-						    	<div class="col-lg-3">
-						    		<fieldset class="form-group">
-									    <select class="form-control" id="nac-mes">
-									      <option>-Mes-</option>
-									      <option>Enero</option>
-									      <option>Febrero</option>
-									      <option>Marzo</option>
-									      <option>Abril</option>
-									      <option>Mayo</option>
-									      <option>Junio</option>
-									      <option>Julio</option>
-									      <option>Agosto</option>
-									      <option>Septiembre</option>
-									      <option>Octubre</option>
-									      <option>Noviembre</option>
-									      <option>Diciembre</option>
-									    </select>
-									</fieldset>
-						    	</div>
-						    	<div class="col-lg-3">
-						    		<fieldset class="form-group">
-									    <select class="form-control" id="nac-ano">
-									      <option>-Año-</option>
-									      <option>1</option>
-									      <option>2</option>
-									      <option>3</option>
-									      <option>4</option>
-									    </select>
-									</fieldset>
-						    	</div>
-						    </div>
-					    </div>
-					</fieldset>
--->
-
 				<hr>	
-					
 					<h2>Domicilio de facturación</h2>
 
 					<fieldset class="form-group">
@@ -245,33 +176,11 @@ if(!isset($_SESSION["nombre"]))	{
 					</fieldset>
 
 					<a class="btn btn-default btn-custom" href="#" id="btnAltaCliente" role="button">Guardar datos</a>
-                    <a class="btn btn-default btn-custom" role="button" id="btnDatosPersonales">Continuar</a>
                     <div class="mensajes" id="mensaje"></div>
+                    <div id="pantallaMisDatos"></div>
 				</form>
 			</div>
-
-			<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 detalle-carrito">
-				
-			</div>
-			<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 detalle-carrito">
-				<article class="detalle-carrito-resumen">
-					<h2><i class="fa fa-shopping-cart" aria-hidden="true"></i> Resúmen de tu compra:</h2>
-					<div class="row">
-					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Cantidad:</span></p></div>
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p class="totalCantidad"> 3</p></div>
-
-					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total:</span></p></div>
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ <span class="totalPedido"></span></p></div>
-
-					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Envío:</span></p></div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p> $ <span class="totalEnvio"></span></p></div>
-
-					<div class="col-lg-9 col-sm-9 col-xs-9"><p><span class="detalle-items">Total:</span></p></div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right"><p class="precio"> $ <span class="totalPedidoFinal"></span></p></div>
-					</div>
-					
-				</article>
-			</div>
+			
 		</section>
 		</div>
 	</div>
@@ -289,7 +198,6 @@ if(!isset($_SESSION["nombre"]))	{
 	<script src="js/lib/bootstrap.min.js"></script>
 	<script src="js/Cliente.js"></script>
 	<script src="js/Carrito.js"></script>
-	<script src="js/Producto.js"></script>
 	<script>
 		$( document ).ready(function() {
             
@@ -314,31 +222,6 @@ if(!isset($_SESSION["nombre"]))	{
                     }
                 });
                 
-                
-                $("#btnDatosPersonales").click(function() {
-                    
-                    //var idCliente = 1;
-                    
-                    $.post('php/controllerPedido.php', {idCliente:true}, function(respuesta) {
-                        //var rta = JSON.parse(respuestaJson);
-                        if(respuesta == 'ok') {
-                           window.location.href = "Pagar.php";
-                        } else {
-                            alert(respuesta);
-                        }
-                            
-                        
-
-                    }).error(function(e){
-                            console.log('Error al ejecutar la petición por:' + e);
-                        }
-                    );
-                    
-                    
-
-                });
-
-
 		});
   
         function getUrlParameter(sParam) {

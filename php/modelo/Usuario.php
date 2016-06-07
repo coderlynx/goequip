@@ -66,20 +66,21 @@ class Usuario implements JsonSerializable
 	{
 		
 		try {
-			
+			$row = self::validoSiExisteUsuario($usuario->mail);
 			//$query = "SELECT * from usuarios WHERE nombre = :nombre AND password = :password";
-			$query = "SELECT * from usuarios WHERE mail = :mail";
-			$stmt = DBConnection::getStatement($query);
+			//$query = "SELECT * from usuarios WHERE mail = :mail";
+			//$stmt = DBConnection::getStatement($query);
 
-			$stmt->bindValue(':mail',$usuario->mail);
+			//$stmt->bindValue(':mail',$usuario->mail);
 			//$stmt->bindValue(':password',$password_encriptado, PDO::PARAM_STR);
 			
-			$stmt->execute();
+			//$stmt->execute();
  
 			//si existe el usuario
-			if($stmt->rowCount() == 1)
+			//if($stmt->rowCount() == 1)
+			if($row)
 			{
-				 $row  = $stmt->fetch();
+				 //$row  = $stmt->fetch();
 				 
 				 $password_encriptado = password_hash($row['password'], PASSWORD_DEFAULT);
 
@@ -135,14 +136,16 @@ class Usuario implements JsonSerializable
 			}
 			
 			//VALIDO QUE NO EXISTE EL MAIL
-			$query = "SELECT * from usuarios WHERE mail = :mail";
+            $fila = self::validoSiExisteUsuario($usuario->mail);
+			/*$query = "SELECT * from usuarios WHERE mail = :mail";
 			$stmt = DBConnection::getStatement($query);
 			$stmt->bindValue(':mail',$usuario->mail);
 
-			$stmt->execute();
+			$stmt->execute();*/
  
 			//si existe el usuario con ese mail
-			if($stmt->rowCount() == 1)
+			//if(!$stmt->rowCount() == 1)
+			if($fila)
 			{				 
 				die('Ya existe un mail igual en la base.');
 			}
@@ -174,6 +177,31 @@ class Usuario implements JsonSerializable
 		}		
 		
 	}
+    
+    public static function validoSiExisteUsuario($mail){
+        try {
+            $query = "SELECT * FROM usuarios WHERE mail = :mail";		 
+            $stmt = DBConnection::getStatement($query);				
+            $stmt->bindParam(':mail', $mail,PDO::PARAM_STR);
+
+            if(!$stmt->execute()) {
+                throw new Exception("Error en el buscar el usuario.");
+            }
+            //si no existe el usuario
+            if($stmt->rowCount() == 0) {
+                return false;
+            }
+
+            return $stmt->fetch();
+        } catch(PDOException $e){
+			
+			print "Error!: " . $e->getMessage();
+			
+		}	
+            
+        
+        
+    }
 	 
 	public function getAll()
 	{
@@ -280,52 +308,31 @@ class Usuario implements JsonSerializable
 	
 	
 	
-	public static function actualizarPassword($pass_anterior, $pass_nueva, $idUsuario){
+	public static function actualizarPassword($hashEnviado, $pass, $fila){
 		
 		try {
-			
-			$query = "SELECT * from usuarios WHERE id = :id";
-			$stmt = DBConnection::getStatement($query);
+            
+            $hash = md5(md5($fila['nombre']).md5($fila['password']));
+            $idUsuario = $fila['id'];
+            $password_encriptado = password_hash($pass, PASSWORD_DEFAULT);
+            
+            if($hash == $hashEnviado){
+                    $query = "UPDATE usuarios SET password= :password WHERE id = :id";
+                    $stmt = DBConnection::getStatement($query);				
+                    $stmt->bindParam(':id', $idUsuario,PDO::PARAM_INT);
+                    $stmt->bindParam(':password', $password_encriptado,PDO::PARAM_STR);
 
-			$stmt->bindParam(':id',$idUsuario,PDO::PARAM_INT);
-			
-			$stmt->execute();
- 
-			//si existe el usuario
-			if($stmt->rowCount() == 1)
-			{
-				 $fila  = $stmt->fetch();
-				 
-				 $password_encriptado = password_hash($pass_nueva, PASSWORD_DEFAULT);
+                    if(!$stmt->execute()) {
+                        throw new Exception("Error al actualizar el password.");
+                    }
 
-				if (password_verify($pass_anterior, $fila['password'])) {
-					$db = DBConnection::getConnection();
-			
-					$db->beginTransaction();
-								
-					$query = "UPDATE usuarios SET password = :password WHERE id = :id";
-					
-					$stmt = DBConnection::getStatement($query);
-					
-					$stmt->bindParam(':password', $password_encriptado,PDO::PARAM_STR);
-					$stmt->bindParam(':id', $idUsuario,PDO::PARAM_INT);
-					
-					if(!$stmt->execute()) {
-						throw new Exception("Error al querer actualizar la clave");
-					}
-					
-					$db->commit();
-					
-					echo "ok";
-				} else {
-					echo 'La clave anterior no coincide con la registrada.';
-				}
+                    echo "ok";				
+                } else {
+                    echo "Error en el hash.";
+                }
 				 
-			}
-		}catch(PDOException $e){
-			
-			print "Error!: " . $e->getMessage();
-			
+			} catch(PDOException $e){
+			 print "Error!: " . $e->getMessage();
 		}		
 	}
 	
