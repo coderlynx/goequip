@@ -53,6 +53,12 @@ var Autenticacion = {
                 $('#mensaje').html('Password incorrecto (debe contener entre 6 y 8 caracteres alfanumericos)'); 
                 return;
             } 
+            
+            //valido campos clave iguales
+            if ($('#inputPasswordRepetida').val() != registro.password) {
+                $('#mensaje').html('Las claves deben coincidir.');
+                return;
+            } 
 			
 			var registro_json = JSON.stringify(registro);
 			

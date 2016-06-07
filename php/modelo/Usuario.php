@@ -66,20 +66,21 @@ class Usuario implements JsonSerializable
 	{
 		
 		try {
-			
+			$row = self::validoSiExisteUsuario($usuario->mail);
 			//$query = "SELECT * from usuarios WHERE nombre = :nombre AND password = :password";
-			$query = "SELECT * from usuarios WHERE mail = :mail";
-			$stmt = DBConnection::getStatement($query);
+			//$query = "SELECT * from usuarios WHERE mail = :mail";
+			//$stmt = DBConnection::getStatement($query);
 
-			$stmt->bindValue(':mail',$usuario->mail);
+			//$stmt->bindValue(':mail',$usuario->mail);
 			//$stmt->bindValue(':password',$password_encriptado, PDO::PARAM_STR);
 			
-			$stmt->execute();
+			//$stmt->execute();
  
 			//si existe el usuario
-			if($stmt->rowCount() == 1)
+			//if($stmt->rowCount() == 1)
+			if($row)
 			{
-				 $row  = $stmt->fetch();
+				 //$row  = $stmt->fetch();
 				 
 				 $password_encriptado = password_hash($row['password'], PASSWORD_DEFAULT);
 
@@ -135,14 +136,16 @@ class Usuario implements JsonSerializable
 			}
 			
 			//VALIDO QUE NO EXISTE EL MAIL
-			$query = "SELECT * from usuarios WHERE mail = :mail";
+            $fila = self::validoSiExisteUsuario($usuario->mail);
+			/*$query = "SELECT * from usuarios WHERE mail = :mail";
 			$stmt = DBConnection::getStatement($query);
 			$stmt->bindValue(':mail',$usuario->mail);
 
-			$stmt->execute();
+			$stmt->execute();*/
  
 			//si existe el usuario con ese mail
-			if($stmt->rowCount() == 1)
+			//if(!$stmt->rowCount() == 1)
+			if($fila)
 			{				 
 				die('Ya existe un mail igual en la base.');
 			}
@@ -184,7 +187,7 @@ class Usuario implements JsonSerializable
             if(!$stmt->execute()) {
                 throw new Exception("Error en el buscar el usuario.");
             }
-            //si existe el usuario
+            //si no existe el usuario
             if($stmt->rowCount() == 0) {
                 return false;
             }
