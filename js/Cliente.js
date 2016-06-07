@@ -96,7 +96,11 @@ var Cliente = {
         $.post('php/controllerCliente.php', {cliente:jsonCliente }, function(respuestaJson) {
             var rta = JSON.parse(respuestaJson);
             if(rta == "exito") {
-                alert("El cliente ha sigo guardado con exito.");
+                if($('#pantallaMisDatos')){
+                    $("#mensaje").html("El cliente ha sigo guardado con exito.");
+                    return;
+                }
+
                 $("#btnDatosPersonales").click();
                 //window.location.href = "Pagar.php";
                 //location.reload();

@@ -215,7 +215,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 					<div class="row">
 						<div class="col-lg-6">
 							<button id="btnAltaProducto" type="submit" class="btn btn-custom">Guardar</button>
-							<div id="mensaje"></div>
+							<div class="mensajes" id="mensaje"></div>
 						</div>
 					</div>
 				</form>
