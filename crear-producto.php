@@ -204,7 +204,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 							    <label for="fotos">Seleccione (una o más imágenes, al mismo tiempo):</label>
 							    <input type="file" id="fotos" name="files[]" multiple >
 							    <p class="help-block">Formato: tipos de imágnes soportados .jpeg, .jpg, .png, .gif</p>
-							    <p class="help-block">Tamaño: se recomienda utilizar imágenes de 350 x 300 (pixels)</p>
+							    <p class="help-block">Tamaño: se recomienda utilizar imágenes de 450 x 350 (pixels)</p>
 							    <p id="cantArchivos" style="margin-top: 10px"></p>
                                 <div id="visor"></div><br>
                                 <div id="visorEdicion"></div>

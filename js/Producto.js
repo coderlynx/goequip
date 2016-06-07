@@ -19,7 +19,7 @@ var Producto = {
 			  url: "php/controllerProducto.php",
 			  success:  function(productos){  
 					var rta = JSON.parse(productos);
-					for (i=0; i < rta.length; i++) {
+					for (var i=0; i < rta.length; i++) {
 						_this.dibujarProductoEnPantalla($('#contenedor'), rta[i]);
 					}
                     _this.bindearBotones();
@@ -39,7 +39,11 @@ var Producto = {
         link.attr('href','producto.html?id=' + producto.id + '&categoria=' + producto.categoria.id);
         
         var foto = $("<img>");
-        foto.attr('src', producto.fotos[0]);
+        if (producto.fotos.length > 0) {
+            foto.attr('src', producto.fotos[0]);
+        } else {
+            foto.attr('src', "img/productos/sin_imagen.png");
+        }
         foto.attr('alt', producto.modelo);
         foto.css({height: '300px'})
         foto.addClass('img-responsive');
@@ -173,7 +177,7 @@ var Producto = {
                     $('#cantidadDeProductos').html(productos.length + " Productos");
                     $('#nombreCategoria').html(productos[0].categoria.descripcion);
             
-                    for (i=0; i < productos.length; i++) {
+                    for (var i=0; i < productos.length; i++) {
 						_this.dibujarProductoEnPantalla($('#contendorProductos'), productos[i]);
                         
                         //dibujo el menu del costado
@@ -218,7 +222,7 @@ var Producto = {
             link = {}, ruta = "", img = {}, div = {}, close = {};
         
         // Dibuja imágenes
-        for (i = 0 ; i < length; i++) {
+        for (var i = 0 ; i < length; i++) {
             link = $("<a>");
             
             ruta = producto.fotos[i];
@@ -244,32 +248,51 @@ var Producto = {
         var length = producto.fotos.length,
             categoria = producto.categoria['descripcion'],
             modelo = producto.modelo,
-            link = {}, ruta = "", img = {};
+            ul = $(".bxslider"),
+            link = {}, ruta = "", img = {}, li = {}, a = {};
 
         $(".divProducto").attr('id',producto.id);
         $("#modelo").html(producto.modelo);
         $("#precio").html(producto.precio);
         $("#descripcion").html(producto.descripcion);
         
-        (producto.fotos[0]) ? $("#imgPrincipal").attr('src',producto.fotos[0]) : $("#imgPrincipal").attr('src',"img/productos/sin_imagen.png");
-        
-        // Dibuja imágenes
-        for (i = 1 ; i < length; i++) {
-            link = $("<a>");
-            ruta = producto.fotos[i];
-            link.attr({href: ruta, "data-lightbox": categoria, "data-title": modelo});
-            link.css({display: 'inline-block', marginLeft: '10px'});
+        /* INICIO CARGA CAROUSEL IMAGENES PRODUCTO */
+        if (producto.fotos.length > 0) {
+            var div = $("#bx-pager");
+            var index = 0;
             
+            for (var i = 0; i < length; i++) {
+                img = $("<img>");
+                img.attr({src: producto.fotos[i]});
+                if (!producto.fotos[i].includes("thumb")) {
+                    li = $("<li>")
+                    li.append(img);
+                    ul.append(li);
+                } else {
+                    a = $("<a>");
+                    a.attr({"data-slide-index": index.toString(), href: ""});
+                    a.append(img);
+                    div.append(a);
+                    index++;
+                }
+            }
+        } else {
             img = $("<img>");
-            img.attr({'src': producto.fotos[i], 'alt': modelo});
-            img.addClass('img-responsive');
-            
-            link.append(img);          
-            $(".preview").append(link);
+            img.attr({src: "img/productos/sin_imagen.png"});
+            li = $("<li>");
+            li.append(img);
+            ul.append(li);
         }
+        /* FIN CARGA CAROUSEL IMAGENES PRODUCTO */
+        
+        // CAROUSEL PRODUCTOS
+        $('.bxslider').bxSlider({
+            pagerCustom: '#bx-pager',
+            captions: true
+        });
         
         //dibujo los colores
-        for (i = 0; i < producto.colores.length; i++){
+        for (var i = 0; i < producto.colores.length; i++){
             var div = $("<div>");
             div.addClass('circle');
             div.attr('style','background:' + producto.colores[i].descripcion);
@@ -279,7 +302,7 @@ var Producto = {
         }
 
         //dibujo los talles
-        for (i=0 ; i < producto.talles.length; i++){
+        for (var i=0 ; i < producto.talles.length; i++){
             var span = $("<span>");
             span.addClass('talle');
             span.attr('data-talle',producto.talles[i].id);
@@ -290,7 +313,7 @@ var Producto = {
          
         //para dibujar si tiene o no stock
         if(producto.stock > 0) {
-            for (i=1; i < producto.stock; i++) {
+            for (var i=1; i < producto.stock; i++) {
                 var option = $('<option>');
                 option.attr('value',i);
                 option.html(i);
@@ -388,7 +411,7 @@ var Producto = {
                 var productos = JSON.parse(respuestaJson);
                     if(productos.length > 0) {
                         $('#contendorProductos').empty();
-                        for (i=0; i < productos.length; i++) {
+                        for (var i=0; i < productos.length; i++) {
                             _this.dibujarProductoEnPantalla($('#contendorProductos'), productos[i]);
                         }
                         _this.bindearBotones();
