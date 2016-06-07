@@ -48,7 +48,7 @@ var Autenticacion = {
             } 
             
             //validamos clave
-             var regex_clave = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,8})$/;
+            var regex_clave = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,8})$/;
             if (!regex_clave.test(registro.password.trim())) {
                 $('#mensaje').html('Password incorrecto (debe contener entre 6 y 8 caracteres alfanumericos)'); 
                 return;
@@ -110,22 +110,66 @@ var Autenticacion = {
 		
 		_this.bindearBtnCerrarSesion();
 			
-           /* $.get('php/controllerAutenticacion.php', function(respuestaJson) {
-				//var rta = JSON.parse(respuestaJson);
-                $('#nombreUsuario').text('');
-                $('.totalPedido').text('0');
-                $('.totalCantidad').text('0');
-                $('#contenedorCarro').text('');
-                //$('#btnComprar').attr("style","display:none");
-				alert('Log out');
+        $('#formCambiarClave').submit(function(e) {
+            e.preventDefault();
+            var mail_input = $('#inputEmailRecuperar').val();
+
+            //Utilizamos una expresion regular para validar mail
+            var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+            //Se utiliza la funcion test() nativa de JavaScript
+            if (!regex.test($('#inputEmailRecuperar').val().trim())) {
+                $('#mensaje').html('Email invalido incorrecto.');
                 return;
-				//$('#nombre_usuario').text("anonimo");
-			}).error(function(e){
-						console.log('Error al ejecutar la peticion');
-					}
-			);*/
-		//});
-		
+            }
+            
+            $.ajax({
+                url: 'php/controllerAutenticacion.php',
+                type: 'PUT',
+                data:  {recuperarMail:mail_input },
+                success: function (rta) {
+                    if(rta == 'ok') {
+                        $('#mensaje').html('Se te envio un link a tu mail para cambiar la password.');
+                    } else {
+                        $('#mensaje').html(rta);
+                    }		
+                },
+                error: function(e){
+                    console.log('Error al ejecutar la petición por:' + e);
+                }
+            });
+        });
+        
+        $('#formCambioConClave').submit(function(e) {
+            e.preventDefault();
+			var password = $('#inputClaveNueva').val();
+            var mailURL = _this.getUrlParameter('mail');
+            var hash = _this.getUrlParameter('id');
+            
+            //validamos clave
+            var regex_clave = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,8})$/;
+            if (!regex_clave.test(password.trim())) {
+                $('#mensaje').html('Password incorrecto (debe contener entre 6 y 8 caracteres alfanumericos)'); 
+                return;
+            } 
+            
+            $.ajax({
+                url: 'php/controllerAutenticacion.php',
+                type: 'PUT',
+                data: {passNuevo:password, mailURL:mailURL, id:hash},
+                success: function (rta) {
+                   if(rta == 'ok') {
+                        $('#mensaje').html("Cambio de clave exitoso.");
+                       $('#inputClaveNueva').val("");
+                    } else {
+                        $('#mensaje').html(rta);
+                    }			
+                },
+                error: function(e){
+                    console.log('Error al ejecutar la petición por:' + e);
+                }
+            });
+        });
+			
     },
     bindearBtnCerrarSesion:function(){
         $('#btnCerrarSesion').click( function() {
@@ -172,6 +216,20 @@ var Autenticacion = {
 		});*/
 		
 		
-	}
+	},
+    getUrlParameter: function(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    }
 }
 	
