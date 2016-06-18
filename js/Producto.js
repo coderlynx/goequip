@@ -35,6 +35,7 @@ var Producto = {
         var div_item = $('<div>');
         div_item.attr('id',producto.id);
         div_item.addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12 producto');
+        div_item.css({height: '300px'});
         
         var link = $("<a>");
         link.attr('href','producto.html?id=' + producto.id + '&categoria=' + producto.categoria.id);
@@ -50,7 +51,7 @@ var Producto = {
                     foto.attr('src', "img/na.jpg");
                 }
         }
-        foto.css({height: '300px', margin: '0 5px'})
+        foto.css({ margin: '0 5px'})
         foto.addClass('img-responsive');
         link.append(foto);
         
@@ -275,7 +276,7 @@ var Producto = {
 
         $(".divProducto").attr('id',producto.id);
         $("#modelo").html(producto.modelo);
-        $("#precio").html(producto.precio);
+        $("#precio").html('$ ' + producto.precio);
         $("#descripcion").html(producto.descripcion);
         
         /* INICIO CARGA CAROUSEL IMAGENES PRODUCTO */
