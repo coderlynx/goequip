@@ -10,7 +10,7 @@ switch ($metodo) {
     case 'get':
         if (isset($_GET["id"])) {
             $producto = Producto::getById($_GET["id"]);
-            echo json_encode($producto);  
+            echo json_encode($producto);
             break;
         }
         if (isset($_GET["buscar"])) {
@@ -39,9 +39,30 @@ switch ($metodo) {
             $_SESSION['idProducto'] = $producto->id;
             
             echo json_encode($_SESSION['idProducto']);
-            exit;
         }
         echo json_encode($validator->getErrores());
+        
+        // Si se cargaron imágenes, almaceno el array retornado con las rutas
+        if (!(empty($_FILES))) {
+            $imagenes = array();
+            $imagenes = Funciones::tratarImagenes($_FILES);
+            
+            foreach ($imagenes as $key => $value) {
+                
+                $imagen = new Imagen($imagenes[$key]->nombre, $imagenes[$key]->tipo, 
+                                     $imagenes[$key]->size, $imagenes[$key]->ruta,
+                                     $imagenes[$key]->rutaThumbnail, $_SESSION['idProducto']);
+                
+                if ($result = Imagen::insert($imagen)) {
+                    echo json_encode("Imagen insertada con éxito.");
+                } else {
+                    echo json_encode("No se han podido insertar las imágenes.");
+                }
+                
+            }
+        } else {
+            echo json_encode("No hay imágenes cargadas.");
+        }
         break;
     case 'put':
     case 'delete':        

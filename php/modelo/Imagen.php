@@ -3,13 +3,22 @@ require_once 'autoload.php';
 
 class Imagen implements JsonSerializable
 { 
-    public $ruta = array();
+    public $nombre;
+    public $tipo;
+    public $size;
+    public $ruta;
+    public $rutaThumbnail;
     public $idProducto;
     public $orden;
 
-    public function __construct($ruta, $idProducto, $orden = 0) 
+    public function __construct($nombre, $tipo, $size, $ruta, $rutaThumbnail,
+                                $idProducto, $orden = 0) 
     {
+        $this->nombre = $nombre;
+        $this->tipo = $tipo;
+        $this->size = $size;
         $this->ruta = $ruta;
+        $this->rutaThumbnail = $rutaThumbnail;
         $this->idProducto = $idProducto;
         $this->orden = $orden;
     }
@@ -18,7 +27,11 @@ class Imagen implements JsonSerializable
 		$json = array();
 		
 		return [
+            'nombre' => $this->nombre,
+            'tipo' => $this->tipo,
+            'size' => $this->size,
 			'ruta' => $this->ruta,
+            'rutaThumbnail' => $this->rutaThumbnail,
 			'idProducto' => $this->idProducto,
 			'orden' => $this->orden
 		];		
@@ -30,22 +43,28 @@ class Imagen implements JsonSerializable
         try {
             $db->beginTransaction();
             
-            for ($i = 0; $i < count($imagen->ruta); $i++) {
-                $ruta = str_replace("..\\","", $imagen->ruta[$i]);
-                
-                $query = "INSERT INTO imagenes (ruta, idProducto, orden) 
-                VALUES(:ruta, :idProducto, :orden)";
+            $ruta = str_replace("..\\","", $imagen->ruta);
+            $rutaThumbnail = str_replace("..\\","", $imagen->rutaThumbnail);
 
-                $stmt = DBConnection::getStatement($query);									
+            $query = "INSERT INTO imagenes(nombre, tipo, size, ruta, 
+                                            rutaThumbnail, idProducto, orden) 
+                      VALUES(:nombre, :tipo, :size, :ruta, :rutaThumbnail, 
+                            :idProducto, :orden)";
 
-                $stmt->bindParam(':ruta', $ruta, PDO::PARAM_STR);
-                $stmt->bindParam(':idProducto', $imagen->idProducto, PDO::PARAM_INT);
-                $stmt->bindParam(':orden', $imagen->orden, PDO::PARAM_INT);
+            $stmt = DBConnection::getStatement($query);									
 
-                if (!$stmt->execute()) {
-                    throw new Exception("Error en el insertado de la imagen.");
-                }
+            $stmt->bindParam(':nombre', $imagen->nombre, PDO::PARAM_STR);
+            $stmt->bindParam(':tipo', $imagen->tipo, PDO::PARAM_STR);
+            $stmt->bindParam(':size', $imagen->size, PDO::PARAM_INT);
+            $stmt->bindParam(':ruta', $ruta, PDO::PARAM_STR);
+            $stmt->bindParam(':rutaThumbnail', $rutaThumbnail, PDO::PARAM_STR);
+            $stmt->bindParam(':idProducto', $imagen->idProducto, PDO::PARAM_INT);
+            $stmt->bindParam(':orden', $imagen->orden, PDO::PARAM_INT);
+
+            if (!$stmt->execute()) {
+                throw new Exception("Error en el insertado de la imagen.");
             }
+            
             $db->commit();
 				 
             return $imagen;
@@ -80,8 +99,9 @@ class Imagen implements JsonSerializable
 		try {
             $db->beginTransaction();
             
-			$query = "SELECT *
-				      FROM imagenes
+			$query = "SELECT nombre, tipo, size, ruta, rutaThumbnail, 
+                             idProducto, orden
+                      FROM imagenes
                       WHERE idProducto = :valor
                       ORDER BY orden";
 											
@@ -90,16 +110,24 @@ class Imagen implements JsonSerializable
             $stmt->bindParam(':valor', $idProducto, PDO::PARAM_INT);
 		   
             if(!$stmt->execute()) {
-				throw new Exception('Error al traer las fotos');
+				throw new Exception('Error al traer las imagenes');
 			}
+            
             $db->commit();
             
-			$rutasFotos = [];
+			$imagenes = [];
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
-                $rutasFotos[] = $row['ruta'];
+                
+                $imagen = new Imagen($row['nombre'], $row['tipo'], $row['size'],
+                                     $row['ruta'], $row['rutaThumbnail'], 
+                                     $row['idProducto'], $row['orden']);
+                
+                $imagenes[] = $imagen;
 			}
-            return $rutasFotos;
+            
+            return $imagenes;
+            
         } catch (PDOException $e) {
             echo 'Error: ' . $e->getMessage();
             $db->rollBack();
