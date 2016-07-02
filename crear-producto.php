@@ -220,7 +220,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                 var files = [];
                 
                 if (prod.fotos.length > 0) {
-                    
+                    console.log(prod.fotos);
                     for (var i = prod.fotos.length - 1; i >= 0; i--) {
 
                         if (!prod.fotos[i].ruta.includes("thumb")) {
@@ -229,7 +229,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                             obj.size = prod.fotos[i].size;
                             obj.type = prod.fotos[i].tipo;
                             obj.file = prod.fotos[i].ruta;
-
+                            console.log(obj);
                             files.push(obj);
                         }
                     }

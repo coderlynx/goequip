@@ -51,6 +51,7 @@ var Producto = {
                     foto.attr('src', "img/na.jpg");
                 }
         }
+        /* REVIDAR!! */
         foto.css({height: '300px', margin: '0 5px'})
         foto.addClass('img-responsive');
         link.append(foto);
