@@ -199,6 +199,7 @@ if(!isset($_SESSION["nombre"]))	{
 	<script src="js/Cliente.js"></script>
 	<script src="js/Carrito.js"></script>
 	<script src="js/Autenticacion.js"></script>
+	<script src="js/Producto.js"></script>
 	<script>
 		$( document ).ready(function() {
             
