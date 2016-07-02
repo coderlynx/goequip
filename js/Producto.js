@@ -40,8 +40,9 @@ var Producto = {
         link.attr('href','producto.html?id=' + producto.id + '&categoria=' + producto.categoria.id);
         
         var foto = $("<img>");
-        if (producto.fotos) {
-            foto.attr('src', producto.fotos[0]);
+
+        if (producto.fotos[0].ruta != null) {
+            foto.attr('src', producto.fotos[0].ruta);
             foto.attr('alt', producto.modelo);
         } else {
             if (Producto.self().detectarSO === "WINDOWS") {
@@ -102,39 +103,44 @@ var Producto = {
         }
         return OSName.toUpperCase();
     },
-    //insert: function (producto, form)
-    insert: function (producto) {
+    insert: function (producto, form) {
         var _this = this;
         //Parseo a JSON el obj Producto
         var jsonProducto = JSON.stringify(producto);
-        console.log(jsonProducto);
-        //var formData = new FormData(form);
+        var formData = new FormData(form);
         
         // Agrego las propiedades del objeto producto al form con las imágenes
-        //formData.append("producto", jsonProducto);
+        formData.append("producto", jsonProducto);
+
         $.ajax({
             url: 'php/controllerProducto.php',
             type: 'POST',
-            //data: formData,
-            data: {producto: jsonProducto},
-            //cache: false,
-            //mimeType: "multipart/form-data",
-            //contentType: false,
-            //processData: false,
+            data: formData,
+            cache: false,
+            mimeType: "multipart/form-data",
+            contentType: false,
+            processData: false,
             success: function (data, textStatus) {
-                //var rta = JSON.parse(respuestaJson);
                 if (data) {
-//                    $('#mensaje').html(data);
-//                    $('#categoria').val("");
-//                    $('#descripcion').val("");
-//                    $('#modelo').val("");
-//                    $('#talles').val("");
-//                    $('#colores').val("");
-//                    $('#stock').val("");
-//                    $('#precio').val("");
-                    //$("#visor").empty();
-                    //window.location.href = "listado-productos.php";
-                    $("#uploader-container").show();
+                    console.log(data);
+                    $('#categoria').val("");
+                    $('#descripcion').val("");
+                    $('#modelo').val("");
+                    $('.check').prop("checked", false);
+                    $('#stock').val("");
+                    $('#precio').val("");
+                    $('#filer_input').prop("jFiler").reset();
+                    $('#box-messages').empty();
+                    $('#box-messages').append('<div class="alert alert-success">' +
+                                              'Producto cargado exitosamente!' +
+                                              '</div>');
+                    
+                    window.setTimeout(function() {
+                      $("#box-messages div").fadeTo(500, 0).slideUp(500, function() {
+                          $(this).remove();
+                          window.location.href = "listado-productos.php";
+                      });
+                    }, 3000);
                 } else {
                     console.log(textStatus);
                 }
@@ -246,7 +252,7 @@ var Producto = {
             for (var i = 0 ; i < length; i++) {
                 link = $("<a>");
 
-                ruta = producto.fotos[i];
+                ruta = producto.fotos[i].ruta;
 
                 link.css({display: 'inline-block', marginLeft: '20px'});
 
@@ -259,7 +265,7 @@ var Producto = {
                 link.append(close);
 
                 img = $("<img>");
-                img.attr({'src': producto.fotos[i], 'alt': modelo, width: '100px', height: '100px'});
+                img.attr({'src': producto.fotos[i].rutaThumbnail, 'alt': modelo, width: '100px', height: '100px'});
 
                 link.append(img);   
                 $("#visorEdicion").append(link);
@@ -279,14 +285,15 @@ var Producto = {
         $("#descripcion").html(producto.descripcion);
         
         /* INICIO CARGA CAROUSEL IMAGENES PRODUCTO */
-        if (producto.fotos.length > 0) {
+        if (producto.fotos.length > 0 && producto.fotos[0].ruta !== null) {
             var div = $("#bx-pager");
             var index = 0;
             
             for (var i = 0; i < length; i++) {
                 img = $("<img>");
-                img.attr({src: producto.fotos[i]});
-                if (!producto.fotos[i].includes("thumb")) {
+                img.attr({src: producto.fotos[i].ruta})
+                
+                if (!producto.fotos[i].ruta.includes("thumb")) {
                     li = $("<li>")
                     li.append(img);
                     ul.append(li);
@@ -300,7 +307,7 @@ var Producto = {
             }
         } else {
             img = $("<img>");
-            img.attr({src: "img/productos/sin_imagen.png"});
+            img.attr({src: "img/na.jpg"});
             li = $("<li>");
             li.append(img);
             ul.append(li);

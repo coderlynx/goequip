@@ -1,12 +1,10 @@
 <?php
 session_start();
-    
 
 if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
   header("Location: index.html");  //Si no hay sesión activa, lo direccionamos al index.php (inicio de sesión) 
   
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +15,8 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 	<link rel="stylesheet" href="css/normalize.css" />
 	<link rel="stylesheet" href="css/normalize.min.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/fine-uploader-new.css">
+	<link rel="stylesheet" href="css/jquery.filer.css">
+	<link rel="stylesheet" href="css/themes/jquery.filer-dragdropbox-theme.css">
 	<script src="js/lib/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 
 	<!-- Google Font -->
@@ -31,12 +30,6 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 
 </head>
 <body>
-	<!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
-    
-    
     	<header>
     		<div class="container-fluid">
     			<div class="row">
@@ -97,15 +90,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                                 <option value="4">Accesorios</option>
                                 <option value="5">Indumentaria</option>
                             </select>
-<!--
-							<select class="form-control">
-							  <option>Accesorios</option>
-							  <option>Equipos Cardio</option>
-							  <option>Indumentaria</option>
-							  <option>Kangoo Jumps</option>
-							  <option>Waterrower</option>
-							</select>
--->
+
 						</div>
 					</div>
 					<div class="row">
@@ -132,20 +117,6 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 						     <div id="talles" class="grupo_chk">
 			                </div>
 			                
-<!--
-						    <label class="checkbox-inline">
-							  <input type="checkbox" id="inlineCheckbox1" value="option1"> XS
-							</label>
-							<label class="checkbox-inline">
-							  <input type="checkbox" id="inlineCheckbox2" value="option2"> S
-							</label>
-							<label class="checkbox-inline">
-							  <input type="checkbox" id="inlineCheckbox3" value="option3"> M
-							</label>
-							<label class="checkbox-inline">
-							  <input type="checkbox" id="inlineCheckbox3" value="option3"> L
-							</label>
--->
 						  </div>
 						</div>
 					</div>
@@ -155,21 +126,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 						    <p>Elija los colores disponibles:</p>
 						    <div id="colores" class="grupo_chk">
 			                </div>
-                        
-<!--
-						    <label class="checkbox-inline">
-							  <input type="checkbox" id="inlineCheckbox1" value="option1">
-							  <div class="circle color-blanco">Blanco</div>
-							</label>
-							<label class="checkbox-inline">
-							  <input type="checkbox" id="inlineCheckbox1" value="option1">
-							  <div class="circle color-gris">Gris</div>
-							</label>
-							<label class="checkbox-inline">
-							  <input type="checkbox" id="inlineCheckbox1" value="option1">
-							  <div class="circle color-negro">Negro</div>
-							</label>
--->
+
 						  </div>
 						</div>
 					</div>
@@ -178,12 +135,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 						<div class="col-lg-6">
 							<label>Stock:</label>
 							<input id="stock" type="number" class="form-control" placeholder="Stock" value="" required />
-<!--
-							<select class="form-control">
-							  <option>En Stock</option>
-							  <option>Sin Stock</option>
-							</select>
--->
+
 						</div>
 					</div>
 
@@ -199,39 +151,25 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 						</div>
 					</div>
 
+					<div class="row">
+						<div class="col-lg-6">
+                            <div id="uploader-container" class="form-group">
+                                <label>Imágenes:</label>
+                                <p class="help-block">Formatos de imágnes soportados: .jpeg, .jpg, .png, .gif</p>
+                                <p class="help-block">Tamaño: se recomienda utilizar imágenes de 450 x 350 (pixels)</p>
+                                <input type="file" name="files[]" id="filer_input" multiple="multiple">
+                                <div id="box-messages"></div>
+                            </div> 
+                        </div>
+                    </div>
+                    
                     <div class="row">
 						<div class="col-lg-6">
 							<button id="btnAltaProducto" type="submit" class="btn btn-custom">Guardar</button>
 							<div id="mensaje"></div>
 						</div>
 					</div> 
-                
-					<div class="row">
-						<div class="col-lg-6">
-                            <!--  INICIO FILE UPLOADER  -->
-                            <div id="uploader-container" class="form-group">
-                               <label>Imágenes:</label>
-                                <p class="help-block">Formatos de imágnes soportados: .jpeg, .jpg, .png, .gif</p>
-							    <p class="help-block">Tamaño: se recomienda utilizar imágenes de 450 x 350 (pixels)</p>
-                                <div id="manual-fine-uploader"></div>
-                                <div id="box-messages"></div>
-                                <input id="requests" type="hidden" name="totalRequest" value="0">
-                                <div id="triggerUpload" class="btn btn-primary" style="margin-top: 10px;">
-                                    <i class="icon-upload icon-white"></i> Upload Now
-                                </div>
-                            </div> 
-                        </div>
-<!--
-							    <label for="fotos">Seleccione (una o más imágenes, al mismo tiempo):</label>
-							    <input type="file" id="fotos" name="files[]" multiple >
-							    <p class="help-block">Formato: tipos de imágnes soportados .jpeg, .jpg, .png, .gif</p>
-							    <p class="help-block">Tamaño: se recomienda utilizar imágenes de 450 x 350 (pixels)</p>
-							    <p id="cantArchivos" style="margin-top: 10px"></p>
-                                <div id="visor"></div><br>
-                                <div id="visorEdicion"></div>
--->
-                               
-                            <!--   FIN FILE UPLOADER   -->
+
 				</form>
 		</div>
 	</main>
@@ -239,10 +177,8 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 		<p>Panel de control Outlet GYM</p>
 	</footer>
 	<script src="js/lib/jquery.js"></script>
-	<!--<script src="http://code.jquery.com/jquery-latest.js"></script><!-->
 	<script src="js/lib/bootstrap.min.js"></script>
-    <!--<script src="js/lib/jquery.fine-uploader.min.js"></script>-->
-    <script src="js/lib/jquery.fine-uploader.js"></script>
+    <script src="js/lib/jquery.filer.min.js"></script>
     <script src="js/Autenticacion.js"></script>
 	<script src="js/Producto.js"></script>
 	<script src="js/ConstructorDeCheck.js"></script>
@@ -250,7 +186,6 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 		$(document).ready(function() { 
             ConstructorDeCheck.armarCheckBox('#talles','talles');
             ConstructorDeCheck.armarCheckBoxColores('#colores','colores');
-            $("#uploader-container").hide();
             Autenticacion.init();
             Autenticacion.bindearBtnCerrarSesion();
             //cuando presiona guardar
@@ -258,18 +193,13 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                 e.preventDefault();
                 if (Producto.validarCampos()) {
                     var producto = Producto.armarObjetoProducto();
-                    // producto.Id = null;
+                    
                     // OJO, NO cambiar el método nativo de JS por JQuery
-                    //var form = document.getElementById("agregarProducto");
+                    var form = document.getElementById("agregarProducto");
                     
-                    // FILE UPLOADER
-                    // manualuploader.fineUploader('uploadStoredFiles');
-                    
-                    //Producto.insert(producto, form);
-                    Producto.insert(producto);
+                    Producto.insert(producto, form);
                 }  
             });
-            // $("#fotos").change(previewFiles);
             
             var id = getUrlParameter('id');
             
@@ -286,70 +216,43 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                 for (var i = 0; i < prod.colores.length; i++) {
                     Producto.tildarCheckbox(prod.colores[i], 'colores');
                 }
+                // Imágenes
+                var files = [];
+                
+                if (prod.fotos.length > 0) {
+                    
+                    for (var i = prod.fotos.length - 1; i >= 0; i--) {
+
+                        if (!prod.fotos[i].ruta.includes("thumb")) {
+                            var obj = {};
+                            obj.name = prod.fotos[i].nombre;
+                            obj.size = prod.fotos[i].size;
+                            obj.type = prod.fotos[i].tipo;
+                            obj.file = prod.fotos[i].ruta;
+
+                            files.push(obj);
+                        }
+                    }
+                    
+                }
+                
                 $("#btnAltaProducto").attr('value','Editar');
                 $("#btnAltaProducto").html("Editar");
-            } 
-            /* INICIO FILE UPLOADER */
-            var manualuploader = $('#manual-fine-uploader').fineUploader({
-                request: {
-                    endpoint: 'php/controllerImagen.php',
-                    params: {
-                        
-                    }
-                },
-                autoUpload: false,
-                text: {
-                    uploadButton: '<i class="icon-plus icon-white"></i> Select Files'
-                },
-                validation: {
-                    allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
-                    sizeLimit: 512000 // 500 kB = 500 * 1024 bytes
-                },
-                showMessage: function(message) {
-                    // Using Bootstrap's classes
-                    $('#box-messages').empty();
-                    $('#box-messages').append('<div class="alert alert-danger">' + message + '</div>');
-                    
-                    window.setTimeout(function() {
-                      $("#box-messages div").fadeTo(500, 0).slideUp(500, function(){
-                          $(this).remove();
-                      });
-                    }, 3000);
-                },
-                debug: true
-            })
-            .on('submitted', function(event, id, name) {
-                console.log("%cUpload", "color: blue; font-weight: bold");
-            })
-            .on('upload', function(event, id, name) {
-                console.log("%cSubmited", "color: blue; font-weight: bold");
-                $('#categoria').val("");
-                $('#descripcion').val("");
-                $('#modelo').val("");
-                $('.check').prop("checked", false);
-                $('#stock').val("");
-                $('#precio').val("");
-                $("#uploader-container").hide();
-            })
-            .on('complete', function (id, name, responseJSON, xhr) {
-                if (responseJSON.success) {
-                    console.log("%cUpload process complete.", "color: blue; font-weight: bold");
-                } else {
-                    console.log("%cUpload denied.", "color: orange; font-weight: bold");
-                }
-                console.log(id + " - " + name + " - " + responseJSON);
-            })
-            .on('error', function(event, id, name, errorReason) {
-                console.log("%cError: " + name, "color: red; font-weight: bold");
-                console.log("%cError: " + errorReason, "color: red; font-weight: bold");
-                $(".qq-upload-list-selector").empty();
-            });
+            }
+            
+            cargarUploader(files);
+        });
+        function cargarUploader(files) {
 
-            $('#triggerUpload').click(function() {
-                manualuploader.fineUploader('uploadStoredFiles');
-            });
-            /* FIN FILE UPLOADER */
-		});
+            $('#filer_input').filer({
+                extensions: ['jpg', 'jpeg', 'png', 'gif'],
+                changeInput: true,
+                showThumbs: true,
+                addMore: true,
+                files: files
+            })
+            
+        }
         function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
                 sURLVariables = sPageURL.split('&'),
@@ -363,97 +266,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                     return sParameterName[1] === undefined ? true : sParameterName[1];
                 }
             }
-        };
-        // Previsualizador de múltiples imágenes
-        function previewFiles() {
-            var preview = $('#visor');
-            var files   = document.querySelector('input[type=file]').files;
-            var cantFotos = files.length;
-            $("#cantArchivos").text("Cantidad de archivos cargardos: " + cantFotos);
-            preview.empty();
-            
-            function readAndPreview(file) {
-                // Make sure `file.name` matches our extensions criteria
-                if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
-                    var cssString = "border: 1px solid black; margin-right: 10px;";
-                    var reader = new FileReader();
-
-                  reader.addEventListener("load", function () {
-                    var image = new Image();
-                    image.width = 100;
-                    image.height = 100;
-                    image.style.cssText = cssString;
-                    image.title = file.name;
-                    image.src = this.result;
-                    preview.append(image);
-                  }, false);
-
-                  reader.readAsDataURL(file);
-                }
-            }
-            if (files) {
-                [].forEach.call(files, readAndPreview);
-            }
-        }  
+        }
 	</script>	
-    <!--	THUMBNAIL TEMPLATE FILE UPLOADER   -->
-	<script type="text/template" id="qq-template">
-        <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
-            <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
-                <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
-            </div>
-            <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
-                <span class="qq-upload-drop-area-text-selector"></span>
-            </div>
-            <div class="qq-upload-button-selector qq-upload-button">
-                <div>Upload a file</div>
-            </div>
-            <span class="qq-drop-processing-selector qq-drop-processing">
-                <span>Processing dropped files...</span>
-                <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
-            </span>
-            <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite" aria-relevant="additions removals">
-                <li>
-                    <div class="qq-progress-bar-container-selector">
-                        <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>
-                    </div>
-                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
-                    <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
-                    <span class="qq-upload-file-selector qq-upload-file"></span>
-                    <span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span>
-                    <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
-                    <span class="qq-upload-size-selector qq-upload-size"></span>
-                    <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
-                    <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
-                    <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
-                    <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
-                </li>
-            </ul>
-
-            <dialog class="qq-alert-dialog-selector">
-                <div class="qq-dialog-message-selector"></div>
-                <div class="qq-dialog-buttons">
-                    <button type="button" class="qq-cancel-button-selector">Close</button>
-                </div>
-            </dialog>
-
-            <dialog class="qq-confirm-dialog-selector">
-                <div class="qq-dialog-message-selector"></div>
-                <div class="qq-dialog-buttons">
-                    <button type="button" class="qq-cancel-button-selector">No</button>
-                    <button type="button" class="qq-ok-button-selector">Yes</button>
-                </div>
-            </dialog>
-
-            <dialog class="qq-prompt-dialog-selector">
-                <div class="qq-dialog-message-selector"></div>
-                <input type="text">
-                <div class="qq-dialog-buttons">
-                    <button type="button" class="qq-cancel-button-selector">Cancel</button>
-                    <button type="button" class="qq-ok-button-selector">Ok</button>
-                </div>
-            </dialog>
-        </div>
-    </script>
 </body>
 </html>

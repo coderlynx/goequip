@@ -7,6 +7,12 @@ session_start();
 $metodo = strtolower($_SERVER['REQUEST_METHOD']);
 switch ($metodo) {
     case 'get':
+        if (isset($_GET["idProducto"])) {
+            $imagenes = Imagen::getFotos($_GET["idProducto"]);
+            
+            echo json_encode($imagenes);
+            break;
+        }
         break;
     case 'post':   
         // Si se cargaron imágenes, almaceno el array retornado con las rutas

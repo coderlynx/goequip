@@ -150,10 +150,10 @@ class UploadHandler {
             $target = join(DIRECTORY_SEPARATOR, array($uploadDirectory, $name));
             if ($target){
                 $this->uploadName = $name;
-                if (!is_dir(dirname($target))){
-                    mkdir(dirname($target));
-                    $result['create directory'] = true;
-                }
+//                if (!is_dir(dirname($target))){
+//                    mkdir(dirname($target));
+//                    $result['create directory'] = true;
+//                }
                 if ($image = self::copiarImagen($file['tmp_name'], $target, $this->rutasImagenes)) {
                     $result['copy success'] = true;
                 }
@@ -175,6 +175,9 @@ class UploadHandler {
      */
     private function copiarImagen($file, $destination, &$array)
     {
+        $partes_ruta = pathinfo($destination);
+        if (!file_exists($partes_ruta['dirname'])) mkdir($partes_ruta['dirname']);
+        
         if (strstr($destination, "thumbs")) {
             $filename = "thumb_".basename($destination);
         } else {

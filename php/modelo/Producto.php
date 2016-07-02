@@ -10,7 +10,7 @@ class Producto implements JsonSerializable
 	private $color; // array
 	private $stock;
 	private $precio;
-    private $fotos;
+    private $fotos; // array
     
 	public function __construct($id = null, $modelo, $descripcion, $categoria, $talle = null, 
                                 $color = null, $stock, $precio, $fotos = null) 
@@ -223,13 +223,15 @@ class Producto implements JsonSerializable
 			$query = "SELECT prod.id, prod.modelo, prod.descripcion, prod.stock, prod.precio, 
                       cat.id idCategoria, cat.descripcion descripcionCategoria,
                       t.id idTalle, t.descripcion descripcionTalle,
-                      c.id idColor, c.descripcion descripcionColor
+                      c.id idColor, c.descripcion descripcionColor,
+                      img.nombre, img.tipo, img.size, img.ruta, img.rutaThumbnail, img.idProducto, img.orden
 					  FROM productos prod 
                       INNER JOIN categorias cat ON prod.idCategoria = cat.id
                       INNER JOIN talles_productos tp ON tp.idProducto = prod.id
                       INNER JOIN talles t ON tp.idTalle = t.id
                       INNER JOIN colores_productos cp ON cp.idProducto = prod.id
                       INNER JOIN colores c ON cp.idColor = c.id
+                      LEFT JOIN imagenes img ON prod.id = img.idProducto
                       WHERE prod.baja = 0";
 											
 		   $stmt = DBConnection::getStatement($query);
@@ -247,16 +249,22 @@ class Producto implements JsonSerializable
 				$producto;
                 
                 if ($idAnterior != $row['id']) {
-                    $fotos = Imagen::getFotos($row['id']);
+//                    $fotos = array();
+//                    $fotos = Imagen::getFotos($row['id']);
                     
                     $talle = new Talle($row['idTalle'],$row['descripcionTalle']);
-					$color = new Color($row['idColor'],$row['descripcionColor']);
+				    $color = new Color($row['idColor'],$row['descripcionColor']);
                     $categoria = new Categoria($row['idCategoria'], $row['descripcionCategoria']);
                     $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], 
                                              $categoria, null, null, $row['stock'], $row['precio']);
-                    $producto->fotos = $fotos;
+                    
+                    $imagen = new Imagen($row['nombre'], $row['tipo'], 
+                                         $row['size'], $row['ruta'],
+                                         $row['rutaThumbnail'], $row['idProducto']);
+                    
+                    $producto->addImagen($imagen);
                     $producto->addTalle($talle);
-					$producto->addColor($color);
+				    $producto->addColor($color);
                     
                     $idTalleAnterior = $row['idTalle'];
 					$idColorAnterior = $row['idColor'];
@@ -472,6 +480,10 @@ class Producto implements JsonSerializable
 			}
 		}
 		return false;
+	}
+    public function addImagen($imagen) 
+	{
+		$this->fotos[] = $imagen;
 	}
     public function addTalle($talle) 
 	{
