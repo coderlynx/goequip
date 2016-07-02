@@ -35,14 +35,15 @@ var Producto = {
         var div_item = $('<div>');
         div_item.attr('id',producto.id);
         div_item.addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12 producto');
-        div_item.css({height: '300px'});
+		div_item.attr('style' ,'min-height:300px');
+        //div_item.css({min-height: '300px'});
         
         var link = $("<a>");
         link.attr('href','producto.html?id=' + producto.id + '&categoria=' + producto.categoria.id);
         
         var foto = $("<img>");
 
-        if (producto.fotos[0].ruta != null) {
+        if (producto.fotos != null) {
             foto.attr('src', producto.fotos[0].ruta);
             foto.attr('alt', producto.modelo);
         } else {
