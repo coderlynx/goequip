@@ -109,7 +109,6 @@
 		</section>
 	</div>
 
-
 	<!-- /.DESTACADOS -->	
 	<section id="destacados">
 		
@@ -120,7 +119,6 @@
 		
 	</footer>
 
-	
 	<script src="js/lib/jquery.js"></script>
 	<!--<script src="http://code.jquery.com/jquery-latest.js"></script><!-->
 	<script src="js/lib/bootstrap.min.js"></script>
@@ -141,13 +139,10 @@
              } );
              $( "#footer" ).load( "codigoComun.php #footer" );
              $( "#destacados" ).load( "codigoComun.php #destacados" );
-            
-            
-            
-            
+
             var id = getUrlParameter('id');
             var idCategoria = getUrlParameter('categoria');
-            
+
             if(id) {
                 var prod = Producto.getById(id);
                 Producto.completarDetalle(prod);
@@ -177,7 +172,6 @@
             
         });
 
-  
         function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
                 sURLVariables = sPageURL.split('&'),
@@ -193,8 +187,6 @@
             }
         };
 
-        
-	
 	</script>	
 </body>
 </html>

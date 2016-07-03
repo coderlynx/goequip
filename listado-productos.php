@@ -1,12 +1,10 @@
 <?php
 session_start();
     
-
 if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
   header("Location: index.html");  //Si no hay sesión activa, lo direccionamos al index.php (inicio de sesión) 
   
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,8 +32,6 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-    
-    
     	<header>
     		<div class="container-fluid">
     			<div class="row">

@@ -3,6 +3,7 @@ require_once 'autoload.php';
 
 class Imagen implements JsonSerializable
 { 
+    public $id;
     public $nombre;
     public $tipo;
     public $size;
@@ -11,9 +12,10 @@ class Imagen implements JsonSerializable
     public $idProducto;
     public $orden;
 
-    public function __construct($nombre, $tipo, $size, $ruta, $rutaThumbnail,
+    public function __construct($id = null, $nombre, $tipo, $size, $ruta, $rutaThumbnail,
                                 $idProducto, $orden = 0) 
     {
+        $this->id = $id;
         $this->nombre = $nombre;
         $this->tipo = $tipo;
         $this->size = $size;
@@ -27,6 +29,7 @@ class Imagen implements JsonSerializable
 		$json = array();
 		
 		return [
+            'id' => $this->id,
             'nombre' => $this->nombre,
             'tipo' => $this->tipo,
             'size' => $this->size,
@@ -73,20 +76,19 @@ class Imagen implements JsonSerializable
             $db->rollBack();
         }
     }
-    public static function borrarImagen($ruta, $idProducto) 
+    public static function borrarImagen($idImagen) 
     {
 		try	{
-			$query = "DELETE FROM imagenes WHERE idProducto = :idProducto AND ruta = :ruta";
+			$query = "DELETE FROM imagenes WHERE id = :idImagen";
 					 
 			$stmt = DBConnection::getStatement($query);
 			
-			$stmt->bindParam(':idProducto', $idProducto, PDO::PARAM_INT);
-			$stmt->bindParam(':ruta', $ruta, PDO::PARAM_STR);
+			$stmt->bindParam(':idImagen', $idImagen, PDO::PARAM_INT);
 			
 			if (!$stmt->execute()) {
-					throw new Exception("Error en el borrado de la foto.");
+					throw new Exception("Error al intentar eliminar la imagen.");
             }
-            echo 'Imagen borrada con exito.';
+            echo 'Imagen eliminada con exito.';
 				
 		} catch (PDOException $e) {
             echo 'Error: ' . $e->getMessage();
@@ -99,8 +101,8 @@ class Imagen implements JsonSerializable
 		try {
             $db->beginTransaction();
             
-			$query = "SELECT nombre, tipo, size, ruta, rutaThumbnail, 
-                             idProducto, orden
+			$query = "SELECT id, nombre, tipo, size, ruta, rutaThumbnail, 
+                            idProducto, orden
                       FROM imagenes
                       WHERE idProducto = :valor
                       ORDER BY orden";
@@ -119,8 +121,8 @@ class Imagen implements JsonSerializable
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
                 
-                $imagen = new Imagen($row['nombre'], $row['tipo'], $row['size'],
-                                     $row['ruta'], $row['rutaThumbnail'], 
+                $imagen = new Imagen($row['id'], $row['nombre'], $row['tipo'], 
+                                     $row['size'], $row['ruta'], $row['rutaThumbnail'], 
                                      $row['idProducto'], $row['orden']);
                 
                 $imagenes[] = $imagen;

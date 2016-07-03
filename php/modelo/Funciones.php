@@ -39,8 +39,8 @@ class Funciones
         $minHeight = 100;
         
         // Carpetas destino
-        $destination = "..\\img\\productos\\450_350\\";
-        $destination_thumb = "..\\img\\productos\\thumbs\\";
+        $destination = "../img/productos/450_350/";
+        $destination_thumb = "../img/productos/thumbs/";
 
         foreach($files[$name]["tmp_name"] as $key => $tmp_name) {
              
@@ -111,11 +111,33 @@ class Funciones
     private static function copiarImagen($file, $destination, &$ruta)
     {
         $partes_ruta = pathinfo($destination);
+
         if (!file_exists($partes_ruta['dirname'])) mkdir($partes_ruta['dirname']);
         
         copy($file, $destination);
         $ruta = $destination;
         return basename($destination);
+    }
+    /*
+     * @param string $path - ruta del archivo a eliminar
+     *
+     */
+    public static function borrarImagenFisica($path, $pathThumb)
+    {
+        // Defino ruta relativa
+        $root = "../";
+        
+        $path = $root.$path;
+        $pathThumb = $root.$pathThumb;
+        
+        $resultThumb = unlink($pathThumb);
+        $result = unlink($path);
+        
+        if ($result) {
+            echo "Imagen física eliminada.";
+        } else {
+            echo "La imagen no se pudo eliminar físicamente";
+        }
     }
     /*
      * @param string $filename, example 'test.jpg'

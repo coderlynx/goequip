@@ -150,8 +150,6 @@
              $( "#header" ).load( "codigoComun.php #header", function() {
                 Carrito.init();
                 Autenticacion.init();
-                
-               
              }); 
              $( "#nav" ).load( "codigoComun.php #nav", function() {
                 var id = getUrlParameter('id');
@@ -163,17 +161,13 @@
              $( "#footer" ).load( "codigoComun.php #footer" );
              $( "#destacados" ).load( "codigoComun.php #destacados" );
 
-            
             $('.ordenar').click(function() {
                 var id = getUrlParameter('id');
                //var orden = $('[name="filtro"]:checked').data('filtro');
                var orden = $(this).data('orden');//  $('#ordenar option:selected').data('orden');
                $('#contendorProductos').empty();
                Producto.getByCategoria(id, orden);
-                
             });
-
-
 		});
   
         function getUrlParameter(sParam) {
@@ -190,9 +184,6 @@
                 }
             }
         };
-
-        
-	
 	</script>	
 </body>
 </html>

@@ -7,7 +7,9 @@ $metodo = strtolower($_SERVER['REQUEST_METHOD']);
 
 // Filtrar método
 switch ($metodo) {
+        
     case 'get':
+        
         if (isset($_GET["id"])) {
             $producto = Producto::getById($_GET["id"]);
             echo json_encode($producto);
@@ -26,8 +28,11 @@ switch ($metodo) {
         }
         $productos = Producto::getAll();
         echo json_encode($productos);
+        
         break;
+        
     case 'post':   
+        
         $prod = json_decode($_POST['producto']);
         $producto = new Producto($prod->Id, $prod->Modelo, $prod->Descripcion, $prod->Categoria, 
                                  $prod->Talle, $prod->Color, $prod->Stock, $prod->Precio);
@@ -49,7 +54,7 @@ switch ($metodo) {
             
             foreach ($imagenes as $key => $value) {
                 
-                $imagen = new Imagen($imagenes[$key]->nombre, $imagenes[$key]->tipo, 
+                $imagen = new Imagen(null, $imagenes[$key]->nombre, $imagenes[$key]->tipo, 
                                      $imagenes[$key]->size, $imagenes[$key]->ruta,
                                      $imagenes[$key]->rutaThumbnail, $_SESSION['idProducto']);
                 
@@ -63,18 +68,28 @@ switch ($metodo) {
         } else {
             echo json_encode("No hay imágenes cargadas.");
         }
-        break;
-    case 'put':
-    case 'delete':        
-        //parseo a un array la data que viene por delete
-        parse_str(file_get_contents("php://input"),$delete_vars);
-        $id = $delete_vars['id'];
-        $rutaFoto = $delete_vars['ruta'];
-
-        if (!isset($id)) die("Error: no hay un id");
-        if (Producto::delete($id)) die("exito");
         
         break;
+        
+    case 'put':
+        break;
+        
+    case 'delete':   
+        
+        //parseo a un array la data que viene por delete
+        parse_str(file_get_contents("php://input"), $delete_vars);
+
+        if (isset($delete_vars['idImagen'])) {
+            Imagen::borrarImagen($delete_vars['idImagen']);
+            Funciones::borrarImagenFisica($delete_vars['pathImagen'], 
+                                         $delete_vars['pathThumb']);
+        }
+        else if (isset($delete_vars['id'])) {
+            Producto::delete($delete_vars['id']);
+        }
+        
+        break;
+        
     default:
         echo "Request Method NO reconocible";
 }

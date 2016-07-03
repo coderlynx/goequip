@@ -224,8 +224,9 @@ class Producto implements JsonSerializable
                       cat.id idCategoria, cat.descripcion descripcionCategoria,
                       t.id idTalle, t.descripcion descripcionTalle,
                       c.id idColor, c.descripcion descripcionColor,
-                      img.nombre, img.tipo, img.size, img.ruta, img.rutaThumbnail, img.idProducto, img.orden
-					  FROM productos prod 
+                      img.id idImagen, img.nombre, img.tipo, img.size, img.ruta, 
+                      img.rutaThumbnail, img.idProducto, img.orden
+                      FROM productos prod 
                       INNER JOIN categorias cat ON prod.idCategoria = cat.id
                       INNER JOIN talles_productos tp ON tp.idProducto = prod.id
                       INNER JOIN talles t ON tp.idTalle = t.id
@@ -234,45 +235,46 @@ class Producto implements JsonSerializable
                       LEFT JOIN imagenes img ON prod.id = img.idProducto
                       WHERE prod.baja = 0";
 											
-		   $stmt = DBConnection::getStatement($query);
+            $stmt = DBConnection::getStatement($query);
 		   
             if (!$stmt->execute()) {
 				throw new Exception('Error al traer los productos');
 			}
-			$productos = array();
-			$idAnterior = 0;
+            $productos = array();
+            $idAnterior = 0;
             $idTalleAnterior = 0;
-			$idColorAnterior = 0;
+            $idColorAnterior = 0;
+            $idImagenAnterior = 0;
 			
-			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+            while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
                 //hacer un corte de control para los talles y colores
-				$producto;
+                $producto;
                 
                 if ($idAnterior != $row['id']) {
-//                    $fotos = array();
-//                    $fotos = Imagen::getFotos($row['id']);
                     
                     $talle = new Talle($row['idTalle'],$row['descripcionTalle']);
-				    $color = new Color($row['idColor'],$row['descripcionColor']);
+                    $color = new Color($row['idColor'],$row['descripcionColor']);
                     $categoria = new Categoria($row['idCategoria'], $row['descripcionCategoria']);
                     $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], 
                                              $categoria, null, null, $row['stock'], $row['precio']);
                     
-                    $imagen = new Imagen($row['nombre'], $row['tipo'], 
+                    $imagen = new Imagen($row['idImagen'], $row['nombre'], $row['tipo'], 
                                          $row['size'], $row['ruta'],
                                          $row['rutaThumbnail'], $row['idProducto']);
                     
                     $producto->addImagen($imagen);
                     $producto->addTalle($talle);
-				    $producto->addColor($color);
+                    $producto->addColor($color);
                     
+                    $idImagenAnterior = $row['idImagen'];
                     $idTalleAnterior = $row['idTalle'];
-					$idColorAnterior = $row['idColor'];
+                    $idColorAnterior = $row['idColor'];
 
                     $productos[] = $producto;
                 } else {
+                    self::CorteControlImagenes($producto, $row, $idImagenAnterior);
                     self::CorteControlTalles($producto, $row, $idTalleAnterior);
-					self::CorteControlColores($producto, $row, $idColorAnterior);
+                    self::CorteControlColores($producto, $row, $idColorAnterior);
                 }
                 $idAnterior = $row['id'];
 			}
@@ -289,8 +291,8 @@ class Producto implements JsonSerializable
     {
 		try {
 			$query = "SELECT *
-					 FROM productos
-                     WHERE modelo LIKE :valor or descripcion LIKE :valor";
+				      FROM productos
+                      WHERE modelo LIKE :valor or descripcion LIKE :valor";
 											
             $stmt = DBConnection::getStatement($query);
             
@@ -452,6 +454,19 @@ class Producto implements JsonSerializable
 				return 0;
         }
         return ($a->precio > $b->precio) ? +1 : -1;
+	}
+    private static function CorteControlImagenes(&$producto, $row, &$idImagenAnterior) 
+    {
+		if ($idImagenAnterior != $row['idImagen'] && !self::contieneElemento($producto->fotos, $row['idImagen'])) {
+			
+            $img = new Imagen($row['idImagen'], $row['nombre'], $row['tipo'], 
+                              $row['size'], $row['ruta'],
+                              $row['rutaThumbnail'], $row['idProducto']);
+            
+			$producto->addImagen($img);
+			
+			$idImagenAnterior = $row['idImagen'];
+		}		
 	}
     /* INICIO TALLE Y COLOR */
     private static function CorteControlTalles(&$producto, $row, &$idTalleAnterior) 

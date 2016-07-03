@@ -204,10 +204,12 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
             var id = getUrlParameter('id');
             
             if (id) {
+                
                 var prod = Producto.getById(id);
                 if (prod.id == 0) return;
                 
                 Producto.completarInputs(prod);
+                
                 //talles
                 for (var i = 0; i < prod.talles.length; i++) {
                     Producto.tildarCheckbox(prod.talles[i], 'talles');
@@ -217,19 +219,21 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                     Producto.tildarCheckbox(prod.colores[i], 'colores');
                 }
                 // Imágenes
-                var files = [];
-                
-                if (prod.fotos.length > 0) {
-                    console.log(prod.fotos);
+                if (prod.fotos[0].id !== null) {
+                    
+                    var files = [];
+                    
                     for (var i = prod.fotos.length - 1; i >= 0; i--) {
 
                         if (!prod.fotos[i].ruta.includes("thumb")) {
                             var obj = {};
+                            obj.id = prod.fotos[i].id;
                             obj.name = prod.fotos[i].nombre;
                             obj.size = prod.fotos[i].size;
                             obj.type = prod.fotos[i].tipo;
                             obj.file = prod.fotos[i].ruta;
-                            console.log(obj);
+                            obj.thumb = prod.fotos[i].rutaThumbnail;
+                            
                             files.push(obj);
                         }
                     }
@@ -238,6 +242,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                 
                 $("#btnAltaProducto").attr('value','Editar');
                 $("#btnAltaProducto").html("Editar");
+                
             }
             
             cargarUploader(files);
@@ -249,9 +254,46 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                 changeInput: true,
                 showThumbs: true,
                 addMore: true,
-                files: files
-            })
-            
+                files: files,
+                onSelect: function(file, a, b, c, d, inputEl) {
+                    
+                    var filerKit = inputEl.prop("jFiler");
+                    var _URL = window.URL || window.webkitURL;
+                    var file, img, width = 450, height = 350, 
+                        id = filerKit.current_file.id;
+                
+                    if (file) {
+                        console.log(id);
+                        img = new Image();
+                        img.onload = function() {
+                            if (this.width != width || this.height != height) {
+                                Producto.mostrarMensaje("danger", "La imagen debe " +
+                                                        "ser de " + width + " x " + 
+                                                        height + " pixels", "", 5000);
+                                
+                                window.setTimeout(function () {
+                                    filerKit.remove(id)
+                                }, 3000);
+                            }
+                        };
+                        img.onerror = function() {
+                            console.log( "not a valid file: " + file.type);
+                        };
+                        img.src = _URL.createObjectURL(file);
+                    }    
+                },
+                onRemove: function(itemEl, file, id, listEl, boxEl, newInputEl, 
+                                   inputEl) {
+                    
+                    var filerKit = inputEl.prop("jFiler");
+                    var file_id = filerKit.files_list[id];
+
+                    if (file_id.file.id) {
+                        Producto.eliminarImagen(file_id.file.id, file_id.file.file,
+                                                file_id.file.thumb);
+                    }
+                }
+            });
         }
         function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),

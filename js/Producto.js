@@ -42,17 +42,13 @@ var Producto = {
         var foto = $("<img>");
 
         if (producto.fotos[0].ruta != null) {
-            foto.attr('src', producto.fotos[0].ruta);
+            foto.attr('src', producto.fotos[0].ruta.replace("../", ""));
             foto.attr('alt', producto.modelo);
         } else {
-            if (Producto.self().detectarSO === "WINDOWS") {
-                    foto.attr('src', "img\na.jpg");
-                } else {
-                    foto.attr('src', "img/na.jpg");
-                }
+            foto.attr('src', "img/na.jpg");
         }
-        /* REVIDAR!! */
-        foto.css({height: '300px', margin: '0 5px'})
+
+        foto.css({margin: '0 5px'})
         foto.addClass('img-responsive');
         link.append(foto);
         
@@ -65,7 +61,6 @@ var Producto = {
         div_item.append(link);
         div_item.append(h3);
         div_item.append(p);
-        //div_item.append(article);
 
         if ($('#pantalla').val() == 'pantallaProductos') {
             var div_btn = $("<div>");
@@ -131,17 +126,9 @@ var Producto = {
                     $('#stock').val("");
                     $('#precio').val("");
                     $('#filer_input').prop("jFiler").reset();
-                    $('#box-messages').empty();
-                    $('#box-messages').append('<div class="alert alert-success">' +
-                                              'Producto cargado exitosamente!' +
-                                              '</div>');
                     
-                    window.setTimeout(function() {
-                      $("#box-messages div").fadeTo(500, 0).slideUp(500, function() {
-                          $(this).remove();
-                          window.location.href = "listado-productos.php";
-                      });
-                    }, 3000);
+                    Producto.self().mostrarMensaje("success", "Producto cargado exitosamente", 
+                                                  "listado-productos.php");
                 } else {
                     console.log(textStatus);
                 }
@@ -150,30 +137,20 @@ var Producto = {
                 console.log('Error al ejecutar la petición por:' + e);
             }
         });
-        /*
-        $.post('php/controllerProducto.php', {producto:jsonProducto}, function(respuestaJson) {
-            var rta = JSON.parse(respuestaJson);
-            if(rta == "exito") {
-                alert("El producto ha sigo guardado con exito.");
-            }
-        }).error(function(e){
-                console.log('Error al ejecutar la petición por:' + e);
-            }
-        );
-        */
+
         return false;
     },
     getById: function(idProducto) {
         var _this = this;
         var prod = {};
-         //Lo hice de esta forma porque necesitaba que el asincronismo sea false
+        
 		$.ajax({
-			  async:false,    
-			  cache:false,   
+			  async: false,    
+			  cache: false,   
 			  type: 'GET', 
-              data: {id:idProducto},
+              data: {id: idProducto},
 			  url: "php/controllerProducto.php",
-			  success:  function(respuestaJson){  
+			  success:  function(respuestaJson) {  
 					var producto = JSON.parse(respuestaJson);
                     if(producto === "error") {
                         alert("Producto no encontrado");
@@ -191,27 +168,31 @@ var Producto = {
     },
     getByCategoria: function(idCategoria, orden) {
         var _this = this;
-         //Lo hice de esta forma porque necesitaba que el asincronismo sea false
+        
 		$.ajax({
 			  async:false,    
 			  cache:false,   
 			  type: 'GET', 
-              data: {idCategoria:idCategoria, orden:orden},
+              data: {idCategoria: idCategoria, orden: orden},
 			  url: "php/controllerProducto.php",
 			  success:  function(respuestaJson){  
-					var productos = JSON.parse(respuestaJson);
-            
+                    var productos = JSON.parse(respuestaJson);
+                    var length = productos.length;
+
                     $('#listaProductos').empty();
-                    $('#cantidadDeProductos').html(productos.length + " Productos");
-                    $('#nombreCategoria').html(productos[0].categoria.descripcion);
-            
-                    for (var i=0; i < productos.length; i++) {
-						_this.dibujarProductoEnPantalla($('#contendorProductos'), productos[i]);
-                        
-                        //dibujo el menu del costado
-                        $('#listaProductos').append("<li><a href='producto.html?id=" + productos[i].id + "&categoria=" + productos[i].categoria.id + "' >" + productos[i].modelo + "</a></li>");
-					}
-                    _this.bindearBotones();
+                    $('#cantidadDeProductos').html(length + " Productos");
+                    
+                    if (length > 0) {
+                        $('#nombreCategoria').html(productos[0].categoria.descripcion);
+
+                        for (var i=0; i < length; i++) {
+                            _this.dibujarProductoEnPantalla($('#contendorProductos'), productos[i]);
+
+                            //dibujo el menu del costado
+                            $('#listaProductos').append("<li><a href='producto.html?id=" + productos[i].id + "&categoria=" + productos[i].categoria.id + "' >" + productos[i].modelo + "</a></li>");
+                        }
+                        _this.bindearBotones();
+                    }
 			  },
 			  error:function(e){
 				  console.log('Error al ejecutar la petición por:' + e);
@@ -225,8 +206,8 @@ var Producto = {
 		producto.Modelo = $("#modelo").val();
 		producto.Descripcion = $("#descripcion").val();
 		producto.Categoria = $("#categoria option:selected").val();
-		producto.Talle = this.recorrerCheckbox('talles');  //$("#talle option:selected").val();
-		producto.Color = this.recorrerCheckbox('colores'); //$("#color option:selected").val();
+		producto.Talle = this.recorrerCheckbox('talles');
+		producto.Color = this.recorrerCheckbox('colores');
 		producto.Stock = $("#stock").val();
 		producto.Precio = $("#precio").val();
 		
@@ -241,43 +222,15 @@ var Producto = {
         $("#categoria").val(producto.categoria.id);
         $("#stock").val(producto.stock);
         $("#precio").val(producto.precio);
-        
-        // Cargar Imágenes
-        if (producto.fotos) {
-            var length = producto.fotos.length,
-                categoria = producto.categoria['descripcion'],
-                modelo = producto.modelo,
-                link = {}, ruta = "", img = {}, div = {}, close = {};
-
-            // Dibuja imágenes
-            for (var i = 0 ; i < length; i++) {
-                link = $("<a>");
-
-                ruta = producto.fotos[i].ruta;
-
-                link.css({display: 'inline-block', marginLeft: '20px'});
-
-                close = $("<span>");
-                close.attr('data-id',producto.id);
-                close.addClass("glyphicon glyphicon-remove");
-                close.css('cursor', 'pointer')
-                close.click(_this.eliminarImagen);
-
-                link.append(close);
-
-                img = $("<img>");
-                img.attr({'src': producto.fotos[i].rutaThumbnail, 'alt': modelo, width: '100px', height: '100px'});
-
-                link.append(img);   
-                $("#visorEdicion").append(link);
-            }
-        }
     },
     completarDetalle: function(producto) {
+
+        if (producto.id === 0) return;
+        
         var length = producto.fotos.length,
             categoria = producto.categoria['descripcion'],
             modelo = producto.modelo,
-            ul = $(".bxslider"),
+            ul = $(".bxslider"), thumb = {},
             link = {}, ruta = "", img = {}, li = {}, a = {};
 
         $(".divProducto").attr('id',producto.id);
@@ -292,23 +245,26 @@ var Producto = {
             
             for (var i = 0; i < length; i++) {
                 img = $("<img>");
-                img.attr({src: producto.fotos[i].ruta})
+                img.attr({src: producto.fotos[i].ruta.replace("../", ""), 
+                          title: producto.modelo});
                 
-                if (!producto.fotos[i].ruta.includes("thumb")) {
-                    li = $("<li>")
-                    li.append(img);
-                    ul.append(li);
-                } else {
-                    a = $("<a>");
-                    a.attr({"data-slide-index": index.toString(), href: ""});
-                    a.append(img);
-                    div.append(a);
-                    index++;
-                }
+                li = $("<li>")
+                li.append(img);
+                ul.append(li);
+                
+                a = $("<a>");
+                a.attr({"data-slide-index": index.toString(), href: ""});
+                
+                thumb = $("<img>");
+                thumb.attr({src: producto.fotos[i].rutaThumbnail.replace("../", "")})
+                a.append(thumb);
+                div.append(a);
+                index++;
             }
         } else {
             img = $("<img>");
             img.attr({src: "img/na.jpg"});
+            img.css({width: '100%'});
             li = $("<li>");
             li.append(img);
             ul.append(li);
@@ -318,7 +274,8 @@ var Producto = {
         // CAROUSEL PRODUCTOS
         $('.bxslider').bxSlider({
             pagerCustom: '#bx-pager',
-            captions: true
+            randomStart: true,
+            adaptiveHeight: true
         });
         
         //dibujo los colores
@@ -408,31 +365,7 @@ var Producto = {
             } 
         });
         
-       _this.bindearBuscadorProductos();
-
-        
-        /*$("#btnBuscarProducto").click(function(e){
-														
-				var texto = $("#txtBusqueda").val();
-
-				$.get('php/controllerProducto.php', {buscar:texto },function(respuestaJson) {
-					var productos = JSON.parse(respuestaJson);
-                        if(productos.length > 0) {
-                            $('#contenedor').empty();
-                            for (i=0; i < productos.length; i++) {
-                                _this.dibujarProductoEnPantalla($('#contenedor'), productos[i]);
-                            }
-                            _this.bindearBotones();
-
-                        } else {
-                            alert('No se encontraron resultados.');
-                        }
-				}).error(function(e){
-					console.log('Error al ejecutar la petición.' + e);
-                });
-                e.preventDefault();
-				});*/
-       
+       _this.bindearBuscadorProductos();       
     },
     buscarProductos: function(texto) {
         var _this = this;
@@ -465,11 +398,6 @@ var Producto = {
            
             return false;
         });
-        /*$('#txtBusqueda').keypress(function(e){
-				if(e.which == 13) {
-					$('#btnBuscarProducto').click();
-				}
-			});*/
 	},
 	recorrerCheckbox: function(name) {
 		
@@ -488,29 +416,35 @@ var Producto = {
 			if($(this).val() == elemento.id ) $(this)[0].checked =true;
 		});
 	},
-    eliminarImagen: function() {
-        var r = confirm("¿Está seguro de querer eliminar la imagen  " + this.parentNode.id + "?");
-            
-            if (r == true) {
-                var idProducto = $(this).data('id');
-                var rutaFoto = $(this).next().attr('src');
-               // borro el producto
-                $.ajax({ 
-                    type: 'DELETE',   
-                    url: "php/controllerProducto.php",
-                    data : {id:idProducto, ruta:rutaFoto},
-                    success:  function(respuestaJson){  
-                        //var rta = JSON.parse(respuestaJson);
-                        //if(rta == "exito") {
-                            //$('#mensaje').html(respuestaJson);
-                            alert(respuestaJson);
-                            location.reload();
-                        //}
-                    },
-                    error:function(e){
-                      console.log('Error al ejecutar la petición por:' + e);
-                    }
-                });
-            }       
+    eliminarImagen: function(idImagen, pathImagen, pathThumb) {
+
+        $.ajax({ 
+            type: 'DELETE',   
+            url: "php/controllerProducto.php",
+            data : {idImagen: idImagen, pathImagen: pathImagen, 
+                    pathThumb: pathThumb},
+            success:  function(respuestaJson){  
+                Producto.self().mostrarMensaje("success", 
+                                               "Imagen eliminada exitosamente");
+            },
+            error:function(e){
+              console.log('Error al ejecutar la petición por:' + e);
+            }
+        });   
+        
+    },
+    mostrarMensaje: function(tipo, mensaje, url = "", tiempo = 3000) {
+        
+        $('#box-messages').empty();
+        $('#box-messages').append("<div class='alert alert-" + tipo + "'>" +
+                                  mensaje + "</div>");
+
+        window.setTimeout(function() {
+          $("#box-messages div").fadeTo(500, 0).slideUp(500, function() {
+              $(this).remove();
+              if (url != "") window.location.href = url;
+          });
+        }, tiempo);
+        
     }
 }
