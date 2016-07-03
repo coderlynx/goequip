@@ -27,10 +27,12 @@ session_start();
                         <li role="separator" class="divider"></li>
                         <li><a href="crearcuenta.html"><i class="fa fa-user-plus" aria-hidden="true"></i> Registrarse</a></li>
                          <?php
-                            }
+                            } else {
                         ?>	
                         <li><a href="misDatos.php"><i class="fa fa-pencil" aria-hidden="true"></i> Mis datos</a></li>
                         <?php
+							}
+							
                           if(isset($_SESSION["perfil"]) &&  $_SESSION["perfil"] == 1) {
                             
                         ?>

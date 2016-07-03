@@ -28,6 +28,7 @@ var Cliente = {
 		cliente.Nombre = $("#nombre").val();
 		cliente.Telefono = $("#telefono").val();
 		cliente.Email = $("#email").val();
+		cliente.FechaNacimiento = $("#fechaNacimiento").val();
         // Domicilio
         cliente.Calle = $("#calle").val();
         cliente.Numero = $("#numero").val();
@@ -171,6 +172,7 @@ var Cliente = {
             $("#nombre").val(cliente.nombre);
             $("#telefono").val(cliente.telefono);
             $("#email").val(cliente.email);
+			$("#fechaNacimiento").val(cliente.fechaNacimiento);
         }
         // Domicilio
         $("#calle").val(cliente.domicilio.calle);

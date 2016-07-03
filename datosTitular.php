@@ -98,7 +98,7 @@ if(!isset($_SESSION["nombre"]))	{
 									    <label for="dni-tipo">DNI</label>
 									    <select class="form-control" id="dni-tipo">
 									      <option>-Tipo-</option>
-									      <option>DNI</option>
+									      <option selected>DNI</option>
 									      <option>LC</option>
 									      <option>LE</option>
 									    </select>

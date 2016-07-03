@@ -10,6 +10,7 @@ require_once 'autoload.php';
 	private $nombre;
 	private $telefono;
 	private $email;
+	private $fechaNacimiento;
     private $idDomicilio;
     private $domicilio;
      
@@ -17,7 +18,7 @@ require_once 'autoload.php';
     private $baja;
 
    
-	public function __construct($id=null, $dni, $cuil,$apellido, $nombre, $telefono, $email, $domicilio = null, 
+	public function __construct($id=null, $dni, $cuil,$apellido, $nombre, $telefono, $email,$fechaNacimiento, $domicilio = null, 
                                 $idUsuario, $baja = 0) 
     {
         $this->id = $id;
@@ -27,6 +28,7 @@ require_once 'autoload.php';
         $this->nombre = $nombre;
         $this->telefono = $telefono;
         $this->email = $email;
+		$this->fechaNacimiento = $fechaNacimiento;
         // Domicilio
         $this->domicilio = $domicilio;
         
@@ -61,6 +63,7 @@ require_once 'autoload.php';
 			'nombre' => $this->nombre,
 			'telefono' => $this->telefono,
 			'email' => $this->email,
+			'fechaNacimiento' => $this->fechaNacimiento,
             'domicilio' => $this->domicilio,
             'idUsuario' => $this->idUsuario,
             'baja' => $this->baja
@@ -82,7 +85,7 @@ require_once 'autoload.php';
 				$db->beginTransaction();
 				
 				$query = "UPDATE clientes SET dni = :dni, cuil = :cuil, apellido = :apellido, nombre = :nombre, 
-                telefono = :telefono, email = :email WHERE id = :id";
+                telefono = :telefono, email = :email, fechaNacimiento = :fechaNacimiento WHERE id = :id";
 				 
 				$stmt = DBConnection::getStatement($query);
 				
@@ -114,8 +117,8 @@ require_once 'autoload.php';
 			try	{
 				$db->beginTransaction();
 				
-                $query = "INSERT INTO clientes (dni, cuil, apellido, nombre, telefono, email, idUsuario)
-				VALUES(:dni, :cuil, :apellido, :nombre, :telefono, :email, :idUsuario)";
+                $query = "INSERT INTO clientes (dni, cuil, apellido, nombre, telefono, email, fechaNacimiento, idUsuario)
+				VALUES(:dni, :cuil, :apellido, :nombre, :telefono, :email, :fechaNacimiento, :idUsuario)";
                 
 				$stmt = DBConnection::getStatement($query);
 															
@@ -174,6 +177,7 @@ require_once 'autoload.php';
         $stmt->bindParam(':nombre', $cliente->nombre, PDO::PARAM_STR);
         $stmt->bindParam(':telefono', $cliente->telefono, PDO::PARAM_STR);
         $stmt->bindParam(':email', $cliente->email, PDO::PARAM_STR);
+		$stmt->bindParam(':fechaNacimiento', $cliente->fechaNacimiento, PDO::PARAM_STR);
         $stmt->bindParam(':idUsuario', $cliente->idUsuario, PDO::PARAM_INT);
 
         return $stmt;
@@ -189,6 +193,7 @@ require_once 'autoload.php';
         $stmt->bindParam(':nombre', $cliente->nombre, PDO::PARAM_STR);
         $stmt->bindParam(':telefono', $cliente->telefono, PDO::PARAM_STR);
         $stmt->bindParam(':email', $cliente->email, PDO::PARAM_STR);
+		$stmt->bindParam(':fechaNacimiento', $cliente->fechaNacimiento, PDO::PARAM_STR);
 
         return $stmt;
 	}
@@ -284,7 +289,7 @@ require_once 'autoload.php';
 	public static function getAll(){
 		try {
 		    $query = "SELECT cli.id, cli.dni, cli.cuil, cli.apellido, cli.nombre, cli.telefono, cli.email, 
-                      cli.baja, cli.idUsuario,    
+                      cli.fechaNacimiento, cli.baja, cli.idUsuario,    
 	                  dom.calle, dom.numero, dom.numero, dom.piso, dom.depto, dom.localidad, dom.provincia, 
                       dom.pais, dom.cp
                       FROM clientes cli 
@@ -305,7 +310,7 @@ require_once 'autoload.php';
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
               $domicilio = new Domicilio($row['calle'], $row['numero'], $row['piso'], $row['depto'], $row['localidad'], $row['provincia'], $row['pais'], $row['cp']);
               
-              $cliente = new Cliente($row['id'], $row['dni'], $row['cuil'], $row['apellido'], $row['nombre'], $row['telefono'], $row['email'], $domicilio, $row['idUsuario'], $row['baja']);
+              $cliente = new Cliente($row['id'], $row['dni'], $row['cuil'], $row['apellido'], $row['nombre'], $row['telefono'], $row['email'],$row['fechaNacimiento'], $domicilio, $row['idUsuario'], $row['baja']);
               
               $clientes[] = $cliente;
 			}

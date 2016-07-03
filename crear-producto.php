@@ -266,9 +266,9 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                         console.log(id);
                         img = new Image();
                         img.onload = function() {
-                            if (this.width != width || this.height != height) {
+                            if (this.width < width || this.height < height) {
                                 Producto.mostrarMensaje("danger", "La imagen debe " +
-                                                        "ser de " + width + " x " + 
+                                                        "ser de al menos " + width + " x " + 
                                                         height + " pixels", "", 5000);
                                 
                                 window.setTimeout(function () {

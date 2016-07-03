@@ -34,6 +34,7 @@ var Producto = {
 	dibujarProductoEnPantalla: function (contenedor, producto) {       
         var div_item = $('<div>');
         div_item.attr('id',producto.id);
+		div_item.attr('style','height:430px;');
         div_item.addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12 producto');
         
         var link = $("<a>");
@@ -54,9 +55,11 @@ var Producto = {
         
         var h3 = $("<h3>");
         h3.html(producto.modelo);
+		h3.attr('style','position:absolute; bottom:70px;');
         
         var p = $("<p>");
         p.html('Precio: $ ' + producto.precio);
+		p.attr('style','position:absolute; bottom:40px;');
         
         div_item.append(link);
         div_item.append(h3);
@@ -64,6 +67,7 @@ var Producto = {
 
         if ($('#pantalla').val() == 'pantallaProductos') {
             var div_btn = $("<div>");
+			div_btn.attr('style','position:absolute; bottom:0;');
             
             var btnEditar = $("<button>");
             btnEditar.addClass('btn btn-info btn-editar btnEditar');
