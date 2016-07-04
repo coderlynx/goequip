@@ -42,7 +42,9 @@ var Producto = {
         
         var foto = $("<img>");
 
-        if (producto.fotos[0].ruta != null) {
+		if(producto.fotos.length == 0) {
+			foto.attr('src', "img/na.jpg");
+		} else if (producto.fotos[0].ruta != null) {
             foto.attr('src', producto.fotos[0].ruta.replace("../", ""));
             foto.attr('alt', producto.modelo);
         } else {

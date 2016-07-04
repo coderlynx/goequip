@@ -145,7 +145,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 						    <label class="sr-only" for="precio">Precio (Pesos Argentinos)</label>
 						    <div class="input-group">
 						      <div class="input-group-addon">$</div>
-						      <input id="precio" type="number" class="form-control" id="precio" placeholder="Precio (Pesos Argentinos)" required>
+						      <input id="precio" type="number" step="any" class="form-control" id="precio" placeholder="Precio (Pesos Argentinos)" required>
 						    </div>
 						  </div>
 						</div>

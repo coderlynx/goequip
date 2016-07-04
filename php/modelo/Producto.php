@@ -305,10 +305,10 @@ class Producto implements JsonSerializable
 			$productos = array();
 			
 			while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
-                //$fotos = self::getFotos($row['id']);
+                $fotos = Imagen::getFotos($row['id']);
                 $producto = new Producto($row['id'], $row['modelo'], $row['descripcion'], '', 
                                          null, null, $row['stock'], $row['precio']);
-                //$producto->fotos = $fotos;
+                $producto->fotos = $fotos;
                 $productos[] = $producto;
 			}
 			 return $productos;
