@@ -81,7 +81,7 @@ switch ($metodo) {
 
             $headers = "From:Recuperar password <recuperar@outletgym.com>\r\n";  
             $message = "Para recuperar tu clave debe hacerle click en el link de abajo.
-            http://outletgym.ws58.host4g.com/cambioConClave.html?id=".$hash."&mail=".$mail;
+            http://outletgym.com/cambioConClave.html?id=".$hash."&mail=".$mail;
 
             if (mail($mail,"Recuperar password",$message,$headers)){
                 echo 'ok';

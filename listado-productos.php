@@ -32,19 +32,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-    	<header>
-    		<div class="container-fluid">
-    			<div class="row">
-    				<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 logo">
-    					<h1><a href="index.html" title="Outlet Gym"><img src="img/logo.jpg" alt="Outlet Gym"></a></h1>
-    				</div>
-    				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-right">
-    				    <span style="font-family: 'Roboto', sans-serif;" id="nombreUsuario"></span>
-    					<button id="btnCerrarSesion" type="button" class="btn btn-default btn-sesion">Cerrar sesión</button>
-    				</div>
-    			</div>
-    		</div>
-    	</header>
+		<header id="header"></header>
 	
 	    <nav class="navbar navbar-default">
 		  <div class="container-fluid">
@@ -77,68 +65,21 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<h2>Listado de productos</h2>
+					<h2 style="display:inline-block; margin-right:20px; margin-bottom: 50px;">Listado de productos</h2>
+					<div style="display:inline-block;">
+						<select id="categoria" class="form-control" required>
+							<option value="1">Waterrower</option>
+							<option value="2">Kangoo Jumps</option>
+							<option value="3">Equipos Cardio</option>
+							<option value="4">Accesorios</option>
+							<option value="5">Indumentaria</option>
+						</select>
+					</div>
 				</div>
 			</div>
 			<div class="row">
 			    <div id="contenedor"></div>
                 <input type="hidden" id="pantalla" value="pantallaProductos" />
-<!--
-				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 producto">
-					<img src="../img/productos/a1home.jpg" alt="" class="img-responsive">
-					<h3>Remo A1 Home</h3>
-					<p>Precio: $23.000</p>
-					<div>
-						<button type="button" class="btn btn-info btn-editar"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button>
-						<button type="button" class="btn btn-danger btn-eliminar"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 producto">
-					<img src="../img/productos/a1home.jpg" alt="" class="img-responsive">
-					<h3>Remo A1 Home</h3>
-					<p>Precio: $23.000</p>
-					<div>
-						<button type="button" class="btn btn-info btn-editar"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button>
-						<button type="button" class="btn btn-danger btn-eliminar"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 producto">
-					<img src="../img/productos/a1home.jpg" alt="" class="img-responsive">
-					<h3>Remo A1 Home</h3>
-					<p>Precio: $23.000</p>
-					<div>
-						<button type="button" class="btn btn-info btn-editar"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button>
-						<button type="button" class="btn btn-danger btn-eliminar"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 producto">
-					<img src="../img/productos/a1home.jpg" alt="" class="img-responsive">
-					<h3>Remo A1 Home</h3>
-					<p>Precio: $23.000</p>
-					<div>
-						<button type="button" class="btn btn-info btn-editar"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button>
-						<button type="button" class="btn btn-danger btn-eliminar"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 producto">
-					<img src="../img/productos/a1home.jpg" alt="" class="img-responsive">
-					<h3>Remo A1 Home</h3>
-					<p>Precio: $23.000</p>
-					<div>
-						<button type="button" class="btn btn-info btn-editar"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button>
-						<button type="button" class="btn btn-danger btn-eliminar"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 producto">
-					<img src="../img/productos/a1home.jpg" alt="" class="img-responsive">
-					<h3>Remo A1 Home</h3>
-					<p>Precio: $23.000</p>
-					<div>
-						<button type="button" class="btn btn-info btn-editar"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button>
-						<button type="button" class="btn btn-danger btn-eliminar"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
-					</div>
-				</div>
--->
 			</div>
 		</div>
 	</main>
@@ -150,12 +91,21 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 	<script src="js/lib/bootstrap.min.js"></script>
     <script src="js/Autenticacion.js"></script>
     <script src="js/Producto.js"></script>
+	<script src="js/Carrito.js"></script>
     <script type="text/javascript">
       
          $( document ).ready(function() {
+			 
+			 $( "#header" ).load( "codigoComun.php #header", function() {
+                Carrito.init();
+                Autenticacion.init();
+             }); 
+			 
 			Producto.init();
-            Autenticacion.init();
-            Autenticacion.bindearBtnCerrarSesion();
+			
+			$( "#categoria" ).change(function() {
+			  Producto.getByCategoria($(this).val(),'PrecioMenor');
+			});
 		});
 	
     </script>

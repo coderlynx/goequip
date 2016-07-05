@@ -30,19 +30,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 
 </head>
 <body>
-    	<header>
-    		<div class="container-fluid">
-    			<div class="row">
-    				<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 logo">
-    					<h1><a href="index.html" title="Outlet Gym"><img src="img/logo.jpg" alt="Outlet Gym"></a></h1>
-    				</div>
-    				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-right">
-    				    <span style="font-family: 'Roboto', sans-serif;" id="nombreUsuario"></span>
-    					<button id="btnCerrarSesion" type="button" class="btn btn-default btn-sesion">Cerrar sesión</button>
-    				</div>
-    			</div>
-    		</div>
-    	</header>
+		<header id="header"></header>
 	
 	    <nav class="navbar navbar-default">
 		  <div class="container-fluid">
@@ -166,6 +154,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                     <div class="row">
 						<div class="col-lg-6">
 							<button id="btnAltaProducto" type="submit" class="btn btn-custom">Guardar</button>
+							<button id="btnCancelar" class="btn btn-custom black">Cancelar</button>
 							<div id="mensaje"></div>
 						</div>
 					</div> 
@@ -181,13 +170,18 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
     <script src="js/lib/jquery.filer.min.js"></script>
     <script src="js/Autenticacion.js"></script>
 	<script src="js/Producto.js"></script>
+	<script src="js/Carrito.js"></script>
 	<script src="js/ConstructorDeCheck.js"></script>
 	<script>
 		$(document).ready(function() { 
+		
+			$( "#header" ).load( "codigoComun.php #header", function() {
+                Carrito.init();
+                Autenticacion.init();
+             }); 
+			 
             ConstructorDeCheck.armarCheckBox('#talles','talles');
             ConstructorDeCheck.armarCheckBoxColores('#colores','colores');
-            Autenticacion.init();
-            Autenticacion.bindearBtnCerrarSesion();
             //cuando presiona guardar
             $("#agregarProducto").submit(function(e) {
                 e.preventDefault();
@@ -199,6 +193,10 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                     
                     Producto.insert(producto, form);
                 }  
+            });
+			
+			$("#btnCancelar").click(function() {
+                window.location.href = "listado-productos.php";
             });
             
             var id = getUrlParameter('id');
@@ -241,7 +239,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                 }
                 
                 $("#btnAltaProducto").attr('value','Editar');
-                $("#btnAltaProducto").html("Editar");
+                $("#btnAltaProducto").html("Guardar");
                 
             }
             

@@ -45,13 +45,15 @@ var Carrito = {
             producto.color = $(this).parent().find("#color").val();
             
             if(producto.color == ''){
-                $('#mensaje').html('Debe seleccionar un color.');
-                return false;
+                //$('#mensaje').html('Debe seleccionar un color.');
+				producto.color = 0;
+                //return false;
             }
             
             if(producto.talle == ''){
-                $('#mensaje').html('Debe seleccionar un talle.');
-                return false;
+                //$('#mensaje').html('Debe seleccionar un talle.');
+				producto.talle = 0;
+                //return false;
             } 
             
 
@@ -108,13 +110,21 @@ var Carrito = {
         var p_color = $('<p>');
         var color = $("<span>");
         color.addClass("color");
-        color.html(producto.colores);
+		if(producto.colores == null) {
+			color.html('Sin color');
+		} else {
+			color.html(producto.colores);
+		}
         p_color.append("<span class='detalle-items'>Color:</span> " + color.html());
         
         var p_talla = $('<p>');
         var talla = $("<span>");
         talla.addClass("talla");
-        talla.html(producto.talles);
+		if(producto.talles == null) {
+			talla.html('Sin talle');
+		} else {
+			talla.html(producto.talles);
+		}
         p_talla.append("<span class='detalle-items'>Talla:</span> " + talla.html());
         
         var p_cantidad = $('<p>');       
@@ -127,17 +137,15 @@ var Carrito = {
         var idBtnSumar = "btnSumarACarrito"+producto.id;
         btnSumarACarrito.attr("type","button");
         btnSumarACarrito.attr("id",idBtnSumar);
-        btnSumarACarrito.attr("value","Agregar");
-        btnSumarACarrito.addClass("btnSumarACarrito");
-        btnSumarACarrito.addClass('btn btn-default btn-custom');
+        btnSumarACarrito.attr("value","+1");
+        btnSumarACarrito.addClass('btn btn-default btn-custom btnSumarACarrito');
         
         var btnQuitarDeCarrito = $("<input>");
         var idBtnQuitar = "btnQuitarDeCarrito"+producto.id;
         btnQuitarDeCarrito.attr("type","button");
         btnQuitarDeCarrito.attr("id",idBtnQuitar);
-        btnQuitarDeCarrito.attr("value","Quitar");
-        btnQuitarDeCarrito.addClass("btnQuitarDeCarrito");
-        btnQuitarDeCarrito.addClass('btn btn-default btn-custom');
+        btnQuitarDeCarrito.attr("value","-1");
+        btnQuitarDeCarrito.addClass('btn btn-default btnQuitarDeCarrito');
               
         
         div_imagen.append(img);

@@ -29,7 +29,7 @@ class Producto implements JsonSerializable
 		'modelo' => ['required'],
 		'descripcion' => ['required'],
 		'categoria' => ['required'],
-		'color' => ['required'],
+		//'color' => ['required'],
 		'stock' => ['required'],
 		'precio' => ['required']
 	];
@@ -228,10 +228,10 @@ class Producto implements JsonSerializable
                       img.rutaThumbnail, img.idProducto, img.orden
                       FROM productos prod 
                       INNER JOIN categorias cat ON prod.idCategoria = cat.id
-                      INNER JOIN talles_productos tp ON tp.idProducto = prod.id
-                      INNER JOIN talles t ON tp.idTalle = t.id
-                      INNER JOIN colores_productos cp ON cp.idProducto = prod.id
-                      INNER JOIN colores c ON cp.idColor = c.id
+                      LEFT JOIN talles_productos tp ON tp.idProducto = prod.id
+                      LEFT JOIN talles t ON tp.idTalle = t.id
+                      LEFT JOIN colores_productos cp ON cp.idProducto = prod.id
+                      LEFT JOIN colores c ON cp.idColor = c.id
                       LEFT JOIN imagenes img ON prod.id = img.idProducto
                       WHERE prod.baja = 0";
 											

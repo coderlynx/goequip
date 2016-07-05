@@ -34,7 +34,7 @@ var Producto = {
 	dibujarProductoEnPantalla: function (contenedor, producto) {       
         var div_item = $('<div>');
         div_item.attr('id',producto.id);
-		div_item.attr('style','height:430px;');
+		div_item.attr('style','height:360px;');
         div_item.addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12 producto');
         
         var link = $("<a>");
@@ -186,13 +186,14 @@ var Producto = {
                     var length = productos.length;
 
                     $('#listaProductos').empty();
+					$('#contenedor').empty();
                     $('#cantidadDeProductos').html(length + " Productos");
                     
                     if (length > 0) {
                         $('#nombreCategoria').html(productos[0].categoria.descripcion);
 
                         for (var i=0; i < length; i++) {
-                            _this.dibujarProductoEnPantalla($('#contendorProductos'), productos[i]);
+                            _this.dibujarProductoEnPantalla($('#contenedor'), productos[i]);
 
                             //dibujo el menu del costado
                             $('#listaProductos').append("<li><a href='producto.html?id=" + productos[i].id + "&categoria=" + productos[i].categoria.id + "' >" + productos[i].modelo + "</a></li>");
@@ -285,24 +286,32 @@ var Producto = {
         });
         
         //dibujo los colores
-        for (var i = 0; i < producto.colores.length; i++){
-            var div = $("<div>");
-            div.addClass('circle');
-            div.attr('style','background:' + producto.colores[i].descripcion);
-            div.attr('data-color',producto.colores[i].id);
+		if (producto.colores[0].id != null) {
+			for (var i = 0; i < producto.colores.length; i++){
+				var div = $("<div>");
+				div.addClass('circle');
+				div.attr('style','background:' + producto.colores[i].descripcion);
+				div.attr('data-color',producto.colores[i].id);
 
-            $('.colores').append(div);
-        }
+				$('.colores').append(div);
+			}
+		} else {
+			$('.colores').append('Sin color para elegir');
+		}
 
         //dibujo los talles
-        for (var i=0 ; i < producto.talles.length; i++){
-            var span = $("<span>");
-            span.addClass('talle');
-            span.attr('data-talle',producto.talles[i].id);
-            span.html(producto.talles[i].descripcion);
+		if (producto.talles[0].id != null) {
+			for (var i=0 ; i < producto.talles.length; i++){
+				var span = $("<span>");
+				span.addClass('talle');
+				span.attr('data-talle',producto.talles[i].id);
+				span.html(producto.talles[i].descripcion);
 
-            $('.talla').append(span);
-        }
+				$('.talla').append(span);
+			}
+		} else {
+			$('.talla').append('Sin talle para elegir');
+		}
          
         //para dibujar si tiene o no stock
         if(producto.stock > 0) {
@@ -379,9 +388,9 @@ var Producto = {
         $.get('php/controllerProducto.php', {buscar:texto },function(respuestaJson) {
                 var productos = JSON.parse(respuestaJson);
                     if(productos.length > 0) {
-                        $('#contendorProductos').empty();
+                        $('#contenedor').empty();
                         for (var i=0; i < productos.length; i++) {
-                            _this.dibujarProductoEnPantalla($('#contendorProductos'), productos[i]);
+                            _this.dibujarProductoEnPantalla($('#contenedor'), productos[i]);
                         }
                         _this.bindearBotones();
 

@@ -12,7 +12,18 @@ h3{font-size: 1.5em; margin: 0;}
 .logo img{width: 300px; height: auto; padding-top: 10px;}
 .logo h1{padding: 0; margin:0;}
 
+.black {
+	background-color: #000;
+}
+
 .btn-sesion{margin-top: 8px;}
+
+.user{text-align: right; padding-top: 5px;}
+.user i{color: #1d1d1b;font-size: 1em;}
+
+.total-header{margin-top: 10px;text-align: right;}
+.total-header a{color: #1d1d1b;font-size: .9em;font-weight: 700;letter-spacing: 0.7px;text-transform: uppercase;}
+.total-header i{color: #e61654;	font-size: 1.5em;}
 
 /*PRODUCTOS*/
 .producto img{padding: 10px 0px;}

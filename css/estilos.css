@@ -168,7 +168,7 @@ ul.icon_list li a:hover{color: #e61654; border-color:#e61654; }
 .detalle-carrito h2{margin-top: 0; border-bottom: 1px solid #ccc; padding-bottom: 10px;}
 .div-comprar{margin-top: 20px; border-top: 1px solid #ccc; padding-top: 20px;}
 .btn-comprar{width: 100%; margin-bottom: 10px; background-color: #f1f1f1;}
-
+.btnSumarACarrito, .btnQuitarDeCarrito {width:50px;margin:5px;}
 
 /*LOGIN*/
 .form-signin{width: 60%; margin:auto; padding: 50px; margin-bottom: 30px;}

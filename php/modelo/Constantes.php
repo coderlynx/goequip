@@ -28,13 +28,16 @@ class Constantes {
     ];
     
     static $TALLE = [
+		0 => 'Sin talle',
         1 => 'L',
         2 => 'M',
         3 => 'S',
-        4 => 'XS'
+        4 => 'XS',
+		5 => 'Único talle'
     ];
         
     static $COLOR = [
+		0 => 'Sin color',
         1 => 'Blanco',
         2 => 'Azul',
         3 => 'Negro'

@@ -37,19 +37,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 
     
     
-    	<header>
-    		<div class="container-fluid">
-    			<div class="row">
-    				<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 logo">
-    					<h1><a href="index.html" title="Outlet Gym"><img src="img/logo.jpg" alt="Outlet Gym"></a></h1>
-    				</div>
-    				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-right">
-    				    <span style="font-family: 'Roboto', sans-serif;" id="nombreUsuario"></span>
-    					<button id="btnCerrarSesion" type="button" class="btn btn-default btn-sesion">Cerrar sesión</button>
-    				</div>
-    			</div>
-    		</div>
-    	</header>
+		<header id="header"></header>
 	
 	    <nav class="navbar navbar-default">
 		  <div class="container-fluid">
@@ -93,59 +81,6 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                         <input type="text" id="search" class="search" class="buscador" placeholder="Buscar"
                             style="display: none; margin:10px;" />
                     </div>	
-                  
-<!--
-                  <table class="table table-hover table-striped table-bordered tabla-pedidos">
-					  <thead>
-					    <tr>
-					      <th>Nro. de pedido</th>
-					      <th>Cliente</th>
-					      <th>Total</th>
-					      <th>Cantidad</th>
-					      <th>Pago</th>
-					      <th>Envío</th>
-					      <th>Estado</th>
-					      <th>Fecha</th>
-					      <th>Detalle</th>
-					    </tr>
-					  </thead>
-					  <tbody>
-					    <tr>
-					      <td>1461337510</td>
-					      <td>Caino, Fernando Raul</td>
-					      <td>$ 1000.5</td>
-					      <td>5</td>
-					      <td>Factura</td>
-					      <td>Sucursal</td>
-					      <td>Pendiente</td>
-					      <td>2016-04-22</td>
-					      <td>Ver <i class="fa fa-search" aria-hidden="true"></i></td>
-					    </tr>
-					    <tr>
-					      <td>1461337510</td>
-					      <td>Caino, Fernando Raul</td>
-					      <td>$ 1000.5</td>
-					      <td>5</td>
-					      <td>Factura</td>
-					      <td>Sucursal</td>
-					      <td>Pendiente</td>
-					      <td>2016-04-22</td>
-					      <td>Ver <i class="fa fa-search" aria-hidden="true"></i></td>
-					    </tr>
-					    <tr>
-					      <td>1461337510</td>
-					      <td>Caino, Fernando Raul</td>
-					      <td>$ 1000.5</td>
-					      <td>5</td>
-					      <td>Factura</td>
-					      <td>Sucursal</td>
-					      <td>Pendiente</td>
-					      <td>2016-04-22</td>
-					      <td>Ver <i class="fa fa-search" aria-hidden="true"></i></td>
-					    </tr>
-					  </tbody>
-					</table>
--->
 				</div>
 			</div>
 		</div>
@@ -159,34 +94,6 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 					<p>Fecha: <span id="detalleFecha"></span></p>
 					<div id="div_tabla_detalle">
                 </div>
-<!--
-					<table class="table table-striped table-bordered tabla-detalles">
-					  <thead>
-					    <tr>
-					      <th>Modelo</th>
-					      <th>Cantidad</th>
-					      <th>Precio</th>
-					    </tr>
-					  </thead>
-					  <tbody>
-					    <tr>
-					      <td>Calzas deportivas mujes</td>
-					      <td>1</td>
-					      <td>500</td>
-					    </tr>
-					    <tr>
-					      <td>Producto con poco stock</td>
-					      <td>2</td>
-					      <td>600</td>
-					    </tr>
-					    <tr>
-					      <td></td>
-					      <td><strong>TOTAL</strong></td>
-					      <td>$<strong id="detalleTotal">1100</strong></td>
-					    </tr>
-					  </tbody>
-					</table>
--->
 				</div>
 			</div>
 		</div>
@@ -201,14 +108,18 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 	     <?php include('scripts.html') ?>
      <script src="js/Autenticacion.js"></script>
      <script src="js/Pedido.js"></script>
+	 <script src="js/Carrito.js"></script>
      <script src="js/lib/Grilla.js"></script>
      <script src="js/lib/list.js"></script>
      <script>
        $( document ).ready(function() {
-            Pedido.init();
-            Autenticacion.init();
-           Autenticacion.bindearBtnCerrarSesion();
-
+		   
+		    $( "#header" ).load( "codigoComun.php #header", function() {
+                Carrito.init();
+                Autenticacion.init();
+             }); 
+			 
+           Pedido.init();
 		});
     
     </script>
