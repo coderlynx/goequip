@@ -68,7 +68,7 @@ var Producto = {
         div_header.append(h3);
         
         var p = $("<p>");
-        p.html('Precio: $ ' + producto.precio);
+        p.html('Precio: $ ' + $.number(producto.precio, 2, ',', '.' )); // Formato);
 		//p.attr('style','position:absolute; bottom:40px;');
         div_header.append(h3);
         div_header.append(p);
@@ -226,7 +226,7 @@ var Producto = {
 		producto.Talle = this.recorrerCheckbox('talles');
 		producto.Color = this.recorrerCheckbox('colores');
 		producto.Stock = $("#stock").val();
-		producto.Precio = $.number($("#precio").val(), 2, ',', '.' );
+		producto.Precio = $("#precio").val();
 		
 		return producto;	
 	},
@@ -238,7 +238,7 @@ var Producto = {
         $("#descripcion").val(producto.descripcion);
         $("#categoria").val(producto.categoria.id);
         $("#stock").val(producto.stock);
-        $("#precio").val(producto.precio.replace(".", "").replace(",", "."));
+        $("#precio").val(producto.precio);
     },
     completarDetalle: function(producto) {
 

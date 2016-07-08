@@ -90,6 +90,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 	<script src="js/lib/jquery.js"></script>
 	<!--<script src="http://code.jquery.com/jquery-latest.js"></script><!-->
 	<script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/lib/jquery.number.min.js"></script>
     <script src="js/Autenticacion.js"></script>
     <script src="js/Producto.js"></script>
 	<script src="js/Carrito.js"></script>
