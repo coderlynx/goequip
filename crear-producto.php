@@ -199,7 +199,20 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 			$("#btnCancelar").click(function() {
                 window.location.href = "listado-productos.php";
             });
-            
+			
+			/*$("#precio").keyup(function() {
+                var nStr = $(this).val() + '';
+				x = nStr.split('.');
+				x1 = x[0];
+				x2 = x.length > 1 ? '.' + x[1] : '';
+				var rgx = /(\d+)(\d{3})/;
+				while (rgx.test(x1)) {
+					x1 = x1.replace(rgx, '$1' + '.' + '$2');
+				}
+				return x1 + x2;
+            });*/
+			
+
             var id = getUrlParameter('id');
             
             if (id) {
@@ -294,6 +307,8 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
                 }
             });
         }
+		
+		
         function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
                 sURLVariables = sPageURL.split('&'),

@@ -165,7 +165,8 @@ var Autenticacion = {
                 success: function (rta) {
                    if(rta == 'ok') {
                         $('#mensaje').html("Cambio de clave exitoso.");
-                       $('#inputClaveNueva').val("");
+						$('#linkLogin').show();
+						$('#inputClaveNueva').val("");
                     } else {
                         $('#mensaje').html(rta);
                     }			

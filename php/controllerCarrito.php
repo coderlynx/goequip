@@ -30,7 +30,7 @@ switch ($metodo) {
         if (isset($_POST["pagar"])) { 
             if(!isset($_SESSION['nombre'])) die("Debes loguearte.");
             if(!isset($_SESSION['carrito'])) die("No hay productos en el carrito");
-
+			if($_SESSION['carrito']->calculateCantidadTotal() == 0 ) die("No hay productos en el carrito");
 
 
             $_SESSION['pedido']['total'] = $_SESSION['carrito']->calculateMontoTotal() + $_SESSION['entrega']->costo;

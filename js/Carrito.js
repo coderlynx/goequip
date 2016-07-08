@@ -63,7 +63,7 @@ var Carrito = {
         });
 
         $('#btnIrACarrito').click(function() {
-            if($(".totalPedido").html() == 0) {
+            if($(".totalPedido").html() == 0 || $(".totalCantidad").html() == 0) {
                 alert('No hay productos para ver en el detalle del carrito')
             } else {
                 window.location.href = "carrito.html";
@@ -211,7 +211,7 @@ var Carrito = {
                         _this.dibujarProductoEnCarrito($('#contenedorDetalleCarro'), rta);
                         
                         _this.getTotal();
-                        $('#mensaje').html('Producto agregado al carrito.');
+                        //$('#mensaje').html('Producto agregado al carrito.');
                         
                         var prodSel = $("#cantidadProductosSeleccionados");
                         prodSel.text((parseInt(prodSel.text()) + 1));
