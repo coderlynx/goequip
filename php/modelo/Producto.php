@@ -292,7 +292,7 @@ class Producto implements JsonSerializable
 		try {
 			$query = "SELECT *
 				      FROM productos
-                      WHERE modelo LIKE :valor or descripcion LIKE :valor";
+                      WHERE baja = 0 AND modelo LIKE :valor or descripcion LIKE :valor";
 											
             $stmt = DBConnection::getStatement($query);
             

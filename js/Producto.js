@@ -198,8 +198,8 @@ var Producto = {
                             //dibujo el menu del costado
                             $('#listaProductos').append("<li><a href='producto.html?id=" + productos[i].id + "&categoria=" + productos[i].categoria.id + "' >" + productos[i].modelo + "</a></li>");
                         }
-                        _this.bindearBotones();
                     }
+					_this.bindearBotones();
 			  },
 			  error:function(e){
 				  console.log('Error al ejecutar la petición por:' + e);
@@ -395,7 +395,7 @@ var Producto = {
                         _this.bindearBotones();
 
                     } else {
-                        alert('No se encontraron resultados.');
+                        $('#contenedor').html('No se encontraron resultados.');
                     }
             }).error(function(e){
                 console.log('Error al ejecutar la petición.' + e);
