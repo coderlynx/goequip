@@ -131,7 +131,7 @@ class Producto implements JsonSerializable
         //$stmt->bindParam(':talle', $producto->talle,PDO::PARAM_STR);
         //$stmt->bindParam(':color', $producto->color,PDO::PARAM_STR);
         $stmt->bindParam(':stock', $producto->stock, PDO::PARAM_INT);
-        $stmt->bindParam(':precio', $producto->precio);
+        $stmt->bindParam(':precio', $producto->precio, PDO::PARAM_STR);
 
         return $stmt;
 	}

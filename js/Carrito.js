@@ -15,6 +15,7 @@ var Carrito = {
 					var items = [];
                 
                     $("#cantidadProductosSeleccionados").html(rta.length);
+                    console.log(rta.length);    
 					for (i=0; i < rta.length; i++) {
 						_this.dibujarProductoEnCarrito($('#contenedorDetalleCarro'), rta[i]);
 					}
@@ -35,6 +36,7 @@ var Carrito = {
             producto.descripcion = $(this).parent().find("#descripcion").html();
             producto.categoria = 'categoria';
             producto.precio = $(this).parent().find("#precio").html();
+            //producto.precio = $.number(producto.precio, 2, ',', '.' )); // Formato
             producto.foto = $('.bxslider')[0].childNodes[1].childNodes[0].src;//$("#imgPrincipal").attr('src');
             
             producto.stock = 1;//default 1 cantidad
@@ -56,8 +58,6 @@ var Carrito = {
                 //return false;
             } 
             
-
-               
             _this.postAgregar(producto);
 
         });
@@ -104,7 +104,6 @@ var Carrito = {
         precio.addClass("detalle-items");
         precio.addClass("precio");
         precio.html(' $ ' + producto.precio);
-
         modelo.append(precio);
         
         var p_color = $('<p>');
@@ -131,7 +130,7 @@ var Carrito = {
         var cantidad = $("<span>");
         cantidad.addClass("cantidad");
         cantidad.html(producto.stock);
-        p_cantidad.append("<span class='detalle-items'>Cantidad:</span><span class='cantidad'>" + cantidad.html() + "</span>");
+        p_cantidad.append("<span class='detalle-items'>Cantidad: </span><span class='cantidad'>" + cantidad.html() + "</span>");
         
         var btnSumarACarrito = $("<input>");
         var idBtnSumar = "btnSumarACarrito"+producto.id;
@@ -213,6 +212,9 @@ var Carrito = {
                         
                         _this.getTotal();
                         $('#mensaje').html('Producto agregado al carrito.');
+                        
+                        var prodSel = $("#cantidadProductosSeleccionados");
+                        prodSel.text((parseInt(prodSel.text()) + 1));
                     }
                     
 			  },
@@ -239,6 +241,10 @@ var Carrito = {
                         $('#contenedorDetalleCarro').find("#"+producto.id).remove();
                     }
                     _this.getTotal();
+            
+                 var prodSel = $("#cantidadProductosSeleccionados");
+                 prodSel.text((parseInt(prodSel.text()) - 1));
+                 (prodSel.text() < 0) ? prodSel.text("0") : prodSel.text();
             
 			  },
 			  error:function(objXMLHttpRequest){
