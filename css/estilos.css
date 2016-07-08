@@ -108,6 +108,8 @@ ul.icon_list li a:hover{color: #e61654; border-color:#e61654; }
 .detalle-producto p{font-size: .9em; line-height: 20px;}
 .precio{color: #e61654; font-weight: 700; font-size: 1.2em!important; margin: 5px 0px;}
 .btn-agregar{padding: 15px; text-transform: uppercase; font-weight: 700; font-size: 1.1em;}
+.div-item-body{margin-bottom: 10px;}
+.div-item-header{margin-bottom: 10px; padding-left: 5px;}
 
 /*----Colores----*/
 .colores{margin: 20px 0px;}

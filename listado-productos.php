@@ -25,6 +25,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 
     <!-- Estilos -->
 	<link rel="stylesheet" href="css/panel.css">
+	<link rel="stylesheet" href="css/estilos.css">
 
 </head>
 <body>

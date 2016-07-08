@@ -133,7 +133,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 						    <label class="sr-only" for="precio">Precio (Pesos Argentinos)</label>
 						    <div class="input-group">
 						      <div class="input-group-addon">$</div>
-						      <input id="precio" type="number" step="any" class="form-control" id="precio" placeholder="Precio (Pesos Argentinos)" required>
+						      <input type="number" id="precio" class="form-control" step="0.01" min="0" placeholder="Precio (Pesos Argentinos)" required>
 						    </div>
 						  </div>
 						</div>
@@ -168,6 +168,7 @@ if(!(isset($_SESSION["perfil"])) || $_SESSION["perfil"] != 1)
 	<script src="js/lib/jquery.js"></script>
 	<script src="js/lib/bootstrap.min.js"></script>
     <script src="js/lib/jquery.filer.min.js"></script>
+    <script src="js/lib/jquery.number.min.js"></script>
     <script src="js/Autenticacion.js"></script>
 	<script src="js/Producto.js"></script>
 	<script src="js/Carrito.js"></script>

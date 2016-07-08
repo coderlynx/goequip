@@ -34,8 +34,11 @@ var Producto = {
 	dibujarProductoEnPantalla: function (contenedor, producto) {       
         var div_item = $('<div>');
         div_item.attr('id',producto.id);
-		div_item.attr('style','height:360px;');
+		//div_item.attr('style','height:360px;');
         div_item.addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12 producto');
+        
+        var div_body = $("<div>");
+        div_body.addClass("div-item-body");
         
         var link = $("<a>");
         link.attr('href','producto.html?id=' + producto.id + '&categoria=' + producto.categoria.id);
@@ -54,22 +57,29 @@ var Producto = {
         foto.css({margin: '0 5px'})
         foto.addClass('img-responsive');
         link.append(foto);
+        div_body.append(link);
+        
+        var div_header = $("<div>");
+        div_header.addClass("div-item-header");
         
         var h3 = $("<h3>");
         h3.html(producto.modelo);
-		h3.attr('style','position:absolute; bottom:70px;');
+		//h3.attr('style','position:absolute; bottom:70px;');
+        div_header.append(h3);
         
         var p = $("<p>");
         p.html('Precio: $ ' + producto.precio);
-		p.attr('style','position:absolute; bottom:40px;');
+		//p.attr('style','position:absolute; bottom:40px;');
+        div_header.append(h3);
+        div_header.append(p);
         
-        div_item.append(link);
-        div_item.append(h3);
-        div_item.append(p);
+        div_item.append(div_body);
+        div_item.append(div_header);
 
         if ($('#pantalla').val() == 'pantallaProductos') {
             var div_btn = $("<div>");
-			div_btn.attr('style','position:absolute; bottom:0;');
+            div_btn.addClass("div-item-btn");
+			//div_btn.attr('style','position:absolute; bottom:0;');
             
             var btnEditar = $("<button>");
             btnEditar.addClass('btn btn-info btn-editar btnEditar');
@@ -216,7 +226,7 @@ var Producto = {
 		producto.Talle = this.recorrerCheckbox('talles');
 		producto.Color = this.recorrerCheckbox('colores');
 		producto.Stock = $("#stock").val();
-		producto.Precio = $("#precio").val();
+		producto.Precio = $.number($("#precio").val(), 2, ',', '.' );
 		
 		return producto;	
 	},
@@ -228,7 +238,7 @@ var Producto = {
         $("#descripcion").val(producto.descripcion);
         $("#categoria").val(producto.categoria.id);
         $("#stock").val(producto.stock);
-        $("#precio").val(producto.precio);
+        $("#precio").val(producto.precio.replace(".", "").replace(",", "."));
     },
     completarDetalle: function(producto) {
 
